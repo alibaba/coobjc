@@ -79,18 +79,18 @@ In the coroutine we use the await method to wait for the asynchronous method to 
 
 ```
 
-- (void)viewDidLoad{
+- (void)viewDidLoad {
     ...
-		co_launch(^{
-            // async downloadDataFromUrl
-    		NSData *data = await(downloadDataFromUrl(url));
+    co_launch(^{
+        // async downloadDataFromUrl
+    	NSData *data = await(downloadDataFromUrl(url));
+        
+        // async transform data to image
+    	UIImage *image = await(imageFromData(data));
 
-            // async transform data to image
-    		UIImage *image = await(imageFromData(data));
-
-            // set image to imageView
-    		self.imageView.image = image;
-		});
+        // set image to imageView
+    	self.imageView.image = image;
+	});
 }
 ```
 
@@ -100,8 +100,7 @@ The above code turns the code that originally needs dispatch_async twice into se
 
 In the coroutine, all our methods are directly returning the value, and no error is returned. Our error in the execution process is obtained by co_getError(). For example, we have the following interface to obtain data from the network. When the promise will reject: error<br /><br />
 ```
-- (CCOPromise*)co_GET:(NSString*)url
-  parameters:(NSDictionary*)parameters{
+- (CCOPromise*)co_GET:(NSString*)url parameters:(NSDictionary*)parameters{
     CCOPromise *promise = [CCOPromise promise];
     [self GET:url parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         [promise fulfill:responseObject];
