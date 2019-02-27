@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AlertDemoViewController">
+            <connections>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rSv-f4-y2d">
+                    <rect key="frame" x="49" y="64" width="277" height="42"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.84705882349999995" green="0.69803921570000005" blue="0.60392156860000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <state key="normal" title="Show Simple Alert"/>
+                    <connections>
+                        <action selector="showSimpleAlert:" destination="-1" eventType="touchUpInside" id="TSo-h4-s3N"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lBF-gK-qoX">
+                    <rect key="frame" x="49" y="114" width="277" height="42"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.84705882349999995" green="0.69803921570000005" blue="0.60392156860000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <state key="normal" title="showOkayCancelAlert"/>
+                    <connections>
+                        <action selector="showOkayCancelAlert:" destination="-1" eventType="touchUpInside" id="nzZ-TR-2VN"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J3i-Mu-ovo">
+                    <rect key="frame" x="49" y="164" width="277" height="42"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.84705882349999995" green="0.69803921570000005" blue="0.60392156860000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <state key="normal" title="showOtherAlert"/>
+                    <connections>
+                        <action selector="showOtherAlert:" destination="-1" eventType="touchUpInside" id="ppR-XU-u1O"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9s8-9a-g9H">
+                    <rect key="frame" x="49" y="214" width="277" height="42"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.84705882349999995" green="0.69803921570000005" blue="0.60392156860000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <state key="normal" title="showTextEntryAlert"/>
+                    <connections>
+                        <action selector="showTextEntryAlert:" destination="-1" eventType="touchUpInside" id="Fme-cN-EKq"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QeR-ow-L5z">
+                    <rect key="frame" x="49" y="264" width="277" height="42"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.84705882349999995" green="0.69803921570000005" blue="0.60392156860000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <state key="normal" title="showOkayCancelActionSheet"/>
+                    <connections>
+                        <action selector="showOkayCancelActionSheet:" destination="-1" eventType="touchUpInside" id="mHM-nd-pAK"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EQc-UN-pvZ">
+                    <rect key="frame" x="49" y="314" width="277" height="42"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" red="0.84705882349999995" green="0.69803921570000005" blue="0.60392156860000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <state key="normal" title="showOtherActionSheet"/>
+                    <connections>
+                        <action selector="showOtherActionSheet:" destination="-1" eventType="touchUpInside" id="DRT-7O-FkN"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <point key="canvasLocation" x="33.5" y="53.5"/>
+        </view>
+    </objects>
+</document>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9046" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9035"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="KMSimilarMoviesCollectionViewCell" id="J62-fe-nhB" customClass="KMSimilarMoviesCollectionViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="46" height="66"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="46" height="66"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="STS-SV-cpK">
+                        <rect key="frame" x="0.0" y="0.0" width="46" height="66"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="teu-Cr-zGd">
+                        <rect key="frame" x="0.0" y="0.0" width="46" height="66"/>
+                    </imageView>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            </view>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="STS-SV-cpK" secondAttribute="bottom" id="7PX-bz-VB0"/>
+                <constraint firstItem="teu-Cr-zGd" firstAttribute="top" secondItem="J62-fe-nhB" secondAttribute="top" id="F5E-Ra-xjV"/>
+                <constraint firstAttribute="trailing" secondItem="teu-Cr-zGd" secondAttribute="trailing" id="F6s-CL-U9C"/>
+                <constraint firstItem="STS-SV-cpK" firstAttribute="top" secondItem="J62-fe-nhB" secondAttribute="top" id="Meh-aE-6ib"/>
+                <constraint firstAttribute="bottom" secondItem="teu-Cr-zGd" secondAttribute="bottom" id="REQ-Ei-0CT"/>
+                <constraint firstItem="STS-SV-cpK" firstAttribute="leading" secondItem="J62-fe-nhB" secondAttribute="leading" id="gFc-TL-TfP"/>
+                <constraint firstItem="teu-Cr-zGd" firstAttribute="leading" secondItem="J62-fe-nhB" secondAttribute="leading" id="i6q-jD-BFW"/>
+                <constraint firstAttribute="trailing" secondItem="STS-SV-cpK" secondAttribute="trailing" id="ut2-tg-STx"/>
+            </constraints>
+            <size key="customSize" width="46" height="46"/>
+            <connections>
+                <outlet property="cellBackgroundView" destination="STS-SV-cpK" id="oI2-Fx-puR"/>
+                <outlet property="cellImageView" destination="teu-Cr-zGd" id="4NK-ds-hbT"/>
+            </connections>
+        </collectionViewCell>
+    </objects>
+</document>

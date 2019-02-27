@@ -1,0 +1,525 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1826DEA821F8487400E89A16 /* UIApplication+Coroutine.h in Sources */ = {isa = PBXBuildFile; fileRef = 1826DEA621F8487400E89A16 /* UIApplication+Coroutine.h */; };
+		1826DEA921F8487400E89A16 /* UIApplication+Coroutine.m in Sources */ = {isa = PBXBuildFile; fileRef = 1826DEA721F8487400E89A16 /* UIApplication+Coroutine.m */; };
+		1826DEAA21F85E8900E89A16 /* UIApplication+Coroutine.h in Headers */ = {isa = PBXBuildFile; fileRef = 1826DEA621F8487400E89A16 /* UIApplication+Coroutine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		183F724721C7BB7D0041C32B /* COKitCommon.h in Headers */ = {isa = PBXBuildFile; fileRef = 183F724521C7BB7D0041C32B /* COKitCommon.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		183F724821C7BB7D0041C32B /* COKitCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 183F724621C7BB7D0041C32B /* COKitCommon.m */; };
+		183F724B21C7BF5F0041C32B /* NSArray+Coroutine.h in Headers */ = {isa = PBXBuildFile; fileRef = 183F724921C7BF5F0041C32B /* NSArray+Coroutine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		183F724C21C7BF5F0041C32B /* NSArray+Coroutine.m in Sources */ = {isa = PBXBuildFile; fileRef = 183F724A21C7BF5F0041C32B /* NSArray+Coroutine.m */; };
+		183F724F21C7C36C0041C32B /* NSBundle+Coroutine.h in Headers */ = {isa = PBXBuildFile; fileRef = 183F724D21C7C36C0041C32B /* NSBundle+Coroutine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		183F725021C7C36C0041C32B /* NSBundle+Coroutine.m in Sources */ = {isa = PBXBuildFile; fileRef = 183F724E21C7C36C0041C32B /* NSBundle+Coroutine.m */; };
+		183F725321C7C47F0041C32B /* NSData+Coroutine.h in Headers */ = {isa = PBXBuildFile; fileRef = 183F725121C7C47F0041C32B /* NSData+Coroutine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		183F725421C7C47F0041C32B /* NSData+Coroutine.m in Sources */ = {isa = PBXBuildFile; fileRef = 183F725221C7C47F0041C32B /* NSData+Coroutine.m */; };
+		183F725721C7C7890041C32B /* NSDictionary+Coroutine.h in Headers */ = {isa = PBXBuildFile; fileRef = 183F725521C7C7890041C32B /* NSDictionary+Coroutine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		183F725821C7C7890041C32B /* NSDictionary+Coroutine.m in Sources */ = {isa = PBXBuildFile; fileRef = 183F725621C7C7890041C32B /* NSDictionary+Coroutine.m */; };
+		183F725B21C7CD010041C32B /* NSFileManager+Coroutine.h in Headers */ = {isa = PBXBuildFile; fileRef = 183F725921C7CD010041C32B /* NSFileManager+Coroutine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		183F725C21C7CD010041C32B /* NSFileManager+Coroutine.m in Sources */ = {isa = PBXBuildFile; fileRef = 183F725A21C7CD010041C32B /* NSFileManager+Coroutine.m */; };
+		183F725F21C7CD3E0041C32B /* NSJSONSerialization+Coroutine.h in Headers */ = {isa = PBXBuildFile; fileRef = 183F725D21C7CD3E0041C32B /* NSJSONSerialization+Coroutine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		183F726021C7CD3E0041C32B /* NSJSONSerialization+Coroutine.m in Sources */ = {isa = PBXBuildFile; fileRef = 183F725E21C7CD3E0041C32B /* NSJSONSerialization+Coroutine.m */; };
+		183F726321C7CD560041C32B /* NSKeyedArchiver+Coroutine.h in Headers */ = {isa = PBXBuildFile; fileRef = 183F726121C7CD560041C32B /* NSKeyedArchiver+Coroutine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		183F726421C7CD560041C32B /* NSKeyedArchiver+Coroutine.m in Sources */ = {isa = PBXBuildFile; fileRef = 183F726221C7CD560041C32B /* NSKeyedArchiver+Coroutine.m */; };
+		183F726721C7CD8E0041C32B /* NSPropertyList+Coroutine.h in Headers */ = {isa = PBXBuildFile; fileRef = 183F726521C7CD8E0041C32B /* NSPropertyList+Coroutine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		183F726821C7CD8E0041C32B /* NSPropertyList+Coroutine.m in Sources */ = {isa = PBXBuildFile; fileRef = 183F726621C7CD8E0041C32B /* NSPropertyList+Coroutine.m */; };
+		183F726B21C7CDBB0041C32B /* NSString+Coroutine.h in Headers */ = {isa = PBXBuildFile; fileRef = 183F726921C7CDBB0041C32B /* NSString+Coroutine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		183F726C21C7CDBB0041C32B /* NSString+Coroutine.m in Sources */ = {isa = PBXBuildFile; fileRef = 183F726A21C7CDBB0041C32B /* NSString+Coroutine.m */; };
+		183F727321C7CE070041C32B /* NSURLConnection+Coroutine.h in Headers */ = {isa = PBXBuildFile; fileRef = 183F727121C7CE070041C32B /* NSURLConnection+Coroutine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		183F727421C7CE070041C32B /* NSURLConnection+Coroutine.m in Sources */ = {isa = PBXBuildFile; fileRef = 183F727221C7CE070041C32B /* NSURLConnection+Coroutine.m */; };
+		183F727721C7CE240041C32B /* NSUserDefaults+Coroutine.h in Headers */ = {isa = PBXBuildFile; fileRef = 183F727521C7CE240041C32B /* NSUserDefaults+Coroutine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		183F727821C7CE240041C32B /* NSUserDefaults+Coroutine.m in Sources */ = {isa = PBXBuildFile; fileRef = 183F727621C7CE240041C32B /* NSUserDefaults+Coroutine.m */; };
+		183F727B21C7CE3C0041C32B /* NSXMLParser+Coroutine.h in Headers */ = {isa = PBXBuildFile; fileRef = 183F727921C7CE3C0041C32B /* NSXMLParser+Coroutine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		183F727C21C7CE3C0041C32B /* NSXMLParser+Coroutine.m in Sources */ = {isa = PBXBuildFile; fileRef = 183F727A21C7CE3C0041C32B /* NSXMLParser+Coroutine.m */; };
+		183F728321C7CE690041C32B /* NSURLSession+Coroutine.h in Headers */ = {isa = PBXBuildFile; fileRef = 183F728121C7CE690041C32B /* NSURLSession+Coroutine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		183F728421C7CE690041C32B /* NSURLSession+Coroutine.m in Sources */ = {isa = PBXBuildFile; fileRef = 183F728221C7CE690041C32B /* NSURLSession+Coroutine.m */; };
+		1888C63521E3423A0098055F /* UIImage+Coroutine.h in Headers */ = {isa = PBXBuildFile; fileRef = 1888C63321E3423A0098055F /* UIImage+Coroutine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1888C63621E3423A0098055F /* UIImage+Coroutine.m in Sources */ = {isa = PBXBuildFile; fileRef = 1888C63421E3423A0098055F /* UIImage+Coroutine.m */; };
+		18C43A2E21CB88D800D75A9B /* UIAlertController+Coroutine.h in Headers */ = {isa = PBXBuildFile; fileRef = 18C43A2C21CB88D800D75A9B /* UIAlertController+Coroutine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		18C43A2F21CB88D800D75A9B /* UIAlertController+Coroutine.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C43A2D21CB88D800D75A9B /* UIAlertController+Coroutine.m */; };
+		18C43A3221CB955B00D75A9B /* UIImagePickerController+Coroutine.h in Headers */ = {isa = PBXBuildFile; fileRef = 18C43A3021CB955B00D75A9B /* UIImagePickerController+Coroutine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		18C43A3321CB955B00D75A9B /* UIImagePickerController+Coroutine.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C43A3121CB955B00D75A9B /* UIImagePickerController+Coroutine.m */; };
+		18C43A3A21CBA0AF00D75A9B /* UIVideoEditorController+Coroutine.h in Headers */ = {isa = PBXBuildFile; fileRef = 18C43A3821CBA0AF00D75A9B /* UIVideoEditorController+Coroutine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		18C43A3B21CBA0AF00D75A9B /* UIVideoEditorController+Coroutine.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C43A3921CBA0AF00D75A9B /* UIVideoEditorController+Coroutine.m */; };
+		A37DDF811E8A62DF00E11BD9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A37DDF801E8A62DF00E11BD9 /* UIKit.framework */; };
+		A37DDF831E8A62E400E11BD9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A37DDF821E8A62E400E11BD9 /* Foundation.framework */; };
+		D85037D81B9C6D8400864DF0 /* cokit-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = D85037D71B9C6D8400864DF0 /* cokit-Prefix.pch */; };
+		D8B050571B9ED5EF004F67D6 /* cokit.h in Headers */ = {isa = PBXBuildFile; fileRef = D8B050551B9ED5EF004F67D6 /* cokit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1826DEA621F8487400E89A16 /* UIApplication+Coroutine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIApplication+Coroutine.h"; sourceTree = "<group>"; };
+		1826DEA721F8487400E89A16 /* UIApplication+Coroutine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+Coroutine.m"; sourceTree = "<group>"; };
+		183F724521C7BB7D0041C32B /* COKitCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = COKitCommon.h; sourceTree = "<group>"; };
+		183F724621C7BB7D0041C32B /* COKitCommon.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = COKitCommon.m; sourceTree = "<group>"; };
+		183F724921C7BF5F0041C32B /* NSArray+Coroutine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSArray+Coroutine.h"; sourceTree = "<group>"; };
+		183F724A21C7BF5F0041C32B /* NSArray+Coroutine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Coroutine.m"; sourceTree = "<group>"; };
+		183F724D21C7C36C0041C32B /* NSBundle+Coroutine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Coroutine.h"; sourceTree = "<group>"; };
+		183F724E21C7C36C0041C32B /* NSBundle+Coroutine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+Coroutine.m"; sourceTree = "<group>"; };
+		183F725121C7C47F0041C32B /* NSData+Coroutine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSData+Coroutine.h"; sourceTree = "<group>"; };
+		183F725221C7C47F0041C32B /* NSData+Coroutine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSData+Coroutine.m"; sourceTree = "<group>"; };
+		183F725521C7C7890041C32B /* NSDictionary+Coroutine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Coroutine.h"; sourceTree = "<group>"; };
+		183F725621C7C7890041C32B /* NSDictionary+Coroutine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Coroutine.m"; sourceTree = "<group>"; };
+		183F725921C7CD010041C32B /* NSFileManager+Coroutine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+Coroutine.h"; sourceTree = "<group>"; };
+		183F725A21C7CD010041C32B /* NSFileManager+Coroutine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+Coroutine.m"; sourceTree = "<group>"; };
+		183F725D21C7CD3E0041C32B /* NSJSONSerialization+Coroutine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSJSONSerialization+Coroutine.h"; sourceTree = "<group>"; };
+		183F725E21C7CD3E0041C32B /* NSJSONSerialization+Coroutine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSJSONSerialization+Coroutine.m"; sourceTree = "<group>"; };
+		183F726121C7CD560041C32B /* NSKeyedArchiver+Coroutine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSKeyedArchiver+Coroutine.h"; sourceTree = "<group>"; };
+		183F726221C7CD560041C32B /* NSKeyedArchiver+Coroutine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSKeyedArchiver+Coroutine.m"; sourceTree = "<group>"; };
+		183F726521C7CD8E0041C32B /* NSPropertyList+Coroutine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSPropertyList+Coroutine.h"; sourceTree = "<group>"; };
+		183F726621C7CD8E0041C32B /* NSPropertyList+Coroutine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSPropertyList+Coroutine.m"; sourceTree = "<group>"; };
+		183F726921C7CDBB0041C32B /* NSString+Coroutine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+Coroutine.h"; sourceTree = "<group>"; };
+		183F726A21C7CDBB0041C32B /* NSString+Coroutine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+Coroutine.m"; sourceTree = "<group>"; };
+		183F727121C7CE070041C32B /* NSURLConnection+Coroutine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSURLConnection+Coroutine.h"; sourceTree = "<group>"; };
+		183F727221C7CE070041C32B /* NSURLConnection+Coroutine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSURLConnection+Coroutine.m"; sourceTree = "<group>"; };
+		183F727521C7CE240041C32B /* NSUserDefaults+Coroutine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+Coroutine.h"; sourceTree = "<group>"; };
+		183F727621C7CE240041C32B /* NSUserDefaults+Coroutine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+Coroutine.m"; sourceTree = "<group>"; };
+		183F727921C7CE3C0041C32B /* NSXMLParser+Coroutine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSXMLParser+Coroutine.h"; sourceTree = "<group>"; };
+		183F727A21C7CE3C0041C32B /* NSXMLParser+Coroutine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSXMLParser+Coroutine.m"; sourceTree = "<group>"; };
+		183F728121C7CE690041C32B /* NSURLSession+Coroutine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSURLSession+Coroutine.h"; sourceTree = "<group>"; };
+		183F728221C7CE690041C32B /* NSURLSession+Coroutine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSURLSession+Coroutine.m"; sourceTree = "<group>"; };
+		1888C63321E3423A0098055F /* UIImage+Coroutine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Coroutine.h"; sourceTree = "<group>"; };
+		1888C63421E3423A0098055F /* UIImage+Coroutine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Coroutine.m"; sourceTree = "<group>"; };
+		18C43A2C21CB88D800D75A9B /* UIAlertController+Coroutine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+Coroutine.h"; sourceTree = "<group>"; };
+		18C43A2D21CB88D800D75A9B /* UIAlertController+Coroutine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIAlertController+Coroutine.m"; sourceTree = "<group>"; };
+		18C43A3021CB955B00D75A9B /* UIImagePickerController+Coroutine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImagePickerController+Coroutine.h"; sourceTree = "<group>"; };
+		18C43A3121CB955B00D75A9B /* UIImagePickerController+Coroutine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImagePickerController+Coroutine.m"; sourceTree = "<group>"; };
+		18C43A3821CBA0AF00D75A9B /* UIVideoEditorController+Coroutine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIVideoEditorController+Coroutine.h"; sourceTree = "<group>"; };
+		18C43A3921CBA0AF00D75A9B /* UIVideoEditorController+Coroutine.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIVideoEditorController+Coroutine.m"; sourceTree = "<group>"; };
+		65890A9216C64A84EFCC64FC /* Pods-cokit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cokit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-cokit/Pods-cokit.debug.xcconfig"; sourceTree = "<group>"; };
+		7357386444926A53E70FEE78 /* Pods-cokit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cokit.release.xcconfig"; path = "Pods/Target Support Files/Pods-cokit/Pods-cokit.release.xcconfig"; sourceTree = "<group>"; };
+		A37DDF801E8A62DF00E11BD9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.2.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		A37DDF821E8A62E400E11BD9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.2.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		D85037CF1B9C6D8400864DF0 /* cokit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework.static; includeInIndex = 0; path = cokit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D85037D61B9C6D8400864DF0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D85037D71B9C6D8400864DF0 /* cokit-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "cokit-Prefix.pch"; sourceTree = "<group>"; };
+		D8B050551B9ED5EF004F67D6 /* cokit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cokit.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D85037CA1B9C6D8400864DF0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A37DDF831E8A62E400E11BD9 /* Foundation.framework in Frameworks */,
+				A37DDF811E8A62DF00E11BD9 /* UIKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		183F724221C7BB490041C32B /* common */ = {
+			isa = PBXGroup;
+			children = (
+				183F724521C7BB7D0041C32B /* COKitCommon.h */,
+				183F724621C7BB7D0041C32B /* COKitCommon.m */,
+			);
+			path = common;
+			sourceTree = "<group>";
+		};
+		183F724321C7BB490041C32B /* Foundation */ = {
+			isa = PBXGroup;
+			children = (
+				183F724921C7BF5F0041C32B /* NSArray+Coroutine.h */,
+				183F724A21C7BF5F0041C32B /* NSArray+Coroutine.m */,
+				183F724D21C7C36C0041C32B /* NSBundle+Coroutine.h */,
+				183F724E21C7C36C0041C32B /* NSBundle+Coroutine.m */,
+				183F725121C7C47F0041C32B /* NSData+Coroutine.h */,
+				183F725221C7C47F0041C32B /* NSData+Coroutine.m */,
+				183F725521C7C7890041C32B /* NSDictionary+Coroutine.h */,
+				183F725621C7C7890041C32B /* NSDictionary+Coroutine.m */,
+				183F725921C7CD010041C32B /* NSFileManager+Coroutine.h */,
+				183F725A21C7CD010041C32B /* NSFileManager+Coroutine.m */,
+				183F725D21C7CD3E0041C32B /* NSJSONSerialization+Coroutine.h */,
+				183F725E21C7CD3E0041C32B /* NSJSONSerialization+Coroutine.m */,
+				183F726121C7CD560041C32B /* NSKeyedArchiver+Coroutine.h */,
+				183F726221C7CD560041C32B /* NSKeyedArchiver+Coroutine.m */,
+				183F726521C7CD8E0041C32B /* NSPropertyList+Coroutine.h */,
+				183F726621C7CD8E0041C32B /* NSPropertyList+Coroutine.m */,
+				183F726921C7CDBB0041C32B /* NSString+Coroutine.h */,
+				183F726A21C7CDBB0041C32B /* NSString+Coroutine.m */,
+				183F727121C7CE070041C32B /* NSURLConnection+Coroutine.h */,
+				183F727221C7CE070041C32B /* NSURLConnection+Coroutine.m */,
+				183F727521C7CE240041C32B /* NSUserDefaults+Coroutine.h */,
+				183F727621C7CE240041C32B /* NSUserDefaults+Coroutine.m */,
+				183F727921C7CE3C0041C32B /* NSXMLParser+Coroutine.h */,
+				183F727A21C7CE3C0041C32B /* NSXMLParser+Coroutine.m */,
+				183F728121C7CE690041C32B /* NSURLSession+Coroutine.h */,
+				183F728221C7CE690041C32B /* NSURLSession+Coroutine.m */,
+			);
+			path = Foundation;
+			sourceTree = "<group>";
+		};
+		183F724421C7BB490041C32B /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				18C43A2C21CB88D800D75A9B /* UIAlertController+Coroutine.h */,
+				18C43A2D21CB88D800D75A9B /* UIAlertController+Coroutine.m */,
+				18C43A3021CB955B00D75A9B /* UIImagePickerController+Coroutine.h */,
+				18C43A3121CB955B00D75A9B /* UIImagePickerController+Coroutine.m */,
+				18C43A3821CBA0AF00D75A9B /* UIVideoEditorController+Coroutine.h */,
+				18C43A3921CBA0AF00D75A9B /* UIVideoEditorController+Coroutine.m */,
+				1888C63321E3423A0098055F /* UIImage+Coroutine.h */,
+				1888C63421E3423A0098055F /* UIImage+Coroutine.m */,
+				1826DEA621F8487400E89A16 /* UIApplication+Coroutine.h */,
+				1826DEA721F8487400E89A16 /* UIApplication+Coroutine.m */,
+			);
+			path = UIKit;
+			sourceTree = "<group>";
+		};
+		8F2FE39BD123D2CCE2F531A0 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				65890A9216C64A84EFCC64FC /* Pods-cokit.debug.xcconfig */,
+				7357386444926A53E70FEE78 /* Pods-cokit.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		D85037C41B9C6D8400864DF0 = {
+			isa = PBXGroup;
+			children = (
+				D85037D41B9C6D8400864DF0 /* cokit */,
+				D85037D11B9C6D8400864DF0 /* Frameworks */,
+				D85037D01B9C6D8400864DF0 /* Products */,
+				8F2FE39BD123D2CCE2F531A0 /* Pods */,
+			);
+			sourceTree = "<group>";
+		};
+		D85037D01B9C6D8400864DF0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D85037CF1B9C6D8400864DF0 /* cokit.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D85037D11B9C6D8400864DF0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A37DDF821E8A62E400E11BD9 /* Foundation.framework */,
+				A37DDF801E8A62DF00E11BD9 /* UIKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D85037D41B9C6D8400864DF0 /* cokit */ = {
+			isa = PBXGroup;
+			children = (
+				183F724221C7BB490041C32B /* common */,
+				183F724321C7BB490041C32B /* Foundation */,
+				183F724421C7BB490041C32B /* UIKit */,
+				D8B050551B9ED5EF004F67D6 /* cokit.h */,
+				D85037D51B9C6D8400864DF0 /* Supporting Files */,
+			);
+			path = cokit;
+			sourceTree = "<group>";
+		};
+		D85037D51B9C6D8400864DF0 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D85037D71B9C6D8400864DF0 /* cokit-Prefix.pch */,
+				D85037D61B9C6D8400864DF0 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		D85037CB1B9C6D8400864DF0 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				183F726721C7CD8E0041C32B /* NSPropertyList+Coroutine.h in Headers */,
+				183F724B21C7BF5F0041C32B /* NSArray+Coroutine.h in Headers */,
+				D8B050571B9ED5EF004F67D6 /* cokit.h in Headers */,
+				183F727B21C7CE3C0041C32B /* NSXMLParser+Coroutine.h in Headers */,
+				183F725321C7C47F0041C32B /* NSData+Coroutine.h in Headers */,
+				183F726321C7CD560041C32B /* NSKeyedArchiver+Coroutine.h in Headers */,
+				183F726B21C7CDBB0041C32B /* NSString+Coroutine.h in Headers */,
+				183F725F21C7CD3E0041C32B /* NSJSONSerialization+Coroutine.h in Headers */,
+				183F724F21C7C36C0041C32B /* NSBundle+Coroutine.h in Headers */,
+				183F724721C7BB7D0041C32B /* COKitCommon.h in Headers */,
+				183F727321C7CE070041C32B /* NSURLConnection+Coroutine.h in Headers */,
+				18C43A3221CB955B00D75A9B /* UIImagePickerController+Coroutine.h in Headers */,
+				18C43A3A21CBA0AF00D75A9B /* UIVideoEditorController+Coroutine.h in Headers */,
+				1826DEAA21F85E8900E89A16 /* UIApplication+Coroutine.h in Headers */,
+				18C43A2E21CB88D800D75A9B /* UIAlertController+Coroutine.h in Headers */,
+				1888C63521E3423A0098055F /* UIImage+Coroutine.h in Headers */,
+				183F725B21C7CD010041C32B /* NSFileManager+Coroutine.h in Headers */,
+				183F725721C7C7890041C32B /* NSDictionary+Coroutine.h in Headers */,
+				183F727721C7CE240041C32B /* NSUserDefaults+Coroutine.h in Headers */,
+				183F728321C7CE690041C32B /* NSURLSession+Coroutine.h in Headers */,
+				D85037D81B9C6D8400864DF0 /* cokit-Prefix.pch in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		D85037CE1B9C6D8400864DF0 /* cokit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D85037E11B9C6D8500864DF0 /* Build configuration list for PBXNativeTarget "cokit" */;
+			buildPhases = (
+				FD6602A7EE5C3E1F8FC2D07F /* [CP] Check Pods Manifest.lock */,
+				D85037C91B9C6D8400864DF0 /* Sources */,
+				D85037CA1B9C6D8400864DF0 /* Frameworks */,
+				D85037CB1B9C6D8400864DF0 /* Headers */,
+				D85037CC1B9C6D8400864DF0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = cokit;
+			productName = cokit;
+			productReference = D85037CF1B9C6D8400864DF0 /* cokit.framework */;
+			productType = "com.apple.product-type.framework.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D85037C51B9C6D8400864DF0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0640;
+				ORGANIZATIONNAME = "Alibaba lnc.";
+				TargetAttributes = {
+					D85037CE1B9C6D8400864DF0 = {
+						CreatedOnToolsVersion = 6.4;
+					};
+				};
+			};
+			buildConfigurationList = D85037C81B9C6D8400864DF0 /* Build configuration list for PBXProject "cokit" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = D85037C41B9C6D8400864DF0;
+			productRefGroup = D85037D01B9C6D8400864DF0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D85037CE1B9C6D8400864DF0 /* cokit */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D85037CC1B9C6D8400864DF0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		FD6602A7EE5C3E1F8FC2D07F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D85037C91B9C6D8400864DF0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				183F725C21C7CD010041C32B /* NSFileManager+Coroutine.m in Sources */,
+				183F727C21C7CE3C0041C32B /* NSXMLParser+Coroutine.m in Sources */,
+				183F725421C7C47F0041C32B /* NSData+Coroutine.m in Sources */,
+				183F726C21C7CDBB0041C32B /* NSString+Coroutine.m in Sources */,
+				18C43A3321CB955B00D75A9B /* UIImagePickerController+Coroutine.m in Sources */,
+				183F725021C7C36C0041C32B /* NSBundle+Coroutine.m in Sources */,
+				18C43A2F21CB88D800D75A9B /* UIAlertController+Coroutine.m in Sources */,
+				1826DEA921F8487400E89A16 /* UIApplication+Coroutine.m in Sources */,
+				183F725821C7C7890041C32B /* NSDictionary+Coroutine.m in Sources */,
+				1888C63621E3423A0098055F /* UIImage+Coroutine.m in Sources */,
+				183F726421C7CD560041C32B /* NSKeyedArchiver+Coroutine.m in Sources */,
+				183F727821C7CE240041C32B /* NSUserDefaults+Coroutine.m in Sources */,
+				183F724821C7BB7D0041C32B /* COKitCommon.m in Sources */,
+				1826DEA821F8487400E89A16 /* UIApplication+Coroutine.h in Sources */,
+				18C43A3B21CBA0AF00D75A9B /* UIVideoEditorController+Coroutine.m in Sources */,
+				183F726021C7CD3E0041C32B /* NSJSONSerialization+Coroutine.m in Sources */,
+				183F727421C7CE070041C32B /* NSURLConnection+Coroutine.m in Sources */,
+				183F726821C7CD8E0041C32B /* NSPropertyList+Coroutine.m in Sources */,
+				183F728421C7CE690041C32B /* NSURLSession+Coroutine.m in Sources */,
+				183F724C21C7BF5F0041C32B /* NSArray+Coroutine.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		D85037DF1B9C6D8500864DF0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+			};
+			name = Debug;
+		};
+		D85037E01B9C6D8500864DF0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+			};
+			name = Release;
+		};
+		D85037E21B9C6D8500864DF0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 65890A9216C64A84EFCC64FC /* Pods-cokit.debug.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_ENABLE_MODULES = NO;
+				CLANG_ENABLE_MODULE_DEBUGGING = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "cokit/cokit-Prefix.pch";
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = cokit/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_CFLAGS = "$(inherited)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				VALID_ARCHS = "arm64 x86_64 i386 armv7";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Debug;
+		};
+		D85037E31B9C6D8500864DF0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7357386444926A53E70FEE78 /* Pods-cokit.release.xcconfig */;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_ENABLE_MODULES = NO;
+				CLANG_ENABLE_MODULE_DEBUGGING = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "cokit/cokit-Prefix.pch";
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = cokit/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_CFLAGS = "$(inherited)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				VALID_ARCHS = "arm64 x86_64 i386 armv7";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D85037C81B9C6D8400864DF0 /* Build configuration list for PBXProject "cokit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D85037DF1B9C6D8500864DF0 /* Debug */,
+				D85037E01B9C6D8500864DF0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D85037E11B9C6D8500864DF0 /* Build configuration list for PBXNativeTarget "cokit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D85037E21B9C6D8500864DF0 /* Debug */,
+				D85037E31B9C6D8500864DF0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D85037C51B9C6D8400864DF0 /* Project object */;
+}

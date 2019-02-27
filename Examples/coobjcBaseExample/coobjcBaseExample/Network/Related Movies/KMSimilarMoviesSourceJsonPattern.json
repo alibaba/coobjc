@@ -1,0 +1,17 @@
+{
+    "total_results" : "number",
+    "results" : [
+                 {
+                 "original_title" : "string",
+                 "poster_path?" : "string",
+                 "release_date?" : "string",
+                 "id" : "number",
+                 "adult" : "number",
+                 "title" : "string",
+                 "popularity" : "number",
+                 "vote_count" : "number",
+                 "vote_average" : "number",
+                 "backdrop_path?" : "string"
+                 }
+]
+}
