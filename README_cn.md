@@ -2,7 +2,7 @@
   <img src="coobjc_icon.png" alt="coobjc" title="coobjc">
 </p>
 
-这个库为 Objective-C 和 Swift 提供了协程功能。coobjc 支持 await、generator 和 actor model，接口参考了 C# 、Javascript 和 Kotlin 中的很多设计。我们还提供了[cokit库](cokit/README.md)为 Foundation 和 UIKit 中的部分 API 提供了协程化支持，包括 NSFileManager , JSON , NSData , UIImage 等。coobjc 也提供了元组的支持。
+这个库为 Objective-C 和 Swift 提供了协程功能。coobjc 支持 await、generator 和 actor model，接口参考了 C# 、Javascript 和 Kotlin 中的很多设计。我们还提供了 [cokit 库](cokit/README.md)为 Foundation 和 UIKit 中的部分 API 提供了协程化支持，包括 NSFileManager , JSON , NSData , UIImage 等。coobjc 也提供了元组的支持。
 
 ## 0x0 iOS异步编程问题
 
@@ -19,7 +19,6 @@
 
 <br /><br />上述问题反应到线上应用本身就会出现大量的多线程崩溃
 
-
 ## 0x1 解决方案
 
 上述问题在很多系统和语言中都会遇到，解决问题的标准方式就是使用协程。这里不介绍太多的理论，简单说协程就是对基础函数的扩展，可以让函数异步执行的时候挂起然后返回值。协程可以用来实现 generator ，异步模型以及其他强大的能力。
@@ -33,13 +32,13 @@ Kotlin 是这两年由 JetBrains 推出的支持现代多平台应用的静态�
 
 协程的概念在60年代就已经提出，目前在服务端中应用比较广泛，在高并发场景下使用极其合适，可以极大降低单机的线程数，提升单机的连接和处理能力，但是在移动研发中，iOS和android目前都不支持协程的使用
 
-## 0x3 coobjc framework
+## 0x3 coobjc 框架
 
-coobjc 是由手机淘宝架构团队推出的能在 iOS 上使用的协程开发框架，目前支持 Objective-C 和 Swift 中使用，我们底层使用汇编和 C 语言进行开发，上层进行提供了 Objective-C 和 Swift 的接口，目前以 Apache 开源协议进行了开源.
+coobjc 是由手机淘宝架构团队推出的能在 iOS 上使用的协程开发框架，目前支持 Objective-C 和 Swift 中使用，我们底层使用汇编和 C 语言进行开发，上层进行提供了 Objective-C 和 Swift 的接口，目前以 Apache 开源协议进行了开源。
 
 ### 0x31 安装
 
-* cocoapods:  pod 'coobjc'
+* cocoapods 安装:  pod 'coobjc'
 * 源码安装: 所有代码在 ./coobjc 目录下
 
 ### 0x32 文档
