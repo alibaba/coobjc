@@ -1,0 +1,19 @@
+
+platform :ios, '8.0'
+
+target 'coKitExamples' do
+
+    pod 'cokit', :path => '../../../'
+    pod 'coobjc', :path => '../../../'
+
+end
+
+target 'coKitExamplesTests' do
+
+    pod 'cokit', :path => '../../../'
+    pod 'coobjc', :path => '../../../'
+
+    pod 'Specta', '~> 1.0'
+    pod 'Expecta',     '~> 1.0'   # expecta matchers
+    pod 'OCMock',      '~> 2.2'   # OCMock
+end
