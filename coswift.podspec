@@ -24,6 +24,6 @@ Pod::Spec.new do |s|
   s.source =  { :git => "https://github.com/alibaba/coobjc.git", :tag => '1.0.0' } 
   s.source_files = 'coswift/*.{h,swift}'
 
-  s.dependency 'fishhook'
-  s.dependency 'coobjc'
+  s.dependency 'fishhook',  '~> 0.2.0'
+  s.dependency 'coobjc',  '~> 1.0.0'
 end

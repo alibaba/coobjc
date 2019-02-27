@@ -37,7 +37,6 @@ typedef void (^KMDiscoverListCompletionBlock)(NSArray* _Nullable dataArray, NSSt
  *  Use this method to perform a GET request and fetch a list of popular movies to discover.
  *
  *  @param pageLimit       The number of movie pages you would like the API to return
- *  @param completionBlock A block object to be executed when the request operation finishes. This block has no return value and takes two arguments: a collection of movies, and the error string in case of a request failure
  */
 - (NSArray*)getDiscoverList:(NSString *)pageLimit CO_ASYNC;
 

@@ -22,8 +22,6 @@
 		1865B8F221B8C4B5008C8727 /* co_autorelease.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1865B8F021B8C4B5008C8727 /* co_autorelease.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		1865B8F521B8C9C5008C8727 /* co_errors.h in Headers */ = {isa = PBXBuildFile; fileRef = 1865B8F321B8C9C5008C8727 /* co_errors.h */; };
 		1865B8F621B8C9C5008C8727 /* co_errors.m in Sources */ = {isa = PBXBuildFile; fileRef = 1865B8F421B8C9C5008C8727 /* co_errors.m */; };
-		18BC88C021BA8BCC00EF3D9B /* co_tuple.h in Headers */ = {isa = PBXBuildFile; fileRef = 18BC88BE21BA8BCC00EF3D9B /* co_tuple.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		18BC88C121BA8BCC00EF3D9B /* co_tuple.m in Sources */ = {isa = PBXBuildFile; fileRef = 18BC88BF21BA8BCC00EF3D9B /* co_tuple.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		18E74C1C21AE80EE003A9065 /* COActorChan.h in Headers */ = {isa = PBXBuildFile; fileRef = 18E74C1A21AE80EE003A9065 /* COActorChan.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		18E74C1D21AE80EE003A9065 /* COActorChan.m in Sources */ = {isa = PBXBuildFile; fileRef = 18E74C1B21AE80EE003A9065 /* COActorChan.m */; };
 		18EE50A621AE7D6300F244B6 /* COActor.h in Headers */ = {isa = PBXBuildFile; fileRef = 18EE50A421AE7D6300F244B6 /* COActor.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -41,6 +39,8 @@
 		A37DDF831E8A62E400E11BD9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A37DDF821E8A62E400E11BD9 /* Foundation.framework */; };
 		A3824E91221FFD5400B6BFE7 /* coobjc.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D85037CF1B9C6D8400864DF0 /* coobjc.framework */; };
 		A3824E94221FFEC200B6BFE7 /* coswift.h in Headers */ = {isa = PBXBuildFile; fileRef = A35C049A21EC366A00AC7D6E /* coswift.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A39A8CAE2226695900A18C69 /* co_tuple.h in Headers */ = {isa = PBXBuildFile; fileRef = A39A8CAC2226695900A18C69 /* co_tuple.h */; };
+		A39A8CAF2226695900A18C69 /* co_tuple.m in Sources */ = {isa = PBXBuildFile; fileRef = A39A8CAD2226695900A18C69 /* co_tuple.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		A3D67CE121EDF56E009328CC /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D67CE021EDF56E009328CC /* Errors.swift */; };
 		A3D67CE321EDF57F009328CC /* coswift.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D67CE221EDF57F009328CC /* coswift.swift */; };
 		A3ECCFCC21B7D17300CC36B7 /* co_queuedebugging_support.h in Headers */ = {isa = PBXBuildFile; fileRef = A3ECCFCB21B7D17300CC36B7 /* co_queuedebugging_support.h */; };
@@ -79,8 +79,6 @@
 		1865B8F021B8C4B5008C8727 /* co_autorelease.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = co_autorelease.mm; sourceTree = "<group>"; };
 		1865B8F321B8C9C5008C8727 /* co_errors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = co_errors.h; sourceTree = "<group>"; };
 		1865B8F421B8C9C5008C8727 /* co_errors.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = co_errors.m; sourceTree = "<group>"; };
-		18BC88BE21BA8BCC00EF3D9B /* co_tuple.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = co_tuple.h; sourceTree = "<group>"; };
-		18BC88BF21BA8BCC00EF3D9B /* co_tuple.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = co_tuple.m; sourceTree = "<group>"; };
 		18E74C1A21AE80EE003A9065 /* COActorChan.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = COActorChan.h; sourceTree = "<group>"; };
 		18E74C1B21AE80EE003A9065 /* COActorChan.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = COActorChan.m; sourceTree = "<group>"; };
 		18EE50A421AE7D6300F244B6 /* COActor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = COActor.h; sourceTree = "<group>"; };
@@ -101,6 +99,8 @@
 		A35C04A421EC36C200AC7D6E /* Coroutine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coroutine.swift; sourceTree = "<group>"; };
 		A37DDF801E8A62DF00E11BD9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.2.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		A37DDF821E8A62E400E11BD9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.2.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		A39A8CAC2226695900A18C69 /* co_tuple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = co_tuple.h; sourceTree = "<group>"; };
+		A39A8CAD2226695900A18C69 /* co_tuple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = co_tuple.m; sourceTree = "<group>"; };
 		A3D67CE021EDF56E009328CC /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		A3D67CE221EDF57F009328CC /* coswift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = coswift.swift; sourceTree = "<group>"; };
 		A3ECCFCB21B7D17300CC36B7 /* co_queuedebugging_support.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = co_queuedebugging_support.h; sourceTree = "<group>"; };
@@ -158,8 +158,6 @@
 				1807602521A256B5006FD552 /* co_queue.m */,
 				1865B8F321B8C9C5008C8727 /* co_errors.h */,
 				1865B8F421B8C9C5008C8727 /* co_errors.m */,
-				18BC88BE21BA8BCC00EF3D9B /* co_tuple.h */,
-				18BC88BF21BA8BCC00EF3D9B /* co_tuple.m */,
 			);
 			path = util;
 			sourceTree = "<group>";
@@ -199,6 +197,8 @@
 		1865B8EE21B8C49D008C8727 /* objc */ = {
 			isa = PBXGroup;
 			children = (
+				A39A8CAC2226695900A18C69 /* co_tuple.h */,
+				A39A8CAD2226695900A18C69 /* co_tuple.m */,
 				1865B8EF21B8C4B5008C8727 /* co_autorelease.h */,
 				1865B8F021B8C4B5008C8727 /* co_autorelease.mm */,
 			);
@@ -313,7 +313,6 @@
 				A3FAA91221A261CE00605F27 /* COPromise.h in Headers */,
 				A3FAA91E21A2B09700605F27 /* COCoroutine.h in Headers */,
 				1827C575219AE57E0004CE59 /* co_csp.h in Headers */,
-				18BC88C021BA8BCC00EF3D9B /* co_tuple.h in Headers */,
 				18E74C1C21AE80EE003A9065 /* COActorChan.h in Headers */,
 				18EE50AE21AE7DA400F244B6 /* COActorCompletable.h in Headers */,
 				18EE50AA21AE7D7600F244B6 /* COActorMessage.h in Headers */,
@@ -323,6 +322,7 @@
 				A3ECCFCC21B7D17300CC36B7 /* co_queuedebugging_support.h in Headers */,
 				1827C57C219AE57E0004CE59 /* coroutine.h in Headers */,
 				1827C584219AE59F0004CE59 /* coobjc.h in Headers */,
+				A39A8CAE2226695900A18C69 /* co_tuple.h in Headers */,
 				1807602621A256B5006FD552 /* co_queue.h in Headers */,
 				D85037D81B9C6D8400864DF0 /* coobjc-Prefix.pch in Headers */,
 			);
@@ -481,6 +481,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A39A8CAF2226695900A18C69 /* co_tuple.m in Sources */,
 				1827C57E219AE57E0004CE59 /* coroutine_context.m in Sources */,
 				1807602721A256B5006FD552 /* co_queue.m in Sources */,
 				18EE50AF21AE7DA400F244B6 /* COActorCompletable.m in Sources */,
@@ -492,7 +493,6 @@
 				1865B8F221B8C4B5008C8727 /* co_autorelease.mm in Sources */,
 				A3FAA91F21A2B09700605F27 /* COCoroutine.m in Sources */,
 				18EE50A721AE7D6300F244B6 /* COActor.m in Sources */,
-				18BC88C121BA8BCC00EF3D9B /* co_tuple.m in Sources */,
 				1827C573219AE57E0004CE59 /* co_csp.m in Sources */,
 				18EE50AB21AE7D7600F244B6 /* COActorMessage.m in Sources */,
 				1827C57B219AE57E0004CE59 /* coroutine_context.s in Sources */,
@@ -552,7 +552,7 @@
 				MACH_O_TYPE = staticlib;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nj.coswift;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alibaba.coswift;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -604,7 +604,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.nj.coswift;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alibaba.coswift;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -711,6 +711,7 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACH_O_TYPE = staticlib;
 				OTHER_CFLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.alibaba.coobjc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -740,6 +741,7 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				MACH_O_TYPE = staticlib;
 				OTHER_CFLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.alibaba.coobjc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;

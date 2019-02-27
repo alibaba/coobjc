@@ -17,7 +17,7 @@
 //   limitations under the License.
 
 #import <UIKit/UIKit.h>
-#import <coobjc.h>
+#import <coobjc/coobjc.h>
 
 @interface UIImageView (WebCache)
 

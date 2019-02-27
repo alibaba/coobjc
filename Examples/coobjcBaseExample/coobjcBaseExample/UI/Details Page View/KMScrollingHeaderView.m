@@ -258,15 +258,15 @@
         _navbarView.hidden = NO;
 
         [UIView animateWithDuration:0.3 animations:^{
-            _navbarView.alpha = 1;
+            self->_navbarView.alpha = 1;
         }];
     }
     else if(scrollOffset < _navbarViewFadingOffset && _navbarView.alpha == 1.0)
     {
         [UIView animateWithDuration:0.3 animations:^{
-            _navbarView.alpha = 0;
+            self->_navbarView.alpha = 0;
         } completion: ^(BOOL finished) {
-            _navbarView.hidden = YES;
+            self->_navbarView.hidden = YES;
         }];
     }
 }

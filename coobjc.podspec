@@ -23,11 +23,7 @@ Pod::Spec.new do |s|
 
   s.source =  { :git => "https://github.com/alibaba/coobjc.git", :tag => '1.0.0' } 
   s.source_files = 'coobjc/**/*.{h,m,s,c,mm}' 
+  s.requires_arc = ['coobjc/api/*.m', 'coobjc/core/*.m', 'coobjc/csp/*.m', 'coobjc/promise/*.m', 'coobjc/util/*.m']
 
-  s.subspec 'no-arc' do |sna|
-    sna.requires_arc = false
-    sna.source_files = ['coobjc/util/co_tuple.m', 'coobjc/objc/co_autorelease.mm']
-  end
-
-  s.dependency 'fishhook'
+  s.dependency 'fishhook', '~> 0.2.0'
 end

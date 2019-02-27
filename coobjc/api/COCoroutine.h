@@ -69,7 +69,7 @@ COCoroutine *co_get_obj(coroutine_t  *co);
 
  @return NSError object.
  */
-NSError *co_getError();
+NSError *co_getError(void);
 
 /**
  `co_setspecific` and `co_getspecific` help you to store a value in the context.

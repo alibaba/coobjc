@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "KMGillSansLabel.h"
-#import <coobjc.h>
+#import <coobjc/coobjc.h>
 
 @interface KMDiscoverListCell : UITableViewCell
 

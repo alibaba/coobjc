@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <coobjc.h>
+#import <coobjc/coobjc.h>
 
 /**
  *  `KMMoviePosterCell` is a `UICollectionViewCell` displaying a movie poster image.
