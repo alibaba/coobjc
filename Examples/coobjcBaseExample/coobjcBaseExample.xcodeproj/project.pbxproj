@@ -76,10 +76,10 @@
 		183F724121C748050041C32B /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1820749F21C0B235001A5021 /* libc++.tbd */; };
 		18BC88C321BDFE6200EF3D9B /* coobjcTupleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 18BC88C221BDFE6200EF3D9B /* coobjcTupleTests.m */; };
 		18E74C1F21AE96EF003A9065 /* coobjcActorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 18E74C1E21AE96EF003A9065 /* coobjcActorTests.m */; };
-		54F9CDED56D338C0AB04F320 /* libPods-coobjcBaseExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4AF09B7533F1C4E15CC4098A /* libPods-coobjcBaseExampleTests.a */; };
+		271A9116FD9B174652987DBC /* Pods_coobjcBaseExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93266E644FEE5E937368A22C /* Pods_coobjcBaseExampleTests.framework */; };
+		6C8FA938FA4493592B35DB03 /* Pods_coobjcBaseExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C0EDBBC51139E6F2687ED2 /* Pods_coobjcBaseExample.framework */; };
 		A3E839FF21AB9DC20096A7E4 /* coobjcChannelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A3E839FE21AB9DC20096A7E4 /* coobjcChannelTests.m */; };
 		A3FAA92721A2F7C400605F27 /* coobjcPromiseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A3FAA92621A2F7C400605F27 /* coobjcPromiseTests.m */; };
-		CBEB5330C28218C41A7B36CE /* libPods-coobjcBaseExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4DBFDC51DEA9DC794BE4FDF3 /* libPods-coobjcBaseExample.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -206,8 +206,8 @@
 		18BC88C221BDFE6200EF3D9B /* coobjcTupleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = coobjcTupleTests.m; sourceTree = "<group>"; };
 		18E74C1E21AE96EF003A9065 /* coobjcActorTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = coobjcActorTests.m; sourceTree = "<group>"; };
 		236D98A1BE2319FA437A7584 /* Pods-coobjcBaseExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-coobjcBaseExample.release.xcconfig"; path = "Pods/Target Support Files/Pods-coobjcBaseExample/Pods-coobjcBaseExample.release.xcconfig"; sourceTree = "<group>"; };
-		4AF09B7533F1C4E15CC4098A /* libPods-coobjcBaseExampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-coobjcBaseExampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4DBFDC51DEA9DC794BE4FDF3 /* libPods-coobjcBaseExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-coobjcBaseExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		37C0EDBBC51139E6F2687ED2 /* Pods_coobjcBaseExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_coobjcBaseExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		93266E644FEE5E937368A22C /* Pods_coobjcBaseExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_coobjcBaseExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3E839FE21AB9DC20096A7E4 /* coobjcChannelTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = coobjcChannelTests.m; sourceTree = "<group>"; };
 		A3FAA92621A2F7C400605F27 /* coobjcPromiseTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = coobjcPromiseTests.m; sourceTree = "<group>"; };
 		DE44BF03409C3FA4753A41D7 /* Pods-coobjcBaseExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-coobjcBaseExampleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-coobjcBaseExampleTests/Pods-coobjcBaseExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -220,7 +220,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				183F724121C748050041C32B /* libc++.tbd in Frameworks */,
-				CBEB5330C28218C41A7B36CE /* libPods-coobjcBaseExample.a in Frameworks */,
+				6C8FA938FA4493592B35DB03 /* Pods_coobjcBaseExample.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -229,7 +229,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				182074A021C0B235001A5021 /* libc++.tbd in Frameworks */,
-				54F9CDED56D338C0AB04F320 /* libPods-coobjcBaseExampleTests.a in Frameworks */,
+				271A9116FD9B174652987DBC /* Pods_coobjcBaseExampleTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -240,8 +240,8 @@
 			isa = PBXGroup;
 			children = (
 				1820749F21C0B235001A5021 /* libc++.tbd */,
-				4DBFDC51DEA9DC794BE4FDF3 /* libPods-coobjcBaseExample.a */,
-				4AF09B7533F1C4E15CC4098A /* libPods-coobjcBaseExampleTests.a */,
+				37C0EDBBC51139E6F2687ED2 /* Pods_coobjcBaseExample.framework */,
+				93266E644FEE5E937368A22C /* Pods_coobjcBaseExampleTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -588,8 +588,7 @@
 				1827C590219BC9C10004CE59 /* Sources */,
 				1827C591219BC9C10004CE59 /* Frameworks */,
 				1827C592219BC9C10004CE59 /* Resources */,
-				24F1D64B525517CAA1E6ADB3 /* [CP] Embed Pods Frameworks */,
-				A38EAF55A470C4597F3A1412 /* [CP] Copy Pods Resources */,
+				F496BF459B000187DBCB9AD2 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -608,8 +607,7 @@
 				1827C5A8219BC9C30004CE59 /* Sources */,
 				1827C5A9219BC9C30004CE59 /* Frameworks */,
 				1827C5AA219BC9C30004CE59 /* Resources */,
-				CBC7F537820B4B76E2744E28 /* [CP] Embed Pods Frameworks */,
-				C08265F9E22ABF51F0A2690E /* [CP] Copy Pods Resources */,
+				71D03BF3C12B644032F80E47 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -694,19 +692,30 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		24F1D64B525517CAA1E6ADB3 /* [CP] Embed Pods Frameworks */ = {
+		71D03BF3C12B644032F80E47 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-coobjcBaseExampleTests/Pods-coobjcBaseExampleTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/coobjc/coobjc.framework",
+				"${BUILT_PRODUCTS_DIR}/fishhook/fishhook.framework",
+				"${BUILT_PRODUCTS_DIR}/Expecta/Expecta.framework",
+				"${BUILT_PRODUCTS_DIR}/OCMock/OCMock.framework",
+				"${BUILT_PRODUCTS_DIR}/Specta/Specta.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/coobjc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/fishhook.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Expecta.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OCMock.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Specta.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-coobjcBaseExample/Pods-coobjcBaseExample-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-coobjcBaseExampleTests/Pods-coobjcBaseExampleTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		76F885828FF35FC568DD04BB /* [CP] Check Pods Manifest.lock */ = {
@@ -715,58 +724,36 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-coobjcBaseExample-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A38EAF55A470C4597F3A1412 /* [CP] Copy Pods Resources */ = {
+		F496BF459B000187DBCB9AD2 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-coobjcBaseExample/Pods-coobjcBaseExample-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C08265F9E22ABF51F0A2690E /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-coobjcBaseExampleTests/Pods-coobjcBaseExampleTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		CBC7F537820B4B76E2744E28 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-coobjcBaseExample/Pods-coobjcBaseExample-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/coobjc/coobjc.framework",
+				"${BUILT_PRODUCTS_DIR}/fishhook/fishhook.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/coobjc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/fishhook.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-coobjcBaseExampleTests/Pods-coobjcBaseExampleTests-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-coobjcBaseExample/Pods-coobjcBaseExample-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F4DCC356B7B679278FCE9BD0 /* [CP] Check Pods Manifest.lock */ = {
@@ -775,13 +762,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-coobjcBaseExampleTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

@@ -18,7 +18,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import <coobjc.h>
+#import <coobjc/coobjc.h>
 
 @interface DataService : NSObject
 

@@ -39,7 +39,6 @@ NS_ASSUME_NONNULL_BEGIN
  *  Use this method to perform a GET request and fetch details for a movie.
  *
  *  @param movieId         The movie id
- *  @param completionBlock A block object to be executed when the request operation finishes. This block has no return value and takes two arguments: the movie details, and the error string in case of a request failure.
  */
 - (KMMovie*)getMovieDetails:(NSString *)movieId CO_ASYNC;
 

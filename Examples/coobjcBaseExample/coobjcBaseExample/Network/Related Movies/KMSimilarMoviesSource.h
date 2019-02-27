@@ -37,7 +37,6 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @param movieId         The movie id
  *  @param numberOfPages   The number of similar movies pages
- *  @param completionBlock A block object to be executed when the request operation finishes. This block has no return value and takes two arguments: a collection of movies, and the error string in case of a request failure.
  */
 - (NSArray*)getSimilarMovies:(NSString *)movieId numberOfPages:(NSString *)numberOfPages;
 

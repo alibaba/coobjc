@@ -74,9 +74,9 @@
 
 @end
 
-id co_tupleSentinel();
+id co_tupleSentinel(void);
 
-void** co_unpackSentinel();
+void** co_unpackSentinel(void);
 
 #define co_tuple(...) [[COTuple alloc] initWithObjects:__VA_ARGS__, co_tupleSentinel()]
 #define co_unpack(...) [[COTupleUnpack alloc] initWithPointers:0, __VA_ARGS__, co_unpackSentinel()].tuple

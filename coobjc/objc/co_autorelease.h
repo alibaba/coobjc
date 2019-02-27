@@ -42,7 +42,7 @@ extern "C" {
     extern void * co_autoreleasePoolPush(void);
     extern void co_autoreleasePoolPop(void *ctxt);
     
-    extern void co_autoreleasePoolPrint();
+    extern void co_autoreleasePoolPrint(void);
     
     extern id co_autoreleaseObj(id obj);
     
