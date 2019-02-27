@@ -2,7 +2,7 @@
 
 This document instroduce how to use coobjc.
 
-![image.png](https://intranetproxy.alipay.com/skylark/lark/0/2019/png/2121/1551055808980-bd786387-b24e-4bd4-a9be-c311d3cb54d3.png#align=left&display=inline&height=560&linkTarget=_blank&name=image.png&originHeight=544&originWidth=725&size=33366&status=done&width=746)<br />(reference：[https://dkandalov.github.io/async-await](https://dkandalov.github.io/async-await))
+![image.png](images/asyncawait.png)<br />(reference：[https://dkandalov.github.io/async-await](https://dkandalov.github.io/async-await))
 
 #### Simple Launch
 
