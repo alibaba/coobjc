@@ -4,7 +4,7 @@ Pod::Spec.new do |s|
   s.summary      = "A coroutine framework for swift."
 
   s.description  = <<-DESC
-                    A coroutine framework for swift.
+                    A coroutine framework for swift, using coobjc.
                    DESC
 
   s.homepage     = "https://github.com/alibaba/coobjc"
@@ -23,6 +23,8 @@ Pod::Spec.new do |s|
 
   s.source =  { :git => "https://github.com/alibaba/coobjc.git", :tag => '1.0.0' } 
   s.source_files = 'coswift/*.{h,swift}'
+
+  s.swift_version = '4.2'
 
   s.dependency 'fishhook',  '~> 0.2.0'
   s.dependency 'coobjc',  '~> 1.0.0'
