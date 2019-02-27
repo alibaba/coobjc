@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
                     A coroutine framework for swift.
                    DESC
 
-  s.homepage     = "http://github.com/alibaba/coobjc"
+  s.homepage     = "https://github.com/alibaba/coobjc"
   s.license = {
     :type => 'Copyright',
     :text => <<-LICENSE
@@ -21,9 +21,8 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '8.0'
   s.requires_arc = true
 
-  s.source =  { :git => "git@github.com:alibaba/coobjc.git", :branch => 'master' } 
+  s.source =  { :git => "https://github.com/alibaba/coobjc.git", :tag => '1.0.0' } 
   s.source_files = 'coswift/*.{h,swift}'
-  s.exclude_files = 'coobjc/util/co_tuple.{h,m}'
 
   s.dependency 'fishhook'
   s.dependency 'coobjc'
