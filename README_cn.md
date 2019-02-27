@@ -4,7 +4,7 @@
 
 这个库为 Objective-C 和 Swift 提供了协程功能。coobjc 支持 await、generator 和 actor model，接口参考了 C# 、Javascript 和 Kotlin 中的很多设计。我们还提供了 [cokit 库](cokit/README.md)为 Foundation 和 UIKit 中的部分 API 提供了协程化支持，包括 NSFileManager , JSON , NSData , UIImage 等。coobjc 也提供了元组的支持。
 
-## 0x0 iOS异步编程问题
+## 0x0 iOS 异步编程问题
 
 基于 Block 的异步编程回调是目前 iOS 使用最广泛的异步编程方式，iOS 系统提供的 GCD 库让异步开发变得很简单方便，但是基于这种编程方式的缺点也有很多，主要有以下几点：
 
@@ -17,14 +17,13 @@
 * 难以定位原因的多线程崩溃
 * 锁和信号量滥用带来的卡顿、卡死
 
-<br /><br />上述问题反应到线上应用本身就会出现大量的多线程崩溃
+上述问题反应到线上应用本身就会出现大量的多线程崩溃
 
 ## 0x1 解决方案
 
 上述问题在很多系统和语言中都会遇到，解决问题的标准方式就是使用协程。这里不介绍太多的理论，简单说协程就是对基础函数的扩展，可以让函数异步执行的时候挂起然后返回值。协程可以用来实现 generator ，异步模型以及其他强大的能力。
 
 Kotlin 是这两年由 JetBrains 推出的支持现代多平台应用的静态编程语言，支持 JVM ，Javascript ，目前也可以在 iOS 上执行，这两年在开发者社区中也是比较火。<br />在 Kotlin 语言中基于协程的 async/await ，generator/yield 等异步化技术都已经成了语法标配，Kotlin 协程相关的介绍，大家可以参考：[https://www.kotlincn.net/docs/reference/coroutines/basics.html](https://www.kotlincn.net/docs/reference/coroutines/basics.html)
-
 
 ## 0x2 协程
 
@@ -497,7 +496,7 @@ coobjc includes a suite of unit tests within the Tests subdirectory. These tests
 
 coobjc 离不开下面这些项目的帮助:
 
-* [Promises](https://github.com/google/promises) - Google 开发的 Objective-C 和 Swift 版本的 Promise 框架
+* [Promises](https://github.com/google/promises) - Google 开源的 Objective-C 和 Swift 版本的 Promise 框架
 * [libtask](https://swtch.com/libtask/) - 一个简易的协程库
 * [movies](https://github.com/KMindeguia/movies) - 一个 iOS 演示项目，我们在 coobjc 的示例中使用了其中的代码
 * [v2ex](https://github.com/singro/v2ex) - v2ex.com 的 iOS 客户端项目，我们在 coobjc 的示例中使用了其中的代码
