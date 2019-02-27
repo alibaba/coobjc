@@ -506,7 +506,7 @@ coobjc couldn't exist without:
 
 
 ## 0x9 License
-coobjc is released under the Apache 2.0 license. See [LICENSE](https://github.com/AFNetworking/AFNetworking/blob/master/LICENSE) for details.
+coobjc is released under the Apache 2.0 license. See [LICENSE](LICENSE) for details.
 <br />
 
 

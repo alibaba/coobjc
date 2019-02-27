@@ -494,7 +494,7 @@ coobjc couldn't exist without:
 * [jmpews](https://github.com/jmpews)
 
 ## 0x9 License
-coobjc is released under the Apache 2.0 license. See [LICENSE](https://github.com/AFNetworking/AFNetworking/blob/master/LICENSE) for details.
+coobjc is released under the Apache 2.0 license. See [LICENSE](LICENSE) for details.
 <br />
 
 
