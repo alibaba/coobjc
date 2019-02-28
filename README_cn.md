@@ -503,6 +503,7 @@ coobjc 离不开下面这些项目和文章的帮助:
 * [tuples](https://github.com/atg/tuples) - Objective-C 元组
 * https://blog.csdn.net/qq910894904/article/details/41911175
 * http://www.voidcn.com/article/p-fwlohnnc-gc.html
+* https://blog.csdn.net/shenlei19911210/article/details/61194617
 
 ## 0x8 作者
 

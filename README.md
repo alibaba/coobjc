@@ -497,6 +497,7 @@ coobjc couldn't exist without:
 * [Sol](https://github.com/comyar/Sol) - Sol° beautifully displays weather information so you can plan your day accordingly. Check the weather in your current location or any city around the world. Implemented in Objective-C.
 * https://blog.csdn.net/qq910894904/article/details/41911175
 * http://www.voidcn.com/article/p-fwlohnnc-gc.html
+* https://blog.csdn.net/shenlei19911210/article/details/61194617
 
 ## 0x8 Authors
 * [pengyutang125](https://github.com/pengyutang125)
