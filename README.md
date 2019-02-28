@@ -157,7 +157,7 @@ The generator can be used in many scenarios, such as message queues, batch downl
 ```
 int unreadMessageCount = 10;
 NSString *userId = @"xxx";
-COSequence *messageSequence = sequenceOnBackgroundQueue(@"message_queue", ^{
+COSequence *messageSequence = co_sequence_onqueue(background_queue, ^{
    //thread execution in the background
     while(1){
         yield(queryOneNewMessageForUserWithId(userId));
@@ -165,10 +165,10 @@ COSequence *messageSequence = sequenceOnBackgroundQueue(@"message_queue", ^{
 });
 
 //Main thread update UI
-co(^{
+co_launch(^{
    for(int i = 0; i < unreadMessageCount; i++){
        if(!isQuitCurrentView()){
-           displayMessage([messageSequence take]);
+           displayMessage([messageSequence next]);
        }
    }
 });
@@ -185,13 +185,13 @@ Through the generator, we can load the data from the traditional producer--notif
 We can use co_actor_onqueue to create an actor in the specified thread.
 
 ```
-CCOActor *actor = co_actor_onqueue(^(CCOActorChan *channel) {
+CCOActor *actor = co_actor_onqueue(q, ^(CCOActorChan *channel) {
     ...  //Define the state variable of the actor
 
     for(CCOActorMessage *message in channel){
         ...//handle message
     }
-}, q);
+});
 ```
 
 * send a message to the actor
@@ -199,13 +199,13 @@ CCOActor *actor = co_actor_onqueue(^(CCOActorChan *channel) {
 The actor's send method can send a message to the actor
 
 ```
-CCOActor *actor = co_actor_onqueue(^(CCOActorChan *channel) {
+CCOActor *actor = co_actor_onqueue(q, ^(CCOActorChan *channel) {
     ...  //Define the state variable of the actor
 
     for(CCOActorMessage *message in channel){
         ...//handle message
     }
-}, q);
+});
 
 // send a message to the actor
 [actor send:@"sadf"];
