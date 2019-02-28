@@ -62,7 +62,7 @@ Based on this design, when we want to execute a coroutine, we only add the corou
 
 ![scheduler.png](/docs/images/scheduler.png)
 
-# Channel 的设计
+# Channel 
 
 Channel is the implementation of Process/Channel in the CSP (Communicating Sequential Processes) concurrency model. The Channel implementation in coobjc fully references the implementation of [libtask](https://swtch.com/libtask/).
 
@@ -80,7 +80,7 @@ Similarly, `receive` will also block the current coroutine until there is data `
 
 ![channel2.png](/docs/images/channel2.png)
 
-# Api的设计
+# Api Design
 
 The basic design of the coroutine mentioned above is based on the implementation of c, then how is our upper API designed?
 
