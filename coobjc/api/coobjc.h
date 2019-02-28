@@ -38,7 +38,6 @@
 
 /**
  Create a coroutine, then resume it asynchronous on current queue.
- co_launch will run the block in next run loop
 
  @param block the code execute in the coroutine
  @return the coroutine instance
@@ -50,18 +49,16 @@ NS_INLINE COCoroutine * _Nonnull  co_launch(void(^ _Nonnull block)(void)) {
 
 /**
  Create a coroutine, then resume it immediately on current queue.
- co_launch_now will run the block in current run loop
  
  @param block the code execute in the coroutine
  */
-NS_INLINE void co_launch_now(void(^ _Nonnull block)(void)){
+NS_INLINE void co_launch_now(void(^ _Nonnull block)(void)) {
     COCoroutine *co = [COCoroutine coroutineWithBlock:block onQueue:nil];
     [co resumeNow];
 }
 
 /**
  Create a coroutine, then resume it asynchronous on current queue.
- co_launch will run the block in next run loop
  
  The stack size is 65536 by default, in case stackSize not enough, you can customize it.
  Max 1M limit.
@@ -75,8 +72,7 @@ NS_INLINE COCoroutine * _Nonnull  co_launch_withStackSize(NSUInteger stackSize, 
 }
 
 /**
- Create a coroutine & resume it immediately on given queue.
- co_launch_onqueue will run the block in next run loop
+ Create a coroutine and resume it asynchronous on the given queue.
 
  @param block the code execute in the coroutine
  @param queue the queue which coroutine work on it.
@@ -89,7 +85,7 @@ NS_INLINE COCoroutine * _Nonnull  co_launch_onqueue(dispatch_queue_t _Nullable q
 
 
 /**
- Create a sequence, the coroutine will be a Generator.
+ Create a sequence, make the coroutine be a Generator.
 
  @param block the sequence task.
  @return the Coroutine
@@ -101,8 +97,9 @@ NS_INLINE COCoroutine * _Nonnull co_sequence(void(^ _Nonnull block)(void)) {
 }
 
 /**
- Create a coroutine will execute on the given queue
- 
+ Create a sequence, make the coroutine be a Generator.
+ The code will run on specified queue.
+
  @param block the code execute in the coroutine.
  @param queue the queue which coroutine work on it.
  @return the coroutine instance
@@ -126,7 +123,7 @@ NS_INLINE COActor * _Nonnull co_actor(void(^ _Nonnull block)(COActorChan* _Nonnu
 }
 
 /**
- Create a coroutine will execute on the given queue
+ Create a actor and start it asynchronous on the given queue.
  
  @param block the code execute in the coroutine.
  @param queue the queue which coroutine work on it.
