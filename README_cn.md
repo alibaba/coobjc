@@ -502,6 +502,7 @@ coobjc 离不开下面这些项目和文章的帮助:
 * [v2ex](https://github.com/singro/v2ex) - v2ex.com 的 iOS 客户端项目，我们在 coobjc 的示例中使用了其中的代码
 * [tuples](https://github.com/atg/tuples) - Objective-C 元组
 * https://blog.csdn.net/qq910894904/article/details/41911175
+* http://www.voidcn.com/article/p-fwlohnnc-gc.html
 
 ## 0x8 作者
 
