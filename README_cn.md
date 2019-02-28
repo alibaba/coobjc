@@ -494,13 +494,14 @@ coobjc includes a suite of unit tests within the Tests subdirectory. These tests
 
 ## 0x7 致谢
 
-coobjc 离不开下面这些项目的帮助:
+coobjc 离不开下面这些项目和文章的帮助:
 
 * [Promises](https://github.com/google/promises) - Google 开源的 Objective-C 和 Swift 版本的 Promise 框架
 * [libtask](https://swtch.com/libtask/) - 一个简易的协程库
 * [movies](https://github.com/KMindeguia/movies) - 一个 iOS 演示项目，我们在 coobjc 的示例中使用了其中的代码
 * [v2ex](https://github.com/singro/v2ex) - v2ex.com 的 iOS 客户端项目，我们在 coobjc 的示例中使用了其中的代码
 * [tuples](https://github.com/atg/tuples) - Objective-C 元组
+* https://blog.csdn.net/qq910894904/article/details/41911175
 
 ## 0x8 作者
 
