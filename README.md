@@ -495,6 +495,7 @@ coobjc couldn't exist without:
 * [v2ex](https://github.com/singro/v2ex) - An iOS client for v2ex.com, we use the code in coobjc examples
 * [tuples](https://github.com/atg/tuples) - Objective-C tuples.
 * [Sol](https://github.com/comyar/Sol) - Sol° beautifully displays weather information so you can plan your day accordingly. Check the weather in your current location or any city around the world. Implemented in Objective-C.
+* https://blog.csdn.net/qq910894904/article/details/41911175
 
 ## 0x8 Authors
 * [pengyutang125](https://github.com/pengyutang125)
