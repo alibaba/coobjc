@@ -495,6 +495,9 @@ coobjc couldn't exist without:
 * [v2ex](https://github.com/singro/v2ex) - An iOS client for v2ex.com, we use the code in coobjc examples
 * [tuples](https://github.com/atg/tuples) - Objective-C tuples.
 * [Sol](https://github.com/comyar/Sol) - Sol° beautifully displays weather information so you can plan your day accordingly. Check the weather in your current location or any city around the world. Implemented in Objective-C.
+* [Swift](https://github.com/apple/swift) - The Swift Programming Language
+* [libdispatch](https://github.com/apple/swift-corelibs-libdispatch) - The libdispatch Project, (a.k.a. Grand Central Dispatch), for concurrency on multicore hardware
+* [objc4](https://opensource.apple.com/source/objc4/objc4-750.1/) - apple objc framework
 * https://blog.csdn.net/qq910894904/article/details/41911175
 * http://www.voidcn.com/article/p-fwlohnnc-gc.html
 * https://blog.csdn.net/shenlei19911210/article/details/61194617
