@@ -85,9 +85,9 @@ co_launch(^{
 在协程中，我们所有的方法都是直接返回值的，并没有返回错误，我们在执行过程中的错误是通过 `co_getError()` 获取的，比如我们有以下从网络获取数据的接口，在失败的时候， promise 会 `reject:error`<br /><br />
 
 ```objc
-- (CCOPromise*)co_GET:(NSString*)url
+- (COPromise*)co_GET:(NSString*)url
   parameters:(NSDictionary*)parameters{
-    CCOPromise *promise = [CCOPromise promise];
+    COPromise *promise = [COPromise promise];
     [self GET:url parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         [promise fulfill:responseObject];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -170,9 +170,9 @@ co(^{
 我们可以使用 `co_actor_onqueue` 在指定线程创建 actor
 
 ```objc
-CCOActor *actor = co_actor_onqueue(^(CCOActorChan *channel) {
+COActor *actor = co_actor_onqueue(^(COActorChan *channel) {
     ...  //定义 actor 的状态变量
-    for(CCOActorMessage *message in channel){
+    for(COActorMessage *message in channel){
         ...//处理消息
     }
 }, q);
@@ -183,9 +183,9 @@ CCOActor *actor = co_actor_onqueue(^(CCOActorChan *channel) {
 actor 的 `send` 方法可以给 actor 发送消息
 
 ```objc
-CCOActor *actor = co_actor_onqueue(^(CCOActorChan *channel) {
+COActor *actor = co_actor_onqueue(^(COActorChan *channel) {
     ...  //定义actor的状态变量
-    for(CCOActorMessage *message in channel){
+    for(COActorMessage *message in channel){
         ...//处理消息
     }
 }, q);

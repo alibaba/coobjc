@@ -100,8 +100,8 @@ The above code turns the code that originally needs dispatch_async twice into se
 
 In the coroutine, all our methods are directly returning the value, and no error is returned. Our error in the execution process is obtained by co_getError(). For example, we have the following interface to obtain data from the network. When the promise will reject: error<br /><br />
 ```
-- (CCOPromise*)co_GET:(NSString*)url parameters:(NSDictionary*)parameters{
-    CCOPromise *promise = [CCOPromise promise];
+- (COPromise*)co_GET:(NSString*)url parameters:(NSDictionary*)parameters{
+    COPromise *promise = [COPromise promise];
     [self GET:url parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         [promise fulfill:responseObject];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -185,10 +185,10 @@ Through the generator, we can load the data from the traditional producer--notif
 We can use co_actor_onqueue to create an actor in the specified thread.
 
 ```
-CCOActor *actor = co_actor_onqueue(q, ^(CCOActorChan *channel) {
+COActor *actor = co_actor_onqueue(q, ^(COActorChan *channel) {
     ...  //Define the state variable of the actor
 
-    for(CCOActorMessage *message in channel){
+    for(COActorMessage *message in channel){
         ...//handle message
     }
 });
@@ -199,10 +199,10 @@ CCOActor *actor = co_actor_onqueue(q, ^(CCOActorChan *channel) {
 The actor's send method can send a message to the actor
 
 ```
-CCOActor *actor = co_actor_onqueue(q, ^(CCOActorChan *channel) {
+COActor *actor = co_actor_onqueue(q, ^(COActorChan *channel) {
     ...  //Define the state variable of the actor
 
-    for(CCOActorMessage *message in channel){
+    for(COActorMessage *message in channel){
         ...//handle message
     }
 });
