@@ -45,7 +45,7 @@
 void scheduler_queue_push(coroutine_scheduler_t *scheduler, coroutine_t *co);
 coroutine_t *scheduler_queue_pop(coroutine_scheduler_t *scheduler);
 coroutine_scheduler_t *coroutine_scheduler_new(void);
-void coroutine_scheduler_free(coroutine_scheduler_t *schedule);
+void coroutine_scheduler_free(coroutine_scheduler_t *scheduler);
 void coroutine_resume_im(coroutine_t *co);
 void *coroutine_memory_malloc(size_t s);
 void  coroutine_memory_free(void *ptr, size_t size);
