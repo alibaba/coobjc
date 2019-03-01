@@ -174,7 +174,7 @@ static void co_obj_dispose(void *coObj) {
     return [self coroutineWithBlock:block onQueue:queue stackSize:0];
 }
     
-+ (instancetype)coroutineWithBlock:(void(^)(void))block onQueue:(dispatch_queue_t _Nullable)queue stackSize:(NSUInteger)stackSize {
++ (instancetype)coroutineWithBlock:(void(^)(void))block onQueue:(dispatch_queue_t)queue stackSize:(NSUInteger)stackSize {
     if (queue == NULL) {
         queue = co_get_current_queue();
     }
@@ -361,7 +361,7 @@ id co_await(id awaitable) {
     }
 }
 
-NSArray *_Nonnull co_batch_await(NSArray * _Nonnull awaitableList) {
+NSArray *co_batch_await(NSArray * awaitableList) {
     
     coroutine_t  *t = coroutine_self();
     if (t == nil) {

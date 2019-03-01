@@ -330,7 +330,7 @@ namespace {
                     page->protect();
                 }
                 delete deathptr;
-            } while (deathptr != this);
+            } while (deathptr != this && page != nil);
         }
         
         static void routine_dealloc(void *p)
@@ -658,7 +658,7 @@ static BOOL co_is_autoreleasepage(void *ctx){
     uintptr_t address = (uintptr_t)ctx;
     uintptr_t baseAddress = (address / PAGE_MAX_SIZE) * PAGE_MAX_SIZE;
     COAutoreleasePoolPage *page = (COAutoreleasePoolPage*)baseAddress;
-    if (page->bitMask == (uintptr_t)CO_AUTORELEASE_PAGE_MASK) {
+    if (page && page->bitMask == (uintptr_t)CO_AUTORELEASE_PAGE_MASK) {
         return YES;
     }
     return NO;

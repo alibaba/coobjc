@@ -21,7 +21,7 @@
 #define EXP_SHORTHAND
 #import <Expecta/Expecta.h>
 #import <OCMock/OCMock.h>
-#import <coobjc.h>
+#import <coobjc/coobjc.h>
 #import <coobjc/co_autorelease.h>
 
 static int state;

@@ -22,7 +22,7 @@
 #define EXP_SHORTHAND
 #import <Expecta/Expecta.h>
 #import <OCMock/OCMock.h>
-#import <coobjc.h>
+#import <coobjc/coobjc.h>
 
 /*
 SpecBegin(coCreate)

@@ -52,7 +52,7 @@ id _Nullable co_await(id  awaitable);
  @param awaitableArray a list of awaitable
  @return the value result list. `nil` is replaced by `NSNull`.
  */
-NSArray *co_batch_await(NSArray * awaitableArray);
+NSArray *_Nullable co_batch_await(NSArray *awaitableArray);
 
 @class COCoroutine;
 
@@ -153,7 +153,7 @@ extern NSString *const COInvalidException;
  @param stackSize : stackSize of the coroutine.
  @return The coroutine object.
  */
-+ (instancetype)coroutineWithBlock:(void(^)(void))block onQueue:(dispatch_queue_t _Nullable)queue stackSize:(NSUInteger)stackSize;
++ (_Nullable instancetype)coroutineWithBlock:(void(^)(void))block onQueue:(dispatch_queue_t _Nullable)queue stackSize:(NSUInteger)stackSize;
 
 
 /**

@@ -18,7 +18,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import <coobjc.h>
+#import <coobjc/coobjc.h>
 
 @interface NSData (asyncio)
 
