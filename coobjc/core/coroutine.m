@@ -42,8 +42,8 @@
 #pragma clang diagnostic ignored "-Wincompatible-pointer-types"
 
 
-void scheduler_add_coroutine (coroutine_list_t *l, coroutine_t *t);
-void scheduler_delete_coroutine(coroutine_list_t *l, coroutine_t *t);
+void scheduler_queue_push(coroutine_scheduler_t *scheduler, coroutine_t *co);
+coroutine_t *scheduler_queue_pop(coroutine_scheduler_t *scheduler);
 coroutine_scheduler_t *coroutine_scheduler_new(void);
 void coroutine_scheduler_free(coroutine_scheduler_t *schedule);
 void coroutine_resume_im(coroutine_t *co);
@@ -95,18 +95,16 @@ coroutine_scheduler_t *coroutine_scheduler_self_create_if_not_exists(void) {
 
 void coroutine_scheduler_main(coroutine_t *scheduler_co) {
     
-    coroutine_t *co;
     coroutine_scheduler_t *scheduler = scheduler_co->scheduler;
     for (;;) {
         
-        co = scheduler->coroutine_queue.head;
+        // pop a coroutine from queue.head.
+        coroutine_t *co = scheduler_queue_pop(scheduler);
         if (co == NULL) {
             // jump out. scheduler will enter idle.
             coroutine_yield(scheduler_co);
             continue;
         }
-        // delete from the scheduler's queue
-        scheduler_delete_coroutine(&scheduler->coroutine_queue, co);
         // set scheduler's current running coroutine.
         scheduler->running_coroutine = co;
         // resume the coroutine
@@ -203,6 +201,7 @@ void coroutine_resume_im(coroutine_t *co) {
                 // when proccess reenter(resume a coroutine), skip the remain codes, just return to pre func.
                 return;
             }
+#pragma unused(skip)
             skip = true;
             
             free(co->context);
@@ -221,6 +220,7 @@ void coroutine_resume_im(coroutine_t *co) {
                 // when proccess reenter(resume a coroutine), skip the remain codes, just return to pre func.
                 return;
             }
+#pragma unused(skip)
             skip = true;
             // setcontext
             coroutine_setcontext(co->context);
@@ -238,11 +238,11 @@ void coroutine_resume(coroutine_t *co) {
         coroutine_scheduler_t *scheduler = coroutine_scheduler_self_create_if_not_exists();
         co->scheduler = scheduler;
         
-        scheduler_add_coroutine(&scheduler->coroutine_queue, co);
+        scheduler_queue_push(scheduler, co);
         
         if (scheduler->running_coroutine) {
             // resume a sub coroutine.
-            scheduler_add_coroutine (&scheduler->coroutine_queue, scheduler->running_coroutine);
+            scheduler_queue_push(scheduler, scheduler->running_coroutine);
             coroutine_yield(scheduler->running_coroutine);
         } else {
             // scheduler is idle
@@ -262,7 +262,7 @@ void coroutine_add(coroutine_t *co) {
             main_co->scheduler = scheduler;
             scheduler->main_coroutine = main_co;
         }
-        scheduler_add_coroutine(&scheduler->coroutine_queue, co);
+        scheduler_queue_push(scheduler, co);
         
         if (!scheduler->running_coroutine) {
             coroutine_resume_im(co->scheduler->main_coroutine);
@@ -283,6 +283,7 @@ void coroutine_yield(coroutine_t *co)
     if (skip) {
         return;
     }
+#pragma unused(skip)
     skip = true;
     co->status = COROUTINE_SUSPEND;
     coroutine_setcontext(co->pre_context);
@@ -299,32 +300,32 @@ coroutine_t *coroutine_self() {
 
 #pragma mark - linked lists
 
-// add routine to the queue
-void scheduler_add_coroutine(coroutine_list_t *l, coroutine_t *t) {
-    if(l->tail) {
-        l->tail->next = t;
-        t->prev = l->tail;
+void scheduler_queue_push(coroutine_scheduler_t *scheduler, coroutine_t *co) {
+    coroutine_list_t *queue = &scheduler->coroutine_queue;
+    if(queue->tail) {
+        queue->tail->next = co;
+        co->prev = queue->tail;
     } else {
-        l->head = t;
-        t->prev = nil;
+        queue->head = co;
+        co->prev = nil;
     }
-    l->tail = t;
-    t->next = nil;
+    queue->tail = co;
+    co->next = nil;
 }
 
-// delete routine from the queue
-void scheduler_delete_coroutine(coroutine_list_t *l, coroutine_t *t) {
-    if(t->prev) {
-        t->prev->next = t->next;
-    } else {
-        l->head = t->next;
+coroutine_t *scheduler_queue_pop(coroutine_scheduler_t *scheduler) {
+    coroutine_list_t *queue = &scheduler->coroutine_queue;
+    coroutine_t *co = queue->head;
+    if (co) {
+        queue->head = co->next;
+        // Actually, co->prev is nil now.
+        if (co->next) {
+            co->next->prev = co->prev;
+        } else {
+            queue->tail = co->prev;
+        }
     }
-    
-    if(t->next) {
-        t->next->prev = t->prev;
-    } else {
-        l->tail = t->prev;
-    }
+    return co;
 }
 
 #pragma clang diagnostic pop

@@ -21,7 +21,7 @@
 #define EXP_SHORTHAND
 #import <Expecta/Expecta.h>
 #import <OCMock/OCMock.h>
-#import <coobjc.h>
+#import <coobjc/coobjc.h>
 
 static dispatch_queue_t get_test_queue(){
     static dispatch_queue_t q = nil;

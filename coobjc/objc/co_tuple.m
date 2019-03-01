@@ -111,11 +111,11 @@ void** co_unpackSentinel(){
 }
 
 // Protocolic Obligations
-- (id)copyWithZone:(NSZone *)zone {
-    id newtup = [[[self class] alloc] init];
-    [newtup _setStorage:[[self _storage] copy]];
-    return newtup;
-}
+//- (id)copyWithZone:(NSZone *)zone {
+//    id newtup = [[[self class] alloc] init];
+//    [newtup _setStorage:[[self _storage] copy]];
+//    return newtup;
+//}
 - (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id arc_unsafe_unretained [])stackbuf count:(NSUInteger)len {
     return [storage countByEnumeratingWithState:state objects:stackbuf count:len];
 }

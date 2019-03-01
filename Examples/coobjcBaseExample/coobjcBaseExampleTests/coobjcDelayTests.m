@@ -21,7 +21,7 @@
 #define EXP_SHORTHAND
 #import <Expecta/Expecta.h>
 #import <OCMock/OCMock.h>
-#import <coobjc.h>
+#import <coobjc/coobjc.h>
 #import "coobjcCommon.h"
 
 SpecBegin(coDelay)

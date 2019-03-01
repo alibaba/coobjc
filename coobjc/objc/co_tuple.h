@@ -18,7 +18,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface COTuple : NSObject<NSCopying, NSFastEnumeration>
+@interface COTuple : NSObject<NSFastEnumeration>
 
 // Creation
 - (id)init; // Empty tuple

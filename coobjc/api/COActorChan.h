@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @return The actor message object.
  */
-- (COActorMessage *)next;
+- (COActorMessage *_Nullable)next;
 
 @end
 
