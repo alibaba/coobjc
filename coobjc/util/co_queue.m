@@ -20,10 +20,6 @@
 #import <pthread/pthread.h>
 #import <mach/mach.h>
 
-typedef struct coobjc_test_thread_s {
-    void* queue;
-} coobjc_test_thread_s;
-
 dispatch_queue_t co_get_current_queue() {
     if ([NSThread isMainThread]) {
         return dispatch_get_main_queue();
@@ -37,10 +33,9 @@ dispatch_queue_t co_get_current_queue() {
         if (tiid.dispatch_qaddr == thread) {
             return NULL;
         }
-        coobjc_test_thread_s test;
-        test.queue = (void*)tiid.dispatch_qaddr;
-        if (test.queue != NULL) {
-            return *(__unsafe_unretained dispatch_queue_t*)test.queue;
+
+        if (tiid.dispatch_qaddr != 0) {
+            return *(__unsafe_unretained dispatch_queue_t*)(void*)tiid.dispatch_qaddr;
         }
         return NULL;
     }
