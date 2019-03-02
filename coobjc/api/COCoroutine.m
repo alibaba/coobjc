@@ -182,8 +182,7 @@ static void co_obj_dispose(void *coObj) {
         return nil;
     }
     COCoroutine *coObj = [[self alloc] initWithBlock:block onQueue:queue];
-    coObj.queue = queue;
-    coroutine_t  *co = coroutine_create((void (*)(void *))co_exec);
+    coroutine_t *co = coroutine_create((void (*)(void *))co_exec);
     if (stackSize > 0 && stackSize < 1024*1024) {   // Max 1M
         co->stack_size = (uint32_t)((stackSize % 16384 > 0) ? ((stackSize/16384 + 1) * 16384) : stackSize/16384);        // Align with 16kb
     }
