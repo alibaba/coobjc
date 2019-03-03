@@ -395,7 +395,7 @@ NSArray *co_batch_await(NSArray * awaitableList) {
               }]
              catch:^(NSError * _Nonnull error) {
                  co.lastError = error;
-                 [chan send_nonblock:nil];
+                 [chan send_nonblock:error];
              }];
             
             [chan onCancel:^(COChan * _Nonnull chan) {
