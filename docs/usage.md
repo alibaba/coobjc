@@ -376,7 +376,6 @@ CCOActor *actor = co_actor_onqueue(^(CCOActorChan *channel) {
         ...//handle message
     }
 }, q);
-}, q);
 
 //cancel
 [actor cancel];
