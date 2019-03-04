@@ -185,7 +185,7 @@ static void co_obj_dispose(void *coObj) {
     coObj.queue = queue;
     coroutine_t  *co = coroutine_create((void (*)(void *))co_exec);
     if (stackSize > 0 && stackSize < 1024*1024) {   // Max 1M
-        co->stack_size = (uint32_t)((stackSize % 16384 > 0) ? ((stackSize/16384 + 1) * 16384) : stackSize/16384);        // Align with 16kb
+        co->stack_size = (uint32_t)((stackSize % 16384 > 0) ? ((stackSize/16384 + 1) * 16384) : stackSize);        // Align with 16kb
     }
     coObj.co = co;
     coroutine_setuserdata(co, (__bridge_retained void *)coObj, co_obj_dispose);
