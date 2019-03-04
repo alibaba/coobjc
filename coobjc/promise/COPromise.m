@@ -37,6 +37,7 @@ typedef void (^COPromiseObserver)(COPromiseState state, id __nullable resolution
     id __nullable _value;
     NSError *__nullable _error;
     COPromiseConstructor _constructor;
+    NSLock  *_lock;
 }
 
 typedef void (^COPromiseOnFulfillBlock)(Value __nullable value);
@@ -48,8 +49,17 @@ typedef id __nullable (^__nullable COPromiseChainedRejectBlock)(NSError *error);
 
 @implementation COPromise
 
-- (instancetype)initWithContructor:(COPromiseConstructor)constructor {
+- (instancetype)init
+{
     self = [super init];
+    if (self) {
+        _lock = [[NSLock alloc] init];
+    }
+    return self;
+}
+
+- (instancetype)initWithContructor:(COPromiseConstructor)constructor {
+    self = [self init];
     if (self) {
         _constructor = constructor;
     }
@@ -78,51 +88,59 @@ typedef id __nullable (^__nullable COPromiseChainedRejectBlock)(NSError *error);
 }
 
 - (BOOL)isPending {
-    @synchronized(self) {
-        return _state == COPromiseStatePending;
-    }
+    [_lock lock];
+    BOOL isPending = _state == COPromiseStatePending;
+    [_lock unlock];
+    return isPending;
 }
 
 - (BOOL)isFulfilled {
-    @synchronized(self) {
-        return _state == COPromiseStateFulfilled;
-    }
+    [_lock lock];
+    BOOL isFulfilled = _state == COPromiseStateFulfilled;
+    [_lock unlock];
+    return isFulfilled;
 }
 
 - (BOOL)isRejected {
-    @synchronized(self) {
-        return _state == COPromiseStateRejected;
-    }
+    [_lock lock];
+    BOOL isRejected = _state == COPromiseStateRejected;
+    [_lock unlock];
+    return isRejected;
 }
 
 - (nullable id)value {
-    @synchronized(self) {
-        return _value;
-    }
+    [_lock lock];
+    id result = _value;
+    [_lock unlock];
+    return result;
 }
 
 - (NSError *__nullable)error {
-    @synchronized(self) {
-        return _error;
-    }
+    [_lock lock];
+    NSError *error = _error;
+    [_lock unlock];
+    return error;
 }
 
 - (void)fulfill:(id)value {
     NSArray<COPromiseObserver> * observers = nil;
     COPromiseState state;
-    @synchronized(self) {
-        if (_state == COPromiseStatePending) {
-            _state = COPromiseStateFulfilled;
-            state = _state;
-            _value = value;
-            observers = [_observers copy];
-            _observers = nil;
-            _constructor = nil;
-        }
-        else{
-            return;
-        }
+    
+    [_lock lock];
+    if (_state == COPromiseStatePending) {
+        _state = COPromiseStateFulfilled;
+        state = _state;
+        _value = value;
+        observers = [_observers copy];
+        _observers = nil;
+        _constructor = nil;
     }
+    else{
+        [_lock unlock];
+        return;
+    }
+    [_lock unlock];
+
     if (observers.count > 0) {
         for (COPromiseObserver observer in observers) {
             observer(state, value);
@@ -134,19 +152,21 @@ typedef id __nullable (^__nullable COPromiseChainedRejectBlock)(NSError *error);
     NSAssert([error isKindOfClass:[NSError class]], @"Invalid error type.");
     NSArray<COPromiseObserver> * observers = nil;
     COPromiseState state;
-    @synchronized(self) {
-        if (_state == COPromiseStatePending) {
-            _state = COPromiseStateRejected;
-            state = _state;
-            _error = error;
-            observers = [_observers copy];
-            _observers = nil;
-            _constructor = nil;
-        }
-        else{
-            return;
-        }
+    [_lock lock];
+    if (_state == COPromiseStatePending) {
+        _state = COPromiseStateRejected;
+        state = _state;
+        _error = error;
+        observers = [_observers copy];
+        _observers = nil;
+        _constructor = nil;
     }
+    else{
+        [_lock unlock];
+        return;
+    }
+    [_lock unlock];
+    
     for (COPromiseObserver observer in observers) {
         observer(state, error);
     }
@@ -176,45 +196,46 @@ typedef id __nullable (^__nullable COPromiseChainedRejectBlock)(NSError *error);
     COPromiseState state = COPromiseStatePending;
     id value = nil;
     NSError *error = nil;
-    @synchronized (self) {
-        
-        switch (_state) {
-            case COPromiseStatePending: {
-                if (!_observers) {
-                    _observers = [[NSMutableArray alloc] init];
+    [_lock lock];
+    
+    switch (_state) {
+        case COPromiseStatePending: {
+            if (!_observers) {
+                _observers = [[NSMutableArray alloc] init];
+            }
+            [_observers addObject:^(COPromiseState state, id __nullable resolution) {
+                switch (state) {
+                    case COPromiseStatePending:
+                        break;
+                    case COPromiseStateFulfilled:
+                        if (onFulfill) {
+                            onFulfill(resolution);
+                        }
+                        break;
+                    case COPromiseStateRejected:
+                        if (onReject) {
+                            onReject(resolution);
+                        }
+                        break;
                 }
-                [_observers addObject:^(COPromiseState state, id __nullable resolution) {
-                    switch (state) {
-                        case COPromiseStatePending:
-                            break;
-                        case COPromiseStateFulfilled:
-                            if (onFulfill) {
-                                onFulfill(resolution);
-                            }
-                            break;
-                        case COPromiseStateRejected:
-                            if (onReject) {
-                                onReject(resolution);
-                            }
-                            break;
-                    }
-                }];
-                break;
-            }
-            case COPromiseStateFulfilled: {
-                state = COPromiseStateFulfilled;
-                value = self.value;
-                break;
-            }
-            case COPromiseStateRejected: {
-                state = COPromiseStateRejected;
-                error = self.error;
-                break;
-            }
-            default:
-                break;
+            }];
+            break;
         }
+        case COPromiseStateFulfilled: {
+            state = COPromiseStateFulfilled;
+            value = _value;
+            break;
+        }
+        case COPromiseStateRejected: {
+            state = COPromiseStateRejected;
+            error = _error;
+            break;
+        }
+        default:
+            break;
     }
+    [_lock unlock];
+    
     if (state == COPromiseStateFulfilled) {
         if (onFulfill) {
             onFulfill(value);
