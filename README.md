@@ -509,8 +509,11 @@ coobjc couldn't exist without:
 * [ValiantCat](https://github.com/ValiantCat)
 * [jmpews](https://github.com/jmpews)
 
+## 0x9 Contributing
 
-## 0x9 License
+* [Contributing](./CONTRIBUTING.md)
+
+## 0x10 License
 coobjc is released under the Apache 2.0 license. See [LICENSE](LICENSE) for details.
 <br />
 

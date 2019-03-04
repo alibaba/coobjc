@@ -1,0 +1,35 @@
+<type>(<scope>) : <subject>
+
+<body>
+
+
+<footer>
+
+
+#type value under below
+#    .feat :new feature 
+#    .fix :fix some bug
+#    .refactor :refactor some code
+#    .perf :optimization performance 
+#    .test :add more test case
+#
+#scope : describe effeter
+#     .all :Widely affected, should pay attention to this commit.
+#     .loation :little influence.
+
+#
+#subject: subject about this commit.
+# 
+#body :detail describe about this commit.
+# 
+#footer :associate issue id or other infomation.
+#
+
+#      An Example
+
+#             
+#feat(location) : <Description method>
+#
+#  add description to EZRNode
+#
+#  [Associate with issued id]
