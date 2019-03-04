@@ -342,7 +342,6 @@ static int _chanop(co_channel *c, int op, void *p, int canblock) {
     a.channel = c;
     a.op = op;
     a.value = p;
-    a.op = op;
     a.can_block = canblock;
     
     if(chanalt(&a) < 0) {
