@@ -383,7 +383,7 @@ NSArray *co_batch_await(NSArray * awaitableList) {
            
         } else if ([awaitable isKindOfClass:[COPromise class]]) {
             
-            COChan *chan = [COChan chan];
+            COChan *chan = [COChan chanWithBuffCount:1];
             COCoroutine *co = co_get_obj(t);
             
             COPromise *promise = awaitable;
