@@ -424,9 +424,7 @@ NSArray *co_batch_await(NSArray * awaitableList) {
     return result.copy;
 }
 
-
-void co_generator_yield(id _Nonnull promiseOrChan) {
-    COCoroutine *co = [COCoroutine currentCoroutine];
+void co_generator_yield_prepare(COCoroutine *co) {
     if (co == nil) {
         @throw [NSException exceptionWithName:COInvalidException
                                        reason:@"Cannot run co_generator_yield out of a coroutine"
@@ -439,8 +437,10 @@ void co_generator_yield(id _Nonnull promiseOrChan) {
     if (!co.yieldChan) {
         co.yieldChan = [COChan chan];
     }
-    
     [co.yieldChan send:[CONextBeginObj instance]]; // 第一个等待next开始
+}
+
+void co_generator_yield_do(COCoroutine *co, id _Nonnull promiseOrChan) {
     if (co.isCancelled) return;
     id val = co_await(promiseOrChan);
     if (co.isCancelled) return;

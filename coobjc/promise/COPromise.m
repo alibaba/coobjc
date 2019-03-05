@@ -23,6 +23,7 @@
 #import "COPromise.h"
 #import "COChan.h"
 #import "COCoroutine.h"
+#import "co_queue.h"
 
 typedef NS_ENUM(NSInteger, COPromiseState) {
     COPromiseStatePending = 0,
@@ -38,7 +39,6 @@ typedef void (^COPromiseObserver)(COPromiseState state, id __nullable resolution
     NSMutableArray<COPromiseObserver> *_observers;
     id __nullable _value;
     NSError *__nullable _error;
-    COPromiseConstructor _constructor;
 }
 
 @property (nonatomic, strong) NSLock *lock;
@@ -61,10 +61,24 @@ typedef id __nullable (^__nullable COPromiseChainedRejectBlock)(NSError *error);
     return self;
 }
 
-- (instancetype)initWithContructor:(COPromiseConstructor)constructor {
+- (instancetype)initWithContructor:(COPromiseConstructor)constructor queue:(dispatch_queue_t)queue {
     self = [self init];
     if (self) {
-        _constructor = constructor;
+        if (constructor) {
+            COPromiseFullfill fullfill = ^(id value){
+                [self fulfill:value];
+            };
+            COPromiseReject reject = ^(NSError *error){
+                [self reject:error];
+            };
+            if (queue) {
+                dispatch_async(queue, ^{
+                    constructor(fullfill, reject);
+                });
+            } else {
+                constructor(fullfill, reject);
+            }
+        }
     }
     return self;
 }
@@ -74,20 +88,11 @@ typedef id __nullable (^__nullable COPromiseChainedRejectBlock)(NSError *error);
 }
 
 + (instancetype)promise:(COPromiseConstructor)constructor {
-    return [[self alloc] initWithContructor:constructor];
+    return [[self alloc] initWithContructor:constructor queue:co_get_current_queue()];
 }
 
 + (instancetype)promise:(COPromiseConstructor)constructor onQueue:(dispatch_queue_t)queue {
-    if (queue) {
-        return [[self alloc] initWithContructor:^(COPromiseFullfill fullfill, COPromiseReject reject) {
-            dispatch_async(queue, ^{
-                constructor(fullfill, reject);
-            });
-        }];
-    }
-    else{
-        return [[self alloc] initWithContructor:constructor];
-    }
+    return [[self alloc] initWithContructor:constructor queue:queue];
 }
 
 - (BOOL)isPending {
@@ -136,7 +141,6 @@ typedef id __nullable (^__nullable COPromiseChainedRejectBlock)(NSError *error);
         _value = value;
         observers = [_observers copy];
         _observers = nil;
-        _constructor = nil;
     }
     else{
         [_lock unlock];
@@ -162,7 +166,6 @@ typedef id __nullable (^__nullable COPromiseChainedRejectBlock)(NSError *error);
         _error = error;
         observers = [_observers copy];
         _observers = nil;
-        _constructor = nil;
     }
     else{
         [_lock unlock];
@@ -284,15 +287,6 @@ typedef id __nullable (^__nullable COPromiseChainedRejectBlock)(NSError *error);
 }
 
 - (COPromise *)then:(COPromiseThenWorkBlock)work {
-    if (_constructor) {
-        COPromiseFullfill fullfill = ^(id value){
-            [self fulfill:value];
-        };
-        COPromiseReject reject = ^(NSError *error){
-            [self reject:error];
-        };
-        _constructor(fullfill, reject);
-    }
     return [self chainedPromiseWithFulfill:work chainedReject:nil];
 }
 
