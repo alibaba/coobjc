@@ -23,6 +23,15 @@
 #import <OCMock/OCMock.h>
 #import <coobjc/coobjc.h>
 
+static dispatch_queue_t test_queue(){
+    static dispatch_queue_t q = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        q = dispatch_queue_create("xxxtest", NULL);
+    });
+    return q;
+}
+
 static id testPromise1() {
     
     COPromise *promise = [COPromise new];
@@ -118,6 +127,23 @@ static COPromise* downloadImageWithError(){
     }
     NSError* error = [NSError errorWithDomain:@"wrong" code:20 userInfo:@{@"h":@"yc"}];
     [promise reject:error];
+    return promise;
+}
+
+
+static COProgressPromise* progressDownloadFileFromUrl(NSString *url){
+    COProgressPromise *promise = [COProgressPromise promise];
+    [NSURLSession sharedSession].configuration.requestCachePolicy = NSURLRequestReloadIgnoringCacheData;
+    NSURLSessionDataTask *task = [[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:url] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+        if (error) {
+            [promise reject:error];
+        }
+        else{
+            [promise fulfill:data];
+        }
+    }];
+    [task resume];
+    [promise setupWithProgress:task.progress];
     return promise;
 }
 
@@ -247,6 +273,87 @@ describe(@"Proimse tests", ^{
         });
         waitUntil(^(DoneCallback done) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                done();
+            });
+        });
+    });
+    
+    it(@"test progress promise", ^{
+        co_launch(^{
+            int progressCount = 0;
+            COProgressPromise *promise = progressDownloadFileFromUrl(@"http://img17.3lian.com/d/file/201701/17/9a0d018ba683b9cbdcc5a7267b90891c.jpg");
+            for(id p in promise){
+                double v = [p doubleValue];
+                NSLog(@"current progress: %f", (float)v);
+                progressCount++;
+            }
+            expect(progressCount > 0);
+            NSData *data = await(promise);
+            expect(data.length > 0);
+        });
+        waitUntil(^(DoneCallback done) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                done();
+            });
+        });
+    });
+    
+    it(@"test progress promise 50%", ^{
+        co_launch(^{
+            int progressCount = 0;
+            COProgressPromise *promise = progressDownloadFileFromUrl(@"http://img17.3lian.com/d/file/201701/17/9a0d018ba683b9cbdcc5a7267b90891c.jpg");
+            for(id p in promise){
+                double v = [p doubleValue];
+                if(v >= 0.5){
+                    break;
+                }
+                NSLog(@"current progress: %f", (float)v);
+                progressCount++;
+            }
+            expect(progressCount > 0);
+            NSData *data = await(promise);
+            expect(data.length > 0);
+        });
+        waitUntil(^(DoneCallback done) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                done();
+            });
+        });
+    });
+    
+    it(@"test progress promise direct", ^{
+        co_launch(^{
+            int progressCount = 0;
+            COProgressPromise *promise = progressDownloadFileFromUrl(@"http://img17.3lian.com/d/file/201701/17/9a0d018ba683b9cbdcc5a7267b90891c.jpg");
+            NSData *data = await(promise);
+            expect(data.length > 0);
+        });
+        waitUntil(^(DoneCallback done) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                done();
+            });
+        });
+    });
+    
+    it(@"test progress promise error", ^{
+        co_launch(^{
+            int progressCount = 0;
+            COProgressPromise *promise = progressDownloadFileFromUrl(@"http://img17.3lian.com/d/file/201701/17/9a0d018ba683b9cbdcc5a7267b90891c.jpg1111");
+            for(id p in promise){
+                double v = [p doubleValue];
+                if(v >= 0.5){
+                    break;
+                }
+                NSLog(@"current progress: %f", (float)v);
+                progressCount++;
+            }
+            expect(progressCount <= 0);
+            NSData *data = await(promise);
+            expect(data == nil);
+            expect(co_getError() != nil);
+        });
+        waitUntil(^(DoneCallback done) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 done();
             });
         });

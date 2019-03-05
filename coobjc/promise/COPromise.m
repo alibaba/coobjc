@@ -21,6 +21,8 @@
 //    Reference code from: [FBLPromise](https://github.com/google/promises)
 
 #import "COPromise.h"
+#import "COChan.h"
+#import "COCoroutine.h"
 
 typedef NS_ENUM(NSInteger, COPromiseState) {
     COPromiseStatePending = 0,
@@ -37,8 +39,9 @@ typedef void (^COPromiseObserver)(COPromiseState state, id __nullable resolution
     id __nullable _value;
     NSError *__nullable _error;
     COPromiseConstructor _constructor;
-    NSLock  *_lock;
 }
+
+@property (nonatomic, strong) NSLock *lock;
 
 typedef void (^COPromiseOnFulfillBlock)(Value __nullable value);
 typedef void (^COPromiseOnRejectBlock)(NSError *error);
@@ -302,4 +305,144 @@ typedef id __nullable (^__nullable COPromiseChainedRejectBlock)(NSError *error);
     }];
 }
     
+@end
+
+@interface COProgressValue : NSObject
+
+@property (nonatomic, assign) CGFloat progress;
+
+@end
+
+@implementation COProgressValue
+
+- (void)dealloc{
+    NSLog(@"test");
+}
+
+@end
+
+@interface COProgressPromise (){
+    unsigned long enum_state;
+}
+
+@property (nonatomic, strong) NSProgress *progress;
+@property (nonatomic, strong) COPromise *internalPromise;
+@property (nonatomic, strong) id lastValue;
+
+@end
+
+static void *COProgressObserverContext = &COProgressObserverContext;
+
+@implementation COProgressPromise
+
+- (instancetype)init{
+    self = [super init];
+    if (self) {
+    }
+    return self;
+}
+
+- (void)fulfill:(id)value{
+    [self.internalPromise fulfill:nil];
+    [super fulfill:value];
+}
+
+- (void)reject:(NSError *)error{
+    [self.internalPromise fulfill:nil];
+    [super reject:error];
+}
+
+- (COProgressValue*)_nextProgressValue{
+    if (![self isPending]) {
+        return nil;
+    }
+    [self.lock lock];
+    self.internalPromise = [COPromise promise];
+    [self.lock unlock];
+    COProgressValue* result = co_await(self.internalPromise);
+    self.internalPromise = [COPromise promise];
+    return result;
+}
+
+- (void)setupWithProgress:(NSProgress*)progress{
+    NSProgress *oldProgress = nil;
+    [self.lock lock];
+    if (self.progress) {
+        oldProgress = self.progress;
+    }
+    self.progress = progress;
+    [self.lock unlock];
+    if (oldProgress) {
+        [oldProgress removeObserver:self
+                      forKeyPath:NSStringFromSelector(@selector(fractionCompleted))
+                         context:COProgressObserverContext];
+    }
+    if (progress) {
+        [progress addObserver:self
+                   forKeyPath:NSStringFromSelector(@selector(fractionCompleted))
+                      options:NSKeyValueObservingOptionInitial
+                      context:COProgressObserverContext];
+    }
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
+                        change:(NSDictionary *)change context:(void *)context
+{
+    if (context == COProgressObserverContext)
+    {
+        NSProgress *progress = object;
+        COProgressValue *value = [[COProgressValue alloc] init];
+        value.progress = progress.fractionCompleted;
+        [self.lock lock];
+        COPromise *promise = self.internalPromise;
+        [self.lock unlock];
+        [promise fulfill:value];
+    }
+    else
+    {
+        [super observeValueForKeyPath:keyPath ofObject:object
+                               change:change context:context];
+    }
+}
+
+- (CGFloat)next {
+    COProgressValue *value = [self _nextProgressValue];
+    return value.progress;
+}
+
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id __unsafe_unretained _Nullable [_Nonnull])buffer count:(NSUInteger)len {
+    
+    if (state->state == 0) {
+        state->mutationsPtr = &enum_state;
+        state->state = enum_state;
+    }
+    
+    NSUInteger count = 0;
+    state->itemsPtr = buffer;
+    COProgressValue* value= [self _nextProgressValue];
+    if (value) {
+        self.lastValue = @(value.progress);
+        buffer[0] = self.lastValue;
+        count++;
+    }
+    
+    return count;
+}
+
+- (void)dealloc{
+    NSProgress *oldProgress = nil;
+    [self.lock lock];
+    if (self.progress) {
+        oldProgress = self.progress;
+    }
+    self.progress = nil;
+    self.internalPromise = nil;
+    [self.lock unlock];
+    if (oldProgress) {
+        [oldProgress removeObserver:self
+                         forKeyPath:NSStringFromSelector(@selector(fractionCompleted))
+                            context:COProgressObserverContext];
+    }
+}
+
 @end
