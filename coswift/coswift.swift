@@ -52,7 +52,7 @@ public func co_launch(queue: DispatchQueue? = nil, stackSize: UInt32? = nil, blo
 public func await<T>(promise: Promise<T>) throws -> Resolution<T>  {
     if let _ = Coroutine.current() {
         
-        let chan = Chan<Resolution<T>>()
+        let chan = Chan<Resolution<T>>(buffCount: 1)
         
         promise.then(work: { (value) -> Any in
             chan.send_nonblock(val: Resolution<T>.fulfilled(value))
