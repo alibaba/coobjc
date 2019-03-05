@@ -23,12 +23,24 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/**
- Can used in a generator, use this method to yield a Promise object.
+@class COCoroutine;
 
+/**
+ Prepare for yield. must use with `co_generator_yield_do`
+ @see `yield` in coobjc.h
+
+ @param co the current coroutine
+ */
+void co_generator_yield_prepare(COCoroutine *co);
+
+/**
+ do yield. must use with `co_generator_yield_prepare`
+ @see `yield` in coobjc.h
+ 
+ @param co the current coroutine
  @param promiseOrChan `COPromise` or `COChan` object
  */
-void co_generator_yield(id promiseOrChan);
+void co_generator_yield_do(COCoroutine *co, id promiseOrChan);
 
 
 /**
@@ -53,8 +65,6 @@ id _Nullable co_await(id  awaitable);
  @return the value result list. `nil` is replaced by `NSNull`.
  */
 NSArray *_Nullable co_batch_await(NSArray *awaitableArray);
-
-@class COCoroutine;
 
 /**
  Get the Coroutine ObjC object from the struct.

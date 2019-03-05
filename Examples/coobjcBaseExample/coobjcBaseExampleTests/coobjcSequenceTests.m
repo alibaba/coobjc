@@ -111,11 +111,10 @@ describe(@"test sequence on same queue", ^{
     });
     
     it(@"yield promise", ^{
+        __block int count = 0;
         COCoroutine *co1 = co_sequence(^{
-            int index = 0;
             while(co_isActive()){
-                yield(co_downloadWithURL(@"http://pytstore.oss-cn-shanghai.aliyuncs.com/GalileoShellApp.ipa"));
-                index++;
+                yield( count++; co_downloadWithURL(@"http://pytstore.oss-cn-shanghai.aliyuncs.com/GalileoShellApp.ipa"));
             }
         });
         int filebytes = 248564;
@@ -130,19 +129,18 @@ describe(@"test sequence on same queue", ^{
         });
         waitUntilTimeout(5.0, ^(DoneCallback done) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                XCTAssert(val == filebytes * 10);
+                expect(val == filebytes * 10).beTruthy();
+                expect(count).equal(10);
                 done();
             });
         });
     });
     
     it(@"yield promise chain", ^{
-        
+        __block             int count = 0;
         COCoroutine *co2 = co_sequence(^{
-            int index = 0;
             while(co_isActive()){
-                yield(co_downloadWithURL(@"http://pytstore.oss-cn-shanghai.aliyuncs.com/GalileoShellApp.ipa"));
-                index++;
+                yield(count++; co_downloadWithURL(@"http://pytstore.oss-cn-shanghai.aliyuncs.com/GalileoShellApp.ipa"));
             }
         });
         
@@ -168,7 +166,8 @@ describe(@"test sequence on same queue", ^{
         });
         waitUntilTimeout(5.0, ^(DoneCallback done) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                XCTAssert(val == filebytes * 20);
+                expect(val == filebytes * 20).beTruthy();
+                expect(count).to.equal(20);
                 done();
             });
         });

@@ -81,6 +81,24 @@ static COPromise *testPromise13() {
     }];
 }
 
+static COPromise *testPromise21() {
+    return [COPromise promise:^(COPromiseFullfill  _Nonnull fullfill, COPromiseReject  _Nonnull reject) {
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            fullfill(@"1");
+        });
+    }];
+}
+
+static COPromise *testPromise22() {
+    return [COPromise promise:^(COPromiseFullfill  _Nonnull fullfill, COPromiseReject  _Nonnull reject) {
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            fullfill(@"2");
+        });
+    }];
+}
+
 @interface Test123 : NSObject
 {
     dispatch_block_t _block;
@@ -269,7 +287,7 @@ describe(@"Proimse tests", ^{
     it(@"https://github.com/alibaba/coobjc/issues/26", ^{
         co_launch(^{
             id dd = await(downloadImageWithError());
-            expect(co_getError() != nil);
+            expect(co_getError()).notTo.equal(nil);
         });
         waitUntil(^(DoneCallback done) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -287,9 +305,9 @@ describe(@"Proimse tests", ^{
                 NSLog(@"current progress: %f", (float)v);
                 progressCount++;
             }
-            expect(progressCount > 0);
+            expect(progressCount > 0).beTruthy();
             NSData *data = await(promise);
-            expect(data.length > 0);
+            expect(data.length > 0).beTruthy();
         });
         waitUntil(^(DoneCallback done) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -310,9 +328,9 @@ describe(@"Proimse tests", ^{
                 NSLog(@"current progress: %f", (float)v);
                 progressCount++;
             }
-            expect(progressCount > 0);
+            expect(progressCount > 0).beTruthy();
             NSData *data = await(promise);
-            expect(data.length > 0);
+            expect(data.length > 0).beTruthy();
         });
         waitUntil(^(DoneCallback done) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -326,7 +344,7 @@ describe(@"Proimse tests", ^{
             int progressCount = 0;
             COProgressPromise *promise = progressDownloadFileFromUrl(@"http://img17.3lian.com/d/file/201701/17/9a0d018ba683b9cbdcc5a7267b90891c.jpg");
             NSData *data = await(promise);
-            expect(data.length > 0);
+            expect(data.length > 0).beTruthy();
         });
         waitUntil(^(DoneCallback done) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -338,7 +356,7 @@ describe(@"Proimse tests", ^{
     it(@"test progress promise error", ^{
         co_launch(^{
             int progressCount = 0;
-            COProgressPromise *promise = progressDownloadFileFromUrl(@"http://img17.3lian.com/d/file/201701/17/9a0d018ba683b9cbdcc5a7267b90891c.jpg1111");
+            COProgressPromise *promise = progressDownloadFileFromUrl(@"http://img17.3lianghhjghj.com/d/file/201701/17/9a0d018ba683b9cbdcc5a7267b90891c.jpg1111");
             for(id p in promise){
                 double v = [p doubleValue];
                 if(v >= 0.5){
@@ -347,10 +365,32 @@ describe(@"Proimse tests", ^{
                 NSLog(@"current progress: %f", (float)v);
                 progressCount++;
             }
-            expect(progressCount <= 0);
+            expect(progressCount).to.equal(1);
             NSData *data = await(promise);
-            expect(data == nil);
-            expect(co_getError() != nil);
+            expect(data == nil).beTruthy();
+            expect(co_getError() != nil).beTruthy();
+        });
+        waitUntil(^(DoneCallback done) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                done();
+            });
+        });
+    });
+    
+    it(@"test concurrent await promise", ^{
+        co_launch(^{
+            
+            NSTimeInterval begin = CACurrentMediaTime();
+            id p1 = testPromise21();
+            id p2 = testPromise22();
+            
+            NSString *r1 = await(p1);
+            expect(r1).to.equal(@"1");
+            NSString *r2 = await(p2);
+            expect(r2).to.equal(@"2");
+            
+            NSTimeInterval duration = CACurrentMediaTime() - begin;
+            expect(duration < 5.5).beTruthy();
         });
         waitUntil(^(DoneCallback done) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

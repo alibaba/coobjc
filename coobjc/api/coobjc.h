@@ -148,6 +148,7 @@ NS_INLINE id _Nullable await(id _Nonnull _promiseOrChan) {
     return val;
 }
 
+
 /**
  batch_await
  
@@ -165,14 +166,18 @@ NS_INLINE NSArray<id> *_Nullable batch_await(NSArray<id> * _Nonnull _promiseOrCh
  @discussion `yield` means pause the expression execution,
  until Generator(coroutine) call `next`.
  
- So, you should passing a `COPromise` object with constructor,
- To make the expression lazy loading.
- 
  @param _promise the COPromise object.
  */
-NS_INLINE void yield(id _Nonnull _promise) {
-    co_generator_yield(_promise);
+#define yield(_expr) \
+{ \
+    COCoroutine *__co__ = [COCoroutine currentCoroutine]; \
+    co_generator_yield_prepare(__co__); \
+    if (!__co__.isCancelled) { \
+        id __promiseOrChan__ = ({ _expr; }); \
+        co_generator_yield_do(__co__, __promiseOrChan__); \
+    } \
 }
+
 
 /**
  yield with a value.
