@@ -24,6 +24,30 @@
 #import <coobjc/coobjc.h>
 #import "coobjcCommon.h"
 
+static COPromise<NSData *> *co_downloadWithURL(NSString *url) {
+    
+    return [COPromise promise:^(COPromiseFullfill  _Nonnull fullfill, COPromiseReject  _Nonnull reject) {
+        
+        [NSURLSession sharedSession].configuration.requestCachePolicy = NSURLRequestReloadIgnoringCacheData;
+        NSURLSessionDownloadTask *task = [[NSURLSession sharedSession] downloadTaskWithURL:[NSURL URLWithString:url] completionHandler:
+                                          ^(NSURL *location, NSURLResponse *response, NSError *error) {
+                                              if (error) {
+                                                  reject(error);
+                                                  return;
+                                              }
+                                              else{
+                                                  NSData *data = [[NSData alloc] initWithContentsOfURL:location];
+                                                  
+                                                  fullfill(data);
+                                                  return;
+                                              }
+                                          }];
+        
+        [task resume];
+        
+    }];
+}
+
 SpecBegin(coSequence)
 
 describe(@"test sequence on same queue", ^{
@@ -90,7 +114,7 @@ describe(@"test sequence on same queue", ^{
         COCoroutine *co1 = co_sequence(^{
             int index = 0;
             while(co_isActive()){
-                yield([NSData co_downloadWithURL:@"http://pytstore.oss-cn-shanghai.aliyuncs.com/GalileoShellApp.ipa"]);
+                yield(co_downloadWithURL(@"http://pytstore.oss-cn-shanghai.aliyuncs.com/GalileoShellApp.ipa"));
                 index++;
             }
         });
@@ -117,7 +141,7 @@ describe(@"test sequence on same queue", ^{
         COCoroutine *co2 = co_sequence(^{
             int index = 0;
             while(co_isActive()){
-                yield([NSData co_downloadWithURL:@"http://pytstore.oss-cn-shanghai.aliyuncs.com/GalileoShellApp.ipa"]);
+                yield(co_downloadWithURL(@"http://pytstore.oss-cn-shanghai.aliyuncs.com/GalileoShellApp.ipa"));
                 index++;
             }
         });
@@ -217,7 +241,7 @@ describe(@"test sequence on multi thread", ^{
         COCoroutine *co1 = co_sequence_onqueue(q1, ^{
             int index = 0;
             while(co_isActive()){
-                yield([NSData co_downloadWithURL:@"http://pytstore.oss-cn-shanghai.aliyuncs.com/GalileoShellApp.ipa"]);
+                yield(co_downloadWithURL(@"http://pytstore.oss-cn-shanghai.aliyuncs.com/GalileoShellApp.ipa"));
                 index++;
             }
         });
@@ -246,7 +270,7 @@ describe(@"test sequence on multi thread", ^{
         COCoroutine *co2 = co_sequence_onqueue(q1, ^{
             int index = 0;
             while(co_isActive()){
-                yield([NSData co_downloadWithURL:@"http://pytstore.oss-cn-shanghai.aliyuncs.com/GalileoShellApp.ipa"]);
+                yield(co_downloadWithURL(@"http://pytstore.oss-cn-shanghai.aliyuncs.com/GalileoShellApp.ipa"));
                 index++;
             }
         });

@@ -160,12 +160,18 @@ NS_INLINE NSArray<id> *_Nullable batch_await(NSArray<id> * _Nonnull _promiseOrCh
 }
 
 /**
- yield with a COPromise or COChan
+ yield with a COPromise
  
- @param _promiseOrChan the COPromise object or COChan object.
+ @discussion `yield` means pause the expression execution,
+ until Generator(coroutine) call `next`.
+ 
+ So, you should passing a `COPromise` object with constructor,
+ To make the expression lazy loading.
+ 
+ @param _promise the COPromise object.
  */
-NS_INLINE void yield(id _Nonnull _promiseOrChan) {
-    co_generator_yield(_promiseOrChan);
+NS_INLINE void yield(id _Nonnull _promise) {
+    co_generator_yield(_promise);
 }
 
 /**
