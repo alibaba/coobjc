@@ -97,7 +97,7 @@ static void co_chan_custom_resume(coroutine_t *co) {
         return nil;
     }
     co.currentChan = self;
-    co.lastError = nil;
+//    co.lastError = nil;
     
     void *ret = chanrecvp(_chan);
     

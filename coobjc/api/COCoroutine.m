@@ -114,6 +114,7 @@ static void co_obj_dispose(void *coObj) {
 
 @implementation COCoroutine
 
+
 - (void)execute {
     if (self.execBlock) {
         self.execBlock();
@@ -336,6 +337,8 @@ id co_await(id awaitable) {
         COChan *chan = [COChan chanWithBuffCount:1];
         COCoroutine *co = co_get_obj(t);
         
+        co.lastError = nil;
+        
         COPromise *promise = awaitable;
         [[promise
           then:^id _Nullable(id  _Nullable value) {
@@ -346,7 +349,7 @@ id co_await(id awaitable) {
              co.lastError = error;
              [chan send_nonblock:nil];
          }];
-        
+
         [chan onCancel:^(COChan * _Nonnull chan) {
             [promise cancel];
         }];

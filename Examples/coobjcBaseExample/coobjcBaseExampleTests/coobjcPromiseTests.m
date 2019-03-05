@@ -110,6 +110,17 @@ static id testPromise3() {
     return promise;
 }
 
+static COPromise* downloadImageWithError(){
+    COPromise* promise = [COPromise promise];
+    long total = 0;
+    for (int i = 0; i < 100000000; i++) {
+        total += i;
+    }
+    NSError* error = [NSError errorWithDomain:@"wrong" code:20 userInfo:@{@"h":@"yc"}];
+    [promise reject:error];
+    return promise;
+}
+
 
 SpecBegin(coPromise)
 
@@ -224,6 +235,18 @@ describe(@"Proimse tests", ^{
         waitUntil(^(DoneCallback done) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(7 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 expect(val).to.equal(1);
+                done();
+            });
+        });
+    });
+    
+    it(@"https://github.com/alibaba/coobjc/issues/26", ^{
+        co_launch(^{
+            id dd = await(downloadImageWithError());
+            expect(co_getError() != nil);
+        });
+        waitUntil(^(DoneCallback done) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 done();
             });
         });
