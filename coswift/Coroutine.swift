@@ -57,17 +57,10 @@ open class Coroutine {
      */
     private var co: UnsafeMutablePointer<coroutine_t>?
     
-    
-    /**
-     When COCoroutine as a Generator, this Channel use to yield a value.
-     */
-    public var yieldChan: Chan<Any>?
-    
-    
     /**
      If `COCoroutine is suspend by a Channel, this pointer mark it.
      */
-    public var currentChan: Chan<Any>?
+    public var chanCancelBlock: (() -> Void)?
     
     
     /**
@@ -116,7 +109,6 @@ open class Coroutine {
             if let finishBlock = finishedBlock {
                 finishBlock()
             }
-            yieldChan = nil
         }
         
         do {
@@ -201,8 +193,8 @@ open class Coroutine {
         cancelled = true
         
         self.co?.pointee.is_cancelled = true
-        if let chan = self.currentChan {
-            chan.cancel();
+        if let chanCancel = self.chanCancelBlock {
+            chanCancel();
         }
     }
     

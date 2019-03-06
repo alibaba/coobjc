@@ -23,7 +23,7 @@
 #ifndef co_csp_h
 #define co_csp_h
 #include <stdio.h>
-#include <coobjc/coroutine.h>
+#include <cocore/coroutine.h>
 
 /**
  Define the channel's op code.  send/receive.

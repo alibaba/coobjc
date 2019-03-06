@@ -22,7 +22,6 @@
 #import <Expecta/Expecta.h>
 #import <OCMock/OCMock.h>
 #import <coobjc/coobjc.h>
-#import <coobjc/co_autorelease.h>
 
 static COActor *countActor = nil;
 
