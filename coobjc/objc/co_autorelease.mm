@@ -18,7 +18,7 @@
 //   limitations under the License.
 
 #import "co_autorelease.h"
-#import "coobjc.h"
+#import "coroutine.h"
 #include <malloc/malloc.h>
 #include <stdint.h>
 #include <stdbool.h>

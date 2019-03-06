@@ -61,7 +61,6 @@ public class Promise<T> {
         }
     }
     
-    private var constructor: PromiseConstructor?
     private var promiseObservers: [PromiseObserver] = []
     private let lock = NSRecursiveLock()
     
@@ -91,15 +90,26 @@ public class Promise<T> {
     
     public init() {}
     
-    public init(constructor: @escaping PromiseConstructor) {
-        self.constructor = constructor
+    public convenience init(constructor: @escaping PromiseConstructor) {
+        self.init(constructor: constructor, on: co_get_current_queue())
     }
     
-    public convenience init(constructor: @escaping PromiseConstructor, on queue: DispatchQueue) {
-        self.init { (fulfill, reject) in
-            queue.async {
-                constructor(fulfill, reject)
+    public convenience init(constructor: @escaping PromiseConstructor, on queue: DispatchQueue?) {
+        self.init()
+        
+        let fulfill: PromiseFulfill = { (val: T) in
+            self.fulfill(value: val)
+        }
+        let reject: PromiseReject = { (err: Error) in
+            self.reject(error: err)
+        }
+        
+        if let q = queue {
+            q.async {
+                constructor(fulfill, reject);
             }
+        } else {
+            constructor(fulfill, reject)
         }
     }
     
@@ -108,17 +118,17 @@ public class Promise<T> {
         var observers: [PromiseObserver]? = nil
         var stateTmp: PromiseState? = nil
         
-        lock.lock()
-        
-        if state == .pending {
-            state = .fulfilled
-            stateTmp = state
-            _value = value
-            observers = promiseObservers
-            promiseObservers = []
-            constructor = nil
+        do {
+            lock.lock()
+            defer { lock.unlock() }
+            if state == .pending {
+                state = .fulfilled
+                stateTmp = state
+                _value = value
+                observers = promiseObservers
+                promiseObservers = []
+            }
         }
-        lock.unlock()
         
         observers?.forEach({ (observer) in
             observer(stateTmp!, Resolution<T>.fulfilled(value))
@@ -139,7 +149,6 @@ public class Promise<T> {
                 _value = value
                 observers = promiseObservers
                 promiseObservers = []
-                constructor = nil
             }
         }
         
@@ -156,9 +165,7 @@ public class Promise<T> {
         
         self.catch { [weak self](err) in
             if let strongSelf = self, let error = err as? COError, error == .promiseCancelled {
-                if error == .promiseCancelled {
-                    onCancelBlock(strongSelf)
-                }
+                onCancelBlock(strongSelf)
             }
         }
     }
@@ -230,7 +237,7 @@ public class Promise<T> {
         }
     }
     
-    private func chainedPromise<U>(chainedFulfill: ((T) -> U)?, chainedReject: ((Error) -> Error)?) -> Promise<U> {
+    private func chainedPromise<U>(chainedFulfill: @escaping ((T) -> U), chainedReject: ((Error) -> Error)?) -> Promise<U> {
         
         let promise = Promise<U>()
         
@@ -244,42 +251,32 @@ public class Promise<T> {
         
         self.observe(fulfill: { (val: T) in
             
-            if let chainedFulfillBlock = chainedFulfill {
-                
-                let ret = chainedFulfillBlock(val)
-                fulfillr(ret)
-            }
+            let ret = chainedFulfill(val)
+            fulfillr(ret)
             
         }) { (err: Error) in
             
             if let chainedRejectBlock = chainedReject {
                 let ret = chainedRejectBlock(err)
                 rejectr(ret)
+            } else {
+                rejectr(err)
             }
         }
         return promise
     }
     
+    @discardableResult
     public func then<U>(work: @escaping (T) -> U) -> Promise<U> {
-        
-        if let cons: PromiseConstructor = constructor {
-            
-            let fulfill: PromiseFulfill = { (val: T) in
-                self.fulfill(value: val)
-            }
-            let reject: PromiseReject = { (err: Error) in
-                self.reject(error: err)
-            }
-            cons(fulfill, reject)
-        }
-        
         return self.chainedPromise(chainedFulfill: work, chainedReject: nil)
     }
     
     @discardableResult
     public func `catch`(reject: @escaping (Error) -> Void) -> Promise<T> {
         
-        return self.chainedPromise(chainedFulfill: nil, chainedReject: { (err) -> Error in
+        return self.chainedPromise(chainedFulfill: { (val: T) -> T in
+            return val
+        },  chainedReject: { (err) -> Error in
             
             reject(err)
             return err

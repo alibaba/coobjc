@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "coobjc"
-  s.version      = "1.0.1"
+  s.version      = "1.1.0"
   s.summary      = "A coroutine framework for Objective-C"
 
   s.description  = <<-DESC
@@ -22,9 +22,9 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.source =  { :git => "https://github.com/alibaba/coobjc.git", :tag => '1.0.0' } 
-  s.source_files = 'coobjc/**/*.{h,m,s,c,mm}' 
-  s.requires_arc = ['coobjc/api/*.m', 'coobjc/core/*.m', 'coobjc/csp/*.m', 'coobjc/promise/*.m', 'coobjc/util/*.m']
+  s.source_files = ['coobjc/api/*.{h,m}', 'coobjc/promise/*.{h,m}', 'coobjc/objc/co_tuple.{h,m}'] 
+  s.requires_arc = ['coobjc/api/*.m', 'coobjc/promise/*.m']
 
-  s.library = 'c++'
   s.dependency 'fishhook', '~> 0.2.0'
+  s.dependency 'cocore', '~> 1.1.0'
 end

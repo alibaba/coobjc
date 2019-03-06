@@ -30,6 +30,12 @@ typedef NS_ENUM(NSInteger, COPromiseState) {
     COPromiseStateRejected,
 };
 
+NSString *const COPromiseErrorDomain = @"COPromiseErrorDomain";
+
+enum {
+    COPromiseCancelledError = -2341;
+}
+
 typedef void (^COPromiseObserver)(COPromiseState state, id __nullable resolution);
 
 @interface COPromise<Value>()
@@ -175,15 +181,23 @@ typedef id __nullable (^__nullable COPromiseChainedRejectBlock)(NSError *error);
     }
 }
 
++ (BOOL)isPromiseCancelled:(NSError *)error {
+    if ([error.domain isEqualToString:COPromiseErrorDomain] && error.code == COPromiseCancelledError) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
 - (void)cancel {
-    [self reject:[NSError errorWithDomain:@"COPromiseErrorDomain" code:-2341 userInfo:@{NSLocalizedDescriptionKey: @"Promise was cancelled."}]];
+    [self reject:[NSError errorWithDomain:COPromiseErrorDomain code:COPromiseCancelledError userInfo:@{NSLocalizedDescriptionKey: @"Promise was cancelled."}]];
 }
 
 - (void)onCancel:(COPromiseOnCancelBlock)onCancelBlock {
     if (onCancelBlock) {
         __weak typeof(self) weakSelf = self;
         [self catch:^(NSError * _Nonnull error) {
-            if ([error.domain isEqualToString:@"COPromiseErrorDomain"] && error.code == -2341) {
+            if ([COPromise isPromiseCancelled:error]) {
                 onCancelBlock(weakSelf);
             }
         }];

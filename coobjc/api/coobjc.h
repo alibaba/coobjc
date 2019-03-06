@@ -20,10 +20,10 @@
 #import <coobjc/COCoroutine.h>
 #import <coobjc/COChan.h>
 #import <coobjc/COActor.h>
-#import <coobjc/coroutine.h>
-#import <coobjc/co_csp.h>
+#import <cocore/coroutine.h>
+#import <cocore/co_csp.h>
 #import <coobjc/co_tuple.h>
-#import <coobjc/co_autorelease.h>
+#import <cocore/co_autorelease.h>
 
 /**
  Mark a function with `CO_ASYNC`, which means the function may suspend,

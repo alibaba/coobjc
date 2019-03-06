@@ -198,7 +198,7 @@ describe(@"Proimse tests", ^{
             id result = await(testPromise3());
             if (!result) {
                 NSError *error = co_getError();
-                expect(error.code).to.equal(-2341);
+                expect([COPromise isPromiseCancelled:error]).to.beTruthy();
                 expect(co_isActive()).to.equal(NO);
                 expect(co_isCancelled()).to.equal(YES);
                 val = 12;

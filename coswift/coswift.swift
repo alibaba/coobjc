@@ -57,7 +57,11 @@ public func await<T>(promise: Promise<T>) throws -> Resolution<T>  {
         promise.then(work: { (value) -> Any in
             chan.send_nonblock(val: Resolution<T>.fulfilled(value))
         }).catch { (error) in
-            chan.send_nonblock(val: Resolution<T>.rejected(error))
+            if let err = error as? COError, err == .promiseCancelled {
+                
+            } else {
+                chan.send_nonblock(val: Resolution<T>.rejected(error))
+            }
         }
         
         chan.onCancel = { (channel) in

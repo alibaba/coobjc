@@ -17,7 +17,7 @@
 //   limitations under the License.
 
 #import <Foundation/Foundation.h>
-#import <coobjc/coroutine.h>
+#import <cocore/coroutine.h>
 #import <coobjc/COChan.h>
 #import <coobjc/COPromise.h>
 
