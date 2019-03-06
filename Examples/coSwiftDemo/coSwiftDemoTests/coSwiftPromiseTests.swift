@@ -44,13 +44,33 @@ func testPromise3() -> Promise<String> {
     
     
     let timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { (timer) in
+        print("[\(NSDate())]promise on fulfill 1234")
         promise.fulfill(value: "1234")
     }
     
     promise.onCancel { (promise) in
+        print("[\(NSDate())]promise on cancel")
         timer.invalidate()
     }
     return promise
+}
+
+func testPromise21() -> Promise<String> {
+    return Promise<String> { (fulfill, reject) in
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(5000), execute: {
+            fulfill("1")
+        })
+    }
+}
+
+func testPromise22() -> Promise<String> {
+    return Promise<String> { (fulfill, reject) in
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(4000), execute: {
+            fulfill("2")
+        })
+    }
 }
 
 class PromiseSpec: QuickSpec {
@@ -158,8 +178,18 @@ class PromiseSpec: QuickSpec {
             it("cancel a coroutine when await a promise") {
                 
                 let co = co_launch {
+                    print("[\(NSDate())]test begin")
+
+                    let result = try await{ testPromise3() }
                     
-                    _ = try await{ testPromise3() }
+                    switch result {
+                    case .fulfilled(let str):
+                        print("[\(NSDate())]test error with fulfilled: \(str)")
+                        break
+                    case .rejected(let error):
+                        print("[\(NSDate())]test error with error: \(error)")
+                        break
+                    }
                     
                     // should be cancelled
                     expect(false).to(beTrue())
@@ -167,7 +197,7 @@ class PromiseSpec: QuickSpec {
                 
                 waitUntil(timeout: 5, action: { (done) in
                     DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000), execute: {
-                        
+                        print("[\(NSDate())]test error begin co cancel")
                         co.cancel()
                         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000), execute: {
                             done()
@@ -200,6 +230,52 @@ class PromiseSpec: QuickSpec {
                             done()
                         })
                     })
+                })
+            }
+            
+            it("test concurrent await promise") {
+                var step = 0;
+                let co = co_launch {
+                    
+                    let begin = CACurrentMediaTime()
+                    
+                    let p1 = testPromise21()
+                    let p2 = testPromise22()
+                    
+                    let r1 = try await { p1 }
+                    switch r1 {
+                    case .fulfilled(let str):
+                        expect(str).to(equal("1"))
+                        break
+                    case .rejected(_):
+                        expect(false).to(beTrue())
+                        break
+                    }
+                    
+                    
+                    let r2 = try await { p2 }
+                    switch r2 {
+                    case .fulfilled(let str):
+                        expect(str).to(equal("2"))
+                        break
+                    case .rejected(_):
+                        expect(false).to(beTrue())
+                        break
+                    }
+                    
+                    let duration = CACurrentMediaTime() - begin
+                    expect(duration < 5.5).to(beTrue())
+                    step = 1;
+
+                }
+                
+                waitUntil(timeout: 6, action: { (done) in
+                    
+                    co_launch {
+                        co.join()
+                        expect(step).to(equal(1))
+                        done()
+                    }
                 })
             }
         }
