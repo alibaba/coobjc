@@ -34,8 +34,8 @@ typedef NS_ENUM(NSInteger, COPromiseState) {
 NSString *const COPromiseErrorDomain = @"COPromiseErrorDomain";
 
 enum {
-    COPromiseCancelledError = -2341;
-}
+    COPromiseCancelledError = -2341,
+};
 
 typedef void (^COPromiseObserver)(COPromiseState state, id __nullable resolution);
 
