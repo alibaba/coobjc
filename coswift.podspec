@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "coswift"
-  s.version      = "1.0.0"
+  s.version      = "1.1.0"
   s.summary      = "A coroutine framework for swift."
 
   s.description  = <<-DESC
@@ -27,5 +27,5 @@ Pod::Spec.new do |s|
   s.swift_version = '4.2'
 
   s.dependency 'fishhook',  '~> 0.2.0'
-  s.dependency 'coobjc',  '~> 1.0.0'
+  s.dependency 'cocore',  '~> 1.1.0'
 end

@@ -14,7 +14,7 @@
 		A35C048A21E73C1200AC7D6E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A35C048821E73C1200AC7D6E /* LaunchScreen.storyboard */; };
 		A35C049221E73DB500AC7D6E /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35C049121E73DB500AC7D6E /* DataService.swift */; };
 		A362488992902709BC2684EF /* Pods_coSwiftDemoTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7777908A066FA35360524D20 /* Pods_coSwiftDemoTests.framework */; };
-		A3D67CFD21F086F5009328CC /* coSwiftDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D67CFC21F086F5009328CC /* coSwiftDemoTests.swift */; };
+		A3D67CFD21F086F5009328CC /* coSwiftPromiseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D67CFC21F086F5009328CC /* coSwiftPromiseTests.swift */; };
 		BE3A5FB7A33301FC4AF57A86 /* Pods_coSwiftDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C730B8DC19A4897343C94B94 /* Pods_coSwiftDemo.framework */; };
 /* End PBXBuildFile section */
 
@@ -42,7 +42,7 @@
 		A35C048B21E73C1200AC7D6E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A35C049121E73DB500AC7D6E /* DataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
 		A3D67CFA21F086F5009328CC /* coSwiftDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = coSwiftDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A3D67CFC21F086F5009328CC /* coSwiftDemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = coSwiftDemoTests.swift; sourceTree = "<group>"; };
+		A3D67CFC21F086F5009328CC /* coSwiftPromiseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = coSwiftPromiseTests.swift; sourceTree = "<group>"; };
 		A3D67CFE21F086F5009328CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C730B8DC19A4897343C94B94 /* Pods_coSwiftDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_coSwiftDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8132E3B863C5D961133D7D6 /* Pods-coSwiftDemoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-coSwiftDemoTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-coSwiftDemoTests/Pods-coSwiftDemoTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -125,7 +125,7 @@
 		A3D67CFB21F086F5009328CC /* coSwiftDemoTests */ = {
 			isa = PBXGroup;
 			children = (
-				A3D67CFC21F086F5009328CC /* coSwiftDemoTests.swift */,
+				A3D67CFC21F086F5009328CC /* coSwiftPromiseTests.swift */,
 				A3D67CFE21F086F5009328CC /* Info.plist */,
 			);
 			path = coSwiftDemoTests;
@@ -260,13 +260,13 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-coSwiftDemo/Pods-coSwiftDemo-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/coobjc-iOS11.0/coobjc.framework",
+				"${BUILT_PRODUCTS_DIR}/cocore-iOS11.0/cocore.framework",
 				"${BUILT_PRODUCTS_DIR}/coswift-iOS11.0/coswift.framework",
 				"${BUILT_PRODUCTS_DIR}/fishhook-iOS11.0/fishhook.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/coobjc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/cocore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/coswift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/fishhook.framework",
 			);
@@ -300,15 +300,19 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-coSwiftDemoTests/Pods-coSwiftDemoTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/coobjc-iOS12.1/coobjc.framework",
+				"${BUILT_PRODUCTS_DIR}/cocore-iOS12.1/cocore.framework",
 				"${BUILT_PRODUCTS_DIR}/coswift-iOS12.1/coswift.framework",
 				"${BUILT_PRODUCTS_DIR}/fishhook-iOS12.1/fishhook.framework",
+				"${BUILT_PRODUCTS_DIR}/Nimble/Nimble.framework",
+				"${BUILT_PRODUCTS_DIR}/Quick/Quick.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/coobjc.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/cocore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/coswift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/fishhook.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Nimble.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Quick.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -332,7 +336,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A3D67CFD21F086F5009328CC /* coSwiftDemoTests.swift in Sources */,
+				A3D67CFD21F086F5009328CC /* coSwiftPromiseTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

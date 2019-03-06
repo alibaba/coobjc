@@ -39,14 +39,13 @@ public class Chan<T> {
     private var buffCount: Int32
     private var cchan: UnsafeMutablePointer<co_channel>
     private var cancelled: Bool = false
-    private var eleSize: Int32
     private var buffList: [T] = []
     private let lock = NSRecursiveLock()
     
     public init(buffCount: Int32) {
         
         self.buffCount = buffCount
-        eleSize = Int32(MemoryLayout<UInt>.size)
+        let eleSize = Int32(MemoryLayout<UInt>.size)
         cchan = chancreate(eleSize, buffCount, co_chan_custom_resume)
     }
     
@@ -66,13 +65,15 @@ public class Chan<T> {
     public func send(val: T) throws {
         
         if let co = Coroutine.current() {
-            co.currentChan = self as? Chan<Any>
+            co.chanCancelBlock = {
+                self.cancel()
+            }
             
             lock.lock()
             buffList.append(val)
             lock.unlock()
             chansendul(cchan, 1);
-            co.currentChan = nil
+            co.chanCancelBlock = nil
             if cancelled {
                 throw COError.coroutineCancelled
             }
@@ -80,6 +81,7 @@ public class Chan<T> {
     }
     
     public func send_nonblock(val: T) {
+        
         lock.lock()
         buffList.append(val)
         lock.unlock()
@@ -90,10 +92,11 @@ public class Chan<T> {
         
         if let co = Coroutine.current() {
             
-            co.currentChan = self as? Chan<Any>
-            
+            co.chanCancelBlock = {
+                self.cancel()
+            }
             let ret = chanrecvul(cchan);
-            co.currentChan = nil
+            co.chanCancelBlock = nil
 
             if ret == 1 {
                 
@@ -111,7 +114,7 @@ public class Chan<T> {
     }
     
     public func receive_nonblock() -> T? {
-        
+     
         let ret = channbrecvul(cchan)
         if ret == 1 {
             lock.lock()

@@ -22,7 +22,6 @@
 #import <Expecta/Expecta.h>
 #import <OCMock/OCMock.h>
 #import <coobjc/coobjc.h>
-#import <coobjc/co_autorelease.h>
 
 #   define RR_PUSH() objc_autoreleasePoolPush()
 #   define RR_POP(p) objc_autoreleasePoolPop(p)

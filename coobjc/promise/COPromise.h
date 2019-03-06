@@ -157,6 +157,14 @@ typedef void (^COPromiseConstructor)(COPromiseFullfill fullfill, COPromiseReject
  */
 - (COPromise *)catch:(COPromiseCatchWorkBlock)reject;
 
+/**
+ Tell if the error is promise cancelled error
+
+ @param error the error object
+ @return is cancellled error.
+ */
++ (BOOL)isPromiseCancelled:(NSError *)error;
+
 @end
 
 /**
