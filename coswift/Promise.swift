@@ -91,10 +91,10 @@ public class Promise<T> {
     public init() {}
     
     public convenience init(constructor: @escaping PromiseConstructor) {
-        self.init(constructor: constructor, on: co_get_current_queue())
+        self.init(on: co_get_current_queue(), constructor: constructor)
     }
     
-    public convenience init(constructor: @escaping PromiseConstructor, on queue: DispatchQueue?) {
+    public convenience init(on queue: DispatchQueue?, constructor: @escaping PromiseConstructor) {
         self.init()
         
         let fulfill: PromiseFulfill = { (val: T) in
