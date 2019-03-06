@@ -378,6 +378,7 @@ describe(@"Proimse tests", ^{
     });
     
     it(@"test concurrent await promise", ^{
+        __block int val = 0;
         co_launch(^{
             
             NSTimeInterval begin = CACurrentMediaTime();
@@ -391,9 +392,11 @@ describe(@"Proimse tests", ^{
             
             NSTimeInterval duration = CACurrentMediaTime() - begin;
             expect(duration < 5.5).beTruthy();
+            val = 1;
         });
         waitUntil(^(DoneCallback done) {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                expect(val).to.equal(1);
                 done();
             });
         });
