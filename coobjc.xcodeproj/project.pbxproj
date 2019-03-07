@@ -35,6 +35,7 @@
 		A35C04A121EC369F00AC7D6E /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35C04A021EC369F00AC7D6E /* Promise.swift */; };
 		A35C04A321EC36AD00AC7D6E /* Chan.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35C04A221EC36AD00AC7D6E /* Chan.swift */; };
 		A35C04A521EC36C200AC7D6E /* Coroutine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35C04A421EC36C200AC7D6E /* Coroutine.swift */; };
+		A372DA4422314E1F00EF87AA /* Generator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A372DA4322314E1F00EF87AA /* Generator.swift */; };
 		A37DDF811E8A62DF00E11BD9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A37DDF801E8A62DF00E11BD9 /* UIKit.framework */; };
 		A37DDF831E8A62E400E11BD9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A37DDF821E8A62E400E11BD9 /* Foundation.framework */; };
 		A3824E91221FFD5400B6BFE7 /* coobjc.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D85037CF1B9C6D8400864DF0 /* coobjc.framework */; };
@@ -97,6 +98,7 @@
 		A35C04A021EC369F00AC7D6E /* Promise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Promise.swift; sourceTree = "<group>"; };
 		A35C04A221EC36AD00AC7D6E /* Chan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chan.swift; sourceTree = "<group>"; };
 		A35C04A421EC36C200AC7D6E /* Coroutine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coroutine.swift; sourceTree = "<group>"; };
+		A372DA4322314E1F00EF87AA /* Generator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Generator.swift; sourceTree = "<group>"; };
 		A37DDF801E8A62DF00E11BD9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.2.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		A37DDF821E8A62E400E11BD9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.2.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		A39A8CAC2226695900A18C69 /* co_tuple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = co_tuple.h; sourceTree = "<group>"; };
@@ -219,6 +221,7 @@
 		A35C049921EC366A00AC7D6E /* coswift */ = {
 			isa = PBXGroup;
 			children = (
+				A372DA4322314E1F00EF87AA /* Generator.swift */,
 				A35C049A21EC366A00AC7D6E /* coswift.h */,
 				A35C049B21EC366A00AC7D6E /* Info.plist */,
 				A35C04A021EC369F00AC7D6E /* Promise.swift */,
@@ -472,6 +475,7 @@
 				A35C04A521EC36C200AC7D6E /* Coroutine.swift in Sources */,
 				A35C04A121EC369F00AC7D6E /* Promise.swift in Sources */,
 				A3D67CE321EDF57F009328CC /* coswift.swift in Sources */,
+				A372DA4422314E1F00EF87AA /* Generator.swift in Sources */,
 				A3D67CE121EDF56E009328CC /* Errors.swift in Sources */,
 				A35C04A321EC36AD00AC7D6E /* Chan.swift in Sources */,
 			);
