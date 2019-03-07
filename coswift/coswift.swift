@@ -97,6 +97,15 @@ public func await<T>(channel: Chan<T>) throws -> T {
     }
 }
 
+/// A Convenience use of await a channel
+///
+/// - Parameter closure: return a Promise object
+/// - Returns: the promise's resolution
+/// - Throws: COError
+public func await<T>(closure: @escaping () -> Chan<T> ) throws -> T {
+    return try await(channel: closure())
+}
+
 /// Check current coroutine is active or not.
 public var co_isActive: Bool {
     get {

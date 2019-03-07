@@ -84,6 +84,7 @@ describe(@"Channel tests", ^{
         });
         waitUntil(^(DoneCallback done) {
             dispatch_async(dispatch_get_main_queue(), ^{
+                expect(step).to.equal(4);
                 done();
             });
         });

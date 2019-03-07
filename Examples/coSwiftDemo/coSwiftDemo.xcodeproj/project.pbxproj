@@ -14,6 +14,7 @@
 		A35C048A21E73C1200AC7D6E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A35C048821E73C1200AC7D6E /* LaunchScreen.storyboard */; };
 		A35C049221E73DB500AC7D6E /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35C049121E73DB500AC7D6E /* DataService.swift */; };
 		A362488992902709BC2684EF /* Pods_coSwiftDemoTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7777908A066FA35360524D20 /* Pods_coSwiftDemoTests.framework */; };
+		A372DA3D2230F9C700EF87AA /* coSwiftChannelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A372DA3C2230F9C700EF87AA /* coSwiftChannelTests.swift */; };
 		A3D67CFD21F086F5009328CC /* coSwiftPromiseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3D67CFC21F086F5009328CC /* coSwiftPromiseTests.swift */; };
 		BE3A5FB7A33301FC4AF57A86 /* Pods_coSwiftDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C730B8DC19A4897343C94B94 /* Pods_coSwiftDemo.framework */; };
 /* End PBXBuildFile section */
@@ -41,6 +42,7 @@
 		A35C048921E73C1200AC7D6E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A35C048B21E73C1200AC7D6E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A35C049121E73DB500AC7D6E /* DataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
+		A372DA3C2230F9C700EF87AA /* coSwiftChannelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = coSwiftChannelTests.swift; sourceTree = "<group>"; };
 		A3D67CFA21F086F5009328CC /* coSwiftDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = coSwiftDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3D67CFC21F086F5009328CC /* coSwiftPromiseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = coSwiftPromiseTests.swift; sourceTree = "<group>"; };
 		A3D67CFE21F086F5009328CC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				A3D67CFC21F086F5009328CC /* coSwiftPromiseTests.swift */,
+				A372DA3C2230F9C700EF87AA /* coSwiftChannelTests.swift */,
 				A3D67CFE21F086F5009328CC /* Info.plist */,
 			);
 			path = coSwiftDemoTests;
@@ -337,6 +340,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A3D67CFD21F086F5009328CC /* coSwiftPromiseTests.swift in Sources */,
+				A372DA3D2230F9C700EF87AA /* coSwiftChannelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
