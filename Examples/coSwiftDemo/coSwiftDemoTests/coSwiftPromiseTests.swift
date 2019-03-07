@@ -44,12 +44,12 @@ func testPromise3() -> Promise<String> {
     
     
     let timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: false) { (timer) in
-        print("[\(NSDate())]promise on fulfill 1234")
+        print("[\(NSDate())]====promise on fulfill 1234")
         promise.fulfill(value: "1234")
     }
     
     promise.onCancel { (promise) in
-        print("[\(NSDate())]promise on cancel")
+        print("[\(NSDate())]====promise on cancel")
         timer.invalidate()
     }
     return promise
@@ -178,16 +178,16 @@ class PromiseSpec: QuickSpec {
             it("cancel a coroutine when await a promise") {
                 
                 let co = co_launch {
-                    print("[\(NSDate())]test begin")
+                    print("[\(NSDate())]====test begin")
 
                     let result = try await{ testPromise3() }
                     
                     switch result {
                     case .fulfilled(let str):
-                        print("[\(NSDate())]test error with fulfilled: \(str)")
+                        print("[\(NSDate())]====test error with fulfilled: \(str)")
                         break
                     case .rejected(let error):
-                        print("[\(NSDate())]test error with error: \(error)")
+                        print("[\(NSDate())]====test error with error: \(error)")
                         break
                     }
                     
@@ -195,14 +195,17 @@ class PromiseSpec: QuickSpec {
                     expect(false).to(beTrue())
                 }
                 
-                waitUntil(timeout: 5, action: { (done) in
-                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000), execute: {
-                        print("[\(NSDate())]test error begin co cancel")
-                        co.cancel()
-                        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000), execute: {
-                            done()
-                        })
-                    })
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                    print("[\(NSDate())]====test error begin co cancel")
+                    co.cancel()
+                })
+                
+                waitUntil(timeout: 10, action: { (done) in
+                    co_launch {
+                        co.join()
+                        print("[\(NSDate())]====test co is finished")
+                        done()
+                    }
                 })
             }
             
@@ -222,14 +225,18 @@ class PromiseSpec: QuickSpec {
                     }
                 }
                 
-                waitUntil(timeout: 5, action: { (done) in
-                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(3100), execute: {
-                        
-                        co.cancel()
-                        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000), execute: {
-                            done()
-                        })
-                    })
+                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(3100), execute: {
+                    
+                    co.cancel()
+                    
+                })
+                
+                waitUntil(timeout: 10, action: { (done) in
+                    
+                    co_launch {
+                        co.join()
+                        done()
+                    }
                 })
             }
             
