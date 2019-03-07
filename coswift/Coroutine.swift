@@ -163,7 +163,7 @@ open class Coroutine {
         }
     }
     
-    private var resumed: Bool = false
+    public var resumed: Bool = false
     
     /**
      The coroutine is cancelled.?
