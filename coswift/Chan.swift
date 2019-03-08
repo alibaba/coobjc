@@ -25,6 +25,8 @@ private let co_chan_custom_resume: @convention(c) (UnsafeMutablePointer<coroutin
     }
 }
 
+
+/// Define the Channel
 public class Chan<T> {
     
     public typealias  ChanOnCancelBlock = (Chan) -> Void

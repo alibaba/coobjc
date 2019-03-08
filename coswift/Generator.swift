@@ -34,7 +34,8 @@ public func co_sequence<T>(_ type: T.Type, queue: DispatchQueue? = nil, stackSiz
     return co
 }
 
-/// Yield a value
+/// Yield a `{ value } throws` block
+/// Example: `yield {  try getSomeValue() }`
 ///
 /// - Parameter closure: the operation returns a value.
 /// - Throws: COError
@@ -66,7 +67,8 @@ public func yield<T>(closure: @escaping () throws -> T ) throws {
     }
 }
 
-/// Yield a value
+/// Yield a `{ value }` block
+/// Example: `yield { val * 5 - i }`
 ///
 /// - Parameter closure: the operation returns a value.
 /// - Throws: COError
@@ -99,6 +101,7 @@ public func yield<T>(closure: @escaping () -> T ) throws {
 }
 
 /// Yield a promise operation
+/// Example: `yield { somePromise() }`
 ///
 /// - Parameter closure: the operation returns a promise.
 /// - Throws: COError
@@ -109,6 +112,7 @@ public func yield<T>(closure: @escaping () -> Promise<T> ) throws {
 }
 
 /// Yield a channel operation
+/// Example: `yield { someChannel() }`
 ///
 /// - Parameter closure: the operation returns a Channel.
 /// - Throws: COError
@@ -133,9 +137,18 @@ open class Generator<T>: Coroutine {
         super.init(block: block, on: queue, stackSize: stackSize)
     }
     
+    
+    /// Fetch a value from the Generator
+    /// Example: `let val = try generator.next()`
+    ///
+    /// - Returns: the value from generator
+    /// - Throws: COError
     open func next() throws -> T {
         if resumed == false {
             _ = resume()
+        }
+        if Coroutine.current() == nil {
+            throw COError.invalidCoroutine
         }
         if isCancelled == true {
             throw COError.generatorCancelled

@@ -20,6 +20,10 @@ import Foundation
 import Dispatch
 
 
+/// Get the swift Coroutine object from a c pointer to coroutine_t struct
+///
+/// - Parameter co: c pointer to coroutine_t struct
+/// - Returns: the swift coroutine object.
 public func co_get_swiftobj(co: UnsafeMutablePointer<coroutine_t>?) -> Coroutine? {
     return co.flatMap { (coo) -> UnsafeMutableRawPointer?  in
         return coroutine_getuserdata(coo)
@@ -28,52 +32,32 @@ public func co_get_swiftobj(co: UnsafeMutablePointer<coroutine_t>?) -> Coroutine
         })
 }
 
-/**
- COCoroutine is the object owned coroutine.
- */
+/// Coroutine is the object manager coroutine.
 open class Coroutine {
     
-    
-    /**
-     Call back when coroutine is finished.
-     */
+    /// Callback when coroutine is finished.
     public var finishedBlock: (() -> Void)?
     
-    
-    /**
-     The code body of the coroutine.
-     */
+    /// The code body of the coroutine.
     public var execBlock: () throws -> Void
     
-    
-    /**
-     The `dispatch_queue_t` coroutine will run on it.
-     */
+    /// The DispatchQueue that run the coroutine's code
     public var queue: DispatchQueue
     
-    
-    /**
-     The struct pointer of coroutine_t
-     */
+    /// The c pointer to coroutine_t struct
     private var co: UnsafeMutablePointer<coroutine_t>?
     
-    /**
-     If `COCoroutine is suspend by a Channel, this pointer mark it.
-     */
+    /// The closure to cancel the blocking Channel when Coroutine cancel.
+    /// If a channel blocking this coroutine, should set this block.
     public var chanCancelBlock: (() -> Void)?
     
-    
-    /**
-     The lastError marked in the Coroutine.
-     */
+    /// The lastError occurred in the Coroutine.
     public var lastError: Error?
     
-    
-    /**
-     Get the current running coroutine object.
-     
-     @return The coroutine object.
-     */
+    /// Get the current running coroutine object.
+    /// Should call in a coroutine body.
+    ///
+    /// - Returns: The Coroutine swift object
     public class func current() -> Coroutine? {
         
         let co: UnsafeMutablePointer<coroutine_t>? = coroutine_self()
@@ -84,12 +68,9 @@ open class Coroutine {
         }
     }
     
-    
-    /**
-     Tell if the coroutine is cancelled or finished.
-     
-     @return isActive
-     */
+    /// Tell if the coroutine is cancelled or finished.
+    ///
+    /// - Returns: If current coroutine is active
     public class func isActive() -> Bool {
         if let co = Coroutine.current() {
             if co.cancelled || co.finished {
@@ -101,7 +82,7 @@ open class Coroutine {
         return false
     }
     
-    /// running
+    /// the coroutine's entry point
     private func execute() {
         
         defer {
@@ -120,7 +101,7 @@ open class Coroutine {
     }
     
     
-    /// The c bridge
+    /// The c bridge of the entry point
     private let co_exec: @convention(c) (Optional<UnsafeMutableRawPointer>)->Void = { p in
         
         if let co: UnsafeMutablePointer<coroutine_t> = p?.assumingMemoryBound(to: coroutine_t.self) {
@@ -153,9 +134,7 @@ open class Coroutine {
         }
     }
     
-    /**
-     The coroutine is Finished.
-     */
+    /// The coroutine is Finished.
     private var finished: Bool = false
     public var isFinished: Bool {
         get {
@@ -163,11 +142,10 @@ open class Coroutine {
         }
     }
     
+    /// The coroutine is started.
     public var resumed: Bool = false
     
-    /**
-     The coroutine is cancelled.?
-     */
+    /// The coroutine is cancelled
     private var cancelled: Bool = false
     public var isCancelled: Bool {
         get {
@@ -175,8 +153,8 @@ open class Coroutine {
         }
     }
     
+    /// Execute code on the coroutine's queue
     private func performBlockOnQueue(block: @escaping ()->Void ) {
-        
         if co_get_current_queue() == self.queue {
             block()
         } else {
@@ -186,6 +164,7 @@ open class Coroutine {
         }
     }
     
+    /// Do the cancel operation
     private func internalCancel() {
         if cancelled {
             return
@@ -198,19 +177,16 @@ open class Coroutine {
         }
     }
     
-    /**
-     Cancel the coroutine.
-     */
+    /// Cancel the coroutine
     public func cancel() {
         performBlockOnQueue {
             self.internalCancel()
         }
     }
     
-    
-    /**
-     Calling this method in another coroutine. wait the coroutine to be finished.
-     */
+    /// Using this method in another coroutine to wait the coroutine finished.
+    /// Example:  let co = co_launch { ... }
+    ///           co_launch { co.join() }
     public func join() {
         let chan = Chan<Bool>(buffCount: 1)
         performBlockOnQueue {
@@ -231,9 +207,10 @@ open class Coroutine {
     }
     
     
-    /**
-     Calling this method in another coroutine. Cancel the coroutine, and wait the coroutine to be finished.
-     */
+    /// Using this method in another coroutine,
+    /// cancel the coroutine and then wait it finish.
+    /// Example:  let co = co_launch { ... }
+    ///           co_launch { co.join() }
     public func cancelAndJoin() {
         let chan = Chan<Bool>(buffCount: 1)
         performBlockOnQueue {
@@ -254,12 +231,9 @@ open class Coroutine {
         }
     }
     
-    
-    /**
-     Resume the coroutine.
-     
-     @return The coroutine object.
-     */
+    /// Resume the coroutine asynchronous.
+    ///
+    /// - Returns: The coroutine object.
     public func resume() -> Coroutine {
         self.queue.async() {
             
@@ -272,9 +246,9 @@ open class Coroutine {
         return self
     }
     
-    /**
-     Resume the coroutine, if on current queue, run in current runloop.
-     */
+    /// Resume the coroutine directly if on same queue, else asynchronous.
+    ///
+    /// - Returns: The coroutine object.
     public func resumeNow() -> Void {
         self.performBlockOnQueue {
             if self.resumed {
@@ -285,9 +259,8 @@ open class Coroutine {
         }
     }
     
-    /**
-     Add coroutine to the scheduler. If sheduler is idle, resume it.
-     */
+    
+    /// Add coroutine to the scheduler. If sheduler is idle, resume it.
     public func addToScheduler() -> Void {
         self.performBlockOnQueue {
             coroutine_add(self.co)

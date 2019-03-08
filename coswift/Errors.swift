@@ -28,5 +28,11 @@ public enum COError: String, LocalizedError {
     case generatorClosed = "The generator is closed"
     case notGenerator = "The current coroutine is not a generator"
 
+    /// A localized message describing what error occurred.
+    public var errorDescription: String? {
+        get {
+            return self.rawValue
+        }
+    }
 }
 
