@@ -65,7 +65,7 @@ coobjc is a coroutine development framework that can be used on the iOS by the A
 * create coroutine
 
 Create a coroutine using the co_launch method
-```
+```objc
 co_launch(^{
     ...
 });
@@ -77,7 +77,7 @@ The coroutine created by co_launch is scheduled by default in the current thread
 
 In the coroutine we use the await method to wait for the asynchronous method to execute, get the asynchronous execution result
 
-```
+```objc
 
 - (void)viewDidLoad {
     ...
@@ -99,7 +99,7 @@ The above code turns the code that originally needs dispatch_async twice into se
 * error handling
 
 In the coroutine, all our methods are directly returning the value, and no error is returned. Our error in the execution process is obtained by co_getError(). For example, we have the following interface to obtain data from the network. When the promise will reject: error<br /><br />
-```
+```objc
 - (COPromise*)co_GET:(NSString*)url parameters:(NSDictionary*)parameters{
     COPromise *promise = [COPromise promise];
     [self GET:url parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -113,7 +113,7 @@ In the coroutine, all our methods are directly returning the value, and no error
 
 Then we can use the method in the coroutine：
 
-```
+```objc
 co_launch(^{
     id response = await([self co_GET:feedModel.feedUrl parameters:nil]);
     if(co_getError()){
@@ -130,7 +130,7 @@ co_launch(^{
 
 We use co_sequence to create the generator
 
-```
+```objc
 COCoroutine *co1 = co_sequence(^{
             int index = 0;
             while(co_isActive()){
@@ -142,7 +142,7 @@ COCoroutine *co1 = co_sequence(^{
 
 In other coroutines, we can call the next method to get the data in the generator.
 
-```
+```objc
 co_launch(^{
             for(int i = 0; i < 10; i++){
                 val = [[co1 next] intValue];
@@ -154,7 +154,7 @@ co_launch(^{
 
 The generator can be used in many scenarios, such as message queues, batch download files, bulk load caches, etc.:
 
-```
+```objc
 int unreadMessageCount = 10;
 NSString *userId = @"xxx";
 COSequence *messageSequence = co_sequence_onqueue(background_queue, ^{
@@ -184,7 +184,7 @@ Through the generator, we can load the data from the traditional producer--notif
 
 We can use co_actor_onqueue to create an actor in the specified thread.
 
-```
+```objc
 COActor *actor = co_actor_onqueue(q, ^(COActorChan *channel) {
     ...  //Define the state variable of the actor
 
@@ -198,7 +198,7 @@ COActor *actor = co_actor_onqueue(q, ^(COActorChan *channel) {
 
 The actor's send method can send a message to the actor
 
-```
+```objc
 COActor *actor = co_actor_onqueue(q, ^(COActorChan *channel) {
     ...  //Define the state variable of the actor
 
@@ -274,7 +274,7 @@ cotest_loadContentFromFile(NSString *filePath){
 
 then you can fetch the value like this:
 
-```
+```objc
 co_launch(^{
     NSString *tmpFilePath = nil;
     NSData *data = nil;
@@ -290,7 +290,7 @@ use tuple you can get multiple values from await return
 #### Actual case using coobjc
 Let's take the code of the Feeds stream update in the GCDFetchFeed open source project as an example to demonstrate the actual usage scenarios and advantages of the coroutine. The following is the original implementation of not using coroutine：
 
-```
+```objc
 - (RACSignal *)fetchAllFeedWithModelArray:(NSMutableArray *)modelArray {
     @weakify(self);
     return [RACSignal createSignal:^RACDisposable *(id<RACSubscriber> subscriber) {
@@ -353,7 +353,7 @@ Let's take the code of the Feeds stream update in the GCDFetchFeed open source p
 
 The following is the call to the above method in viewDidLoad:
 
-```
+```objc
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     self.fetchingCount = 0; 
     @weakify(self);
@@ -388,7 +388,7 @@ The following is the call to the above method in viewDidLoad:
 
 The above code is relatively poor in terms of readability and simplicity. Let's take a look at the code after using the coroutine transformation:
 
-```
+```objc
 - (SMFeedModel*)co_fetchFeedModelWithUrl:(SMFeedModel*)feedModel{
     feedModel.isSync = NO;
     id response = await([self co_GET:feedModel.feedUrl parameters:nil]);
@@ -410,7 +410,7 @@ The above code is relatively poor in terms of readability and simplicity. Let's 
 
 Here is the place in viewDidLoad that uses the coroutine to call the interface:
 
-```
+```objc
 co_launch(^{
     for (NSUInteger index = 0; index < self.feeds.count; index++) {
         SMFeedModel *model = self.feeds[index];
@@ -438,7 +438,7 @@ The code after the coroutine transformation has become easier to understand and 
 coobjc fully supports Swift through top-level encapsulation, enabling us to enjoy the coroutine ahead of time in Swift.
 Because Swift has richer and more advanced syntax support, coobjc is more elegant in Swift, for example:
 
-```
+```swift
 func test() {
     co_launch {//create coroutine
         //fetch data asynchronous
