@@ -11,43 +11,28 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class COGenerator;
+
+/**
+ This two method implement generator, you should not call this method directly,
+ Use  `yield( xxx )`
+ */
 void co_generator_yield_prepare(COGenerator *co);
 void co_generator_yield_do(COGenerator *co, id _Nonnull promiseOrChan);
-void co_generator_yield_value(id value);
+
 
 /**
- yield with a COPromise
- 
- @discussion `yield` means pause the expression execution,
- until Generator(coroutine) call `next`.
- 
- @param _promise the COPromise object.
+ The Generator object.
  */
-#define yield(_expr) \
-{ \
-    COGenerator *__co__ = (COGenerator *)[COCoroutine currentCoroutine]; \
-    co_generator_yield_prepare(__co__); \
-    if (!__co__.isCancelled) { \
-        id __promiseOrChan__ = ({ _expr; }); \
-        co_generator_yield_do(__co__, __promiseOrChan__); \
-    } \
-}
-
-/**
- yield with a value.
- 
- @param val the value.
- */
-#define yield_val(val)  yield(val)
-
-
 @interface COGenerator : COCoroutine
 
 /**
- When COCoroutine as a Generator, this Channel use to yield a value.
+ The channel for yield.
  */
 @property(nonatomic, strong, nullable) COChan *yieldChan;
 
+/**
+ The channel for send value to the `next()` caller.
+ */
 @property(nonatomic, strong, nullable) COChan *valueChan;
 
 
