@@ -17,10 +17,8 @@
 //   limitations under the License.
 
 #import "COChan.h"
-#import "coroutine.h"
-#import "co_csp.h"
+#import <cocore/cocore.h>
 #import "COCoroutine.h"
-#import "co_queue.h"
 
 static void co_chan_custom_resume(coroutine_t *co) {
     [co_get_obj(co) addToScheduler];

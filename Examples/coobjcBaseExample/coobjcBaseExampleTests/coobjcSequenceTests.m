@@ -52,7 +52,7 @@ SpecBegin(coSequence)
 
 describe(@"test sequence on same queue", ^{
     it(@"yield value", ^{
-        COCoroutine *co1 = co_sequence(^{
+        COGenerator *co1 = co_sequence(^{
             int index = 0;
             while(co_isActive()){
                 NSLog(@"==== before yield val %d", index);
@@ -79,7 +79,7 @@ describe(@"test sequence on same queue", ^{
     });
     
     it(@"yield value chain", ^{
-        COCoroutine *co1 = co_sequence(^{
+        COGenerator *co1 = co_sequence(^{
             int index = 0;
             while(co_isActive()){
                 yield_val(@(index));
@@ -87,7 +87,7 @@ describe(@"test sequence on same queue", ^{
             }
         });
         
-        COCoroutine *co2 = co_sequence(^{
+        COGenerator *co2 = co_sequence(^{
             int index = 0;
             while(co_isActive()){
                 yield_val([co1 next]);
@@ -112,7 +112,7 @@ describe(@"test sequence on same queue", ^{
     
     it(@"yield promise", ^{
         __block int count = 0;
-        COCoroutine *co1 = co_sequence(^{
+        COGenerator *co1 = co_sequence(^{
             while(co_isActive()){
                 yield( count++; co_downloadWithURL(@"http://pytstore.oss-cn-shanghai.aliyuncs.com/GalileoShellApp.ipa"));
             }
@@ -138,13 +138,13 @@ describe(@"test sequence on same queue", ^{
     
     it(@"yield promise chain", ^{
         __block             int count = 0;
-        COCoroutine *co2 = co_sequence(^{
+        COGenerator *co2 = co_sequence(^{
             while(co_isActive()){
                 yield(count++; co_downloadWithURL(@"http://pytstore.oss-cn-shanghai.aliyuncs.com/GalileoShellApp.ipa"));
             }
         });
         
-        COCoroutine *co1 = co_sequence((^{
+        COGenerator *co1 = co_sequence((^{
             int index = 0;
             while(co_isActive()){
                 NSArray *list = [NSArray arrayWithObjects:[co2 next], [co2 next], nil];
@@ -178,7 +178,7 @@ describe(@"test sequence on same queue", ^{
 describe(@"test sequence on multi thread", ^{
     it(@"yield value", ^{
         dispatch_queue_t q = dispatch_queue_create("test", NULL);
-        COCoroutine *co1 = co_sequence_onqueue(q, ^{
+        COGenerator *co1 = co_sequence_onqueue(q, ^{
             int index = 0;
             while(co_isActive()){
                 yield_val(@(index));
@@ -204,7 +204,7 @@ describe(@"test sequence on multi thread", ^{
         dispatch_queue_t q1 = dispatch_queue_create("test", NULL);
         dispatch_queue_t q2 = dispatch_queue_create("test", NULL);
 
-        COCoroutine *co1 = co_sequence_onqueue(q1, ^{
+        COGenerator *co1 = co_sequence_onqueue(q1, ^{
             int index = 0;
             while(co_isActive()){
                 yield_val(@(index));
@@ -212,7 +212,7 @@ describe(@"test sequence on multi thread", ^{
             }
         });
         
-        COCoroutine *co2 = co_sequence_onqueue(q2, ^{
+        COGenerator *co2 = co_sequence_onqueue(q2, ^{
             int index = 0;
             while(co_isActive()){
                 yield_val([co1 next]);
@@ -237,7 +237,7 @@ describe(@"test sequence on multi thread", ^{
     
     it(@"yield promise", ^{
         dispatch_queue_t q1 = dispatch_queue_create("test", NULL);
-        COCoroutine *co1 = co_sequence_onqueue(q1, ^{
+        COGenerator *co1 = co_sequence_onqueue(q1, ^{
             int index = 0;
             while(co_isActive()){
                 yield(co_downloadWithURL(@"http://pytstore.oss-cn-shanghai.aliyuncs.com/GalileoShellApp.ipa"));
@@ -266,7 +266,7 @@ describe(@"test sequence on multi thread", ^{
         dispatch_queue_t q1 = dispatch_queue_create("test", NULL);
         dispatch_queue_t q2 = dispatch_queue_create("test", NULL);
 
-        COCoroutine *co2 = co_sequence_onqueue(q1, ^{
+        COGenerator *co2 = co_sequence_onqueue(q1, ^{
             int index = 0;
             while(co_isActive()){
                 yield(co_downloadWithURL(@"http://pytstore.oss-cn-shanghai.aliyuncs.com/GalileoShellApp.ipa"));
@@ -274,7 +274,7 @@ describe(@"test sequence on multi thread", ^{
             }
         });
         
-        COCoroutine *co1 = co_sequence_onqueue(q2, (^{
+        COGenerator *co1 = co_sequence_onqueue(q2, (^{
             int index = 0;
             while(co_isActive()){
                 NSArray *list = [NSArray arrayWithObjects:[co2 next], [co2 next], nil];

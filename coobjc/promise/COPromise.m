@@ -317,7 +317,7 @@ typedef id __nullable (^__nullable COPromiseChainedRejectBlock)(NSError *error);
 
 @interface COProgressValue : NSObject
 
-@property (nonatomic, assign) CGFloat progress;
+@property (nonatomic, assign) float progress;
 
 @end
 
@@ -413,7 +413,7 @@ static void *COProgressObserverContext = &COProgressObserverContext;
     }
 }
 
-- (CGFloat)next {
+- (float)next {
     COProgressValue *value = [self _nextProgressValue];
     return value.progress;
 }

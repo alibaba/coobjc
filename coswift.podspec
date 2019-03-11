@@ -21,7 +21,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '8.0'
   s.requires_arc = true
 
-  s.source =  { :git => "https://github.com/alibaba/coobjc.git", :tag => '1.0.0' } 
+  s.source =  { :git => "https://github.com/alibaba/coobjc.git", :tag => '1.1.0' } 
   s.source_files = 'coswift/*.{h,swift}'
 
   s.swift_version = '4.2'
