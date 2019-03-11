@@ -38,6 +38,9 @@ open class Coroutine {
     /// Callback when coroutine is finished.
     public var finishedBlock: (() -> Void)?
     
+    /// Callback when coroutine is finished.
+    private var joinBlock: (() -> Void)?
+    
     /// The code body of the coroutine.
     public var execBlock: () throws -> Void
     
@@ -90,13 +93,15 @@ open class Coroutine {
             if let finishBlock = finishedBlock {
                 finishBlock()
             }
+            if let join = joinBlock {
+                join()
+            }
         }
         
         do {
             try self.execBlock()
         } catch {
             self.lastError = error
-
         }
     }
     
@@ -194,7 +199,7 @@ open class Coroutine {
             if self.isFinished {
                 chan.send_nonblock(val: true)
             } else {
-                self.finishedBlock = {
+                self.joinBlock = {
                     chan.send_nonblock(val: true)
                 }
             }
@@ -218,7 +223,7 @@ open class Coroutine {
             if self.isFinished {
                 chan.send_nonblock(val: true)
             } else {
-                self.finishedBlock = {
+                self.joinBlock = {
                     chan.send_nonblock(val: true)
                 }
                 self.internalCancel()

@@ -29,6 +29,7 @@ NSString *const COInvalidException = @"COInvalidException";
 @property(nonatomic, assign) BOOL isCancelled;
 @property(nonatomic, assign) BOOL isResume;
 @property(nonatomic, strong) NSMutableDictionary *parameters;
+@property(nonatomic, copy, nullable) dispatch_block_t joinBlock;
 
 
 - (void)execute;
@@ -80,8 +81,12 @@ static void co_exec(coroutine_t  *co) {
         coObj.isFinished = YES;
         if (coObj.finishedBlock) {
             coObj.finishedBlock();
+            coObj.finishedBlock = nil;
         }
-        coObj.finishedBlock = nil;
+        if (coObj.joinBlock) {
+            coObj.joinBlock();
+            coObj.joinBlock = nil;
+        }
     }
 }
 
@@ -234,7 +239,7 @@ static void co_obj_dispose(void *coObj) {
             [chan send_nonblock:@(1)];
         }
         else{
-            [self setFinishedBlock:^{
+            [self setJoinBlock:^{
                 [chan send_nonblock:@(1)];
             }];
         }
@@ -249,7 +254,7 @@ static void co_obj_dispose(void *coObj) {
             [chan send_nonblock:@(1)];
         }
         else{
-            [self setFinishedBlock:^{
+            [self setJoinBlock:^{
                 [chan send_nonblock:@(1)];
             }];
             [self _internalCancel];
