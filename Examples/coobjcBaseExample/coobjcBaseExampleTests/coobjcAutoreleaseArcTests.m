@@ -76,7 +76,7 @@ static dispatch_queue_t get_test_queue1(){
 @implementation coobjcAutoreleaseArcTests
 
 - (COPromise<NSNumber*>*)makeAsynPromise{
-    return [COPromise promise:^(COPromiseFullfill  resolve, COPromiseReject  reject) {
+    return [COPromise promise:^(COPromiseFulfill  resolve, COPromiseReject  reject) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             resolve(@1);
         });

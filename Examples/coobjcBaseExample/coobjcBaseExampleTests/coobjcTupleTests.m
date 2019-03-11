@@ -45,7 +45,7 @@ extern int co_untuple_dealloc_count;
 
 COPromise<COTuple*>*
 cotest_downloadJSONWithURL(NSString *url){
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         NSURLSessionTask *task = [[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:url] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
             NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*)response;
             if (!error && httpResponse.statusCode != 404) {
@@ -65,7 +65,7 @@ cotest_downloadJSONWithURL(NSString *url){
 
 COPromise<COTuple*>*
 cotest_loadContentFromFile(NSString *filePath){
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
             NSData *data = [[NSData alloc] initWithContentsOfFile:filePath];
             resolve(co_tuple(filePath, data, nil));

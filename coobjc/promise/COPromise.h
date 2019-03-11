@@ -48,7 +48,7 @@ typedef void (^COPromiseOnCancelBlock)(COPromise *promise);
 /**
  Define the resolve prototype
  */
-typedef void (^COPromiseFullfill)(id _Nullable );
+typedef void (^COPromiseFulfill)(id _Nullable );
 
 /**
  Define the reject prototype
@@ -58,7 +58,7 @@ typedef void (^COPromiseReject)(NSError *);
 /**
  Define the constructor's prototype
  */
-typedef void (^COPromiseConstructor)(COPromiseFullfill fullfill, COPromiseReject reject);
+typedef void (^COPromiseConstructor)(COPromiseFulfill fullfill, COPromiseReject reject);
 
 /**
  Tell the promise is pending or not.

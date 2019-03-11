@@ -71,7 +71,7 @@ typedef id __nullable (^__nullable COPromiseChainedRejectBlock)(NSError *error);
     self = [self init];
     if (self) {
         if (constructor) {
-            COPromiseFullfill fullfill = ^(id value){
+            COPromiseFulfill fulfill = ^(id value){
                 [self fulfill:value];
             };
             COPromiseReject reject = ^(NSError *error){
@@ -79,10 +79,10 @@ typedef id __nullable (^__nullable COPromiseChainedRejectBlock)(NSError *error);
             };
             if (queue) {
                 dispatch_async(queue, ^{
-                    constructor(fullfill, reject);
+                    constructor(fulfill, reject);
                 });
             } else {
-                constructor(fullfill, reject);
+                constructor(fulfill, reject);
             }
         }
     }
