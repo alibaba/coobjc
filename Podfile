@@ -1,16 +1,10 @@
 
 platform :ios, '8.0'
 
-target 'coobjc' do
+target 'cocore' do
 
     pod 'fishhook'
 
-        
 end
 
-target 'coswift' do
 
-    pod 'fishhook'
-    
-            
-end

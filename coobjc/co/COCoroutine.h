@@ -26,31 +26,6 @@ NS_ASSUME_NONNULL_BEGIN
 @class COCoroutine;
 
 /**
- Prepare for yield. must use with `co_generator_yield_do`
- @see `yield` in coobjc.h
-
- @param co the current coroutine
- */
-void co_generator_yield_prepare(COCoroutine *co);
-
-/**
- do yield. must use with `co_generator_yield_prepare`
- @see `yield` in coobjc.h
- 
- @param co the current coroutine
- @param promiseOrChan `COPromise` or `COChan` object
- */
-void co_generator_yield_do(COCoroutine *co, id promiseOrChan);
-
-
-/**
- Can used in a generator, use this method to yield a value.
-
- @param value the value produced by Generator
- */
-void co_generator_yield_value(id value);
-
-/**
  Wait a  `COPromise` or `COChan` object, until Promise is fulfilled/rejected, or Channel has value send.
 
  @param awaitable `COPromise` or `COChan` object
@@ -115,11 +90,6 @@ extern NSString *const COInvalidException;
 @property(nonatomic, assign, nullable) coroutine_t  *co;
 
 /**
- When COCoroutine as a Generator, this Channel use to yield a value.
- */
-@property(nonatomic, strong, nullable) COChan *yieldChan;
-
-/**
  If `COCoroutine is suspend by a Channel, this pointer mark it.
  */
 @property(nonatomic, strong, nullable) COChan *currentChan;
@@ -166,6 +136,8 @@ extern NSString *const COInvalidException;
 + (_Nullable instancetype)coroutineWithBlock:(void(^)(void))block onQueue:(dispatch_queue_t _Nullable)queue stackSize:(NSUInteger)stackSize;
 
 
+- (instancetype)initWithBlock:(void (^)(void))block onQueue:(dispatch_queue_t)queue stackSize:(NSUInteger)stackSize;
+
 /**
  The coroutine is Finished.
  */
@@ -185,18 +157,6 @@ extern NSString *const COInvalidException;
  Cancel the coroutine.
  */
 - (void)cancel;
-
-/**
- Await the coroutine to be finished.
- */
-- (void)await;
-
-/**
- The designed for Generator, used as yield/next.
-
- @return The value yiled by the Generator.
- */
-- (id _Nullable )next;
 
 /**
  Calling this method in another coroutine. wait the coroutine to be finished.

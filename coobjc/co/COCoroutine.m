@@ -82,7 +82,6 @@ static void co_exec(coroutine_t  *co) {
             coObj.finishedBlock();
         }
         coObj.finishedBlock = nil;
-        coObj.yieldChan = nil;
     }
 }
 
@@ -92,25 +91,6 @@ static void co_obj_dispose(void *coObj) {
         obj.co = nil;
     }
 }
-
-@interface CONextBeginObj : NSObject
-
-+ (instancetype)instance;
-
-@end
-
-@implementation CONextBeginObj
-
-+ (instancetype)instance {
-    static CONextBeginObj *obj = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        obj = [[CONextBeginObj alloc] init];
-    });
-    return obj;
-}
-
-@end
 
 @implementation COCoroutine
 
@@ -161,11 +141,18 @@ static void co_obj_dispose(void *coObj) {
     }
 }
 
-- (instancetype)initWithBlock:(void (^)(void))block onQueue:(dispatch_queue_t)queue {
+- (instancetype)initWithBlock:(void (^)(void))block onQueue:(dispatch_queue_t)queue stackSize:(NSUInteger)stackSize {
     self = [super init];
     if (self) {
         _execBlock = [block copy];
-        _queue = queue;
+        _queue = queue ?: co_get_current_queue();
+        
+        coroutine_t  *co = coroutine_create((void (*)(void *))co_exec);
+        if (stackSize > 0 && stackSize < 1024*1024) {   // Max 1M
+            co->stack_size = (uint32_t)((stackSize % 16384 > 0) ? ((stackSize/16384 + 1) * 16384) : stackSize);        // Align with 16kb
+        }
+        _co = co;
+        coroutine_setuserdata(co, (__bridge_retained void *)self, co_obj_dispose);
     }
     return self;
 }
@@ -176,20 +163,7 @@ static void co_obj_dispose(void *coObj) {
 }
     
 + (instancetype)coroutineWithBlock:(void(^)(void))block onQueue:(dispatch_queue_t)queue stackSize:(NSUInteger)stackSize {
-    if (queue == NULL) {
-        queue = co_get_current_queue();
-    }
-    if (queue == NULL) {
-        return nil;
-    }
-    COCoroutine *coObj = [[self alloc] initWithBlock:block onQueue:queue];
-    coroutine_t  *co = coroutine_create((void (*)(void *))co_exec);
-    if (stackSize > 0 && stackSize < 1024*1024) {   // Max 1M
-        co->stack_size = (uint32_t)((stackSize % 16384 > 0) ? ((stackSize/16384 + 1) * 16384) : stackSize);        // Align with 16kb
-    }
-    coObj.co = co;
-    coroutine_setuserdata(co, (__bridge_retained void *)coObj, co_obj_dispose);
-    return coObj;
+    return [[[self class] alloc] initWithBlock:block onQueue:queue stackSize:stackSize];
 }
 
 - (void)performBlockOnQueue:(dispatch_block_t)block {
@@ -226,47 +200,6 @@ static void co_obj_dispose(void *coObj) {
     }];
 }
 
-- (void)await {
-    COChan *chan = [COChan chanWithBuffCount:1];
-    [self performBlockOnQueue:^{
-        if ([self isFinished]) {
-            [chan send_nonblock:@(1)];
-        }
-        else{
-            [self setFinishedBlock:^{
-                [chan send_nonblock:@(1)];
-            }];
-        }
-    }];
-    [chan receive];
-}
-
-- (id)next {
-    
-    if (!self.isResume) {
-        [self resume];
-    }
-    
-    if ([self isCancelled] || [self isFinished]) {
-        return nil;
-    }
-    
-    id val = nil;
-    COChan *yieldChan = self.yieldChan;
-    if (yieldChan) {
-        
-        id beginTag = [yieldChan receive];
-        if ([beginTag isKindOfClass:[CONextBeginObj class]]) {
-            val = [yieldChan receive];
-        } else {
-            val = beginTag;
-        }
-    } else {
-        @throw [NSException exceptionWithName:COInvalidException reason:@"next must called by a Generator routine" userInfo:@{}];
-    }
-    return val;
-}
-
 - (COCoroutine *)resume {
     dispatch_async(self.queue, ^{
         if (self.isResume) {
@@ -295,7 +228,18 @@ static void co_obj_dispose(void *coObj) {
 }
 
 - (void)join {
-    [self await];
+    COChan *chan = [COChan chanWithBuffCount:1];
+    [self performBlockOnQueue:^{
+        if ([self isFinished]) {
+            [chan send_nonblock:@(1)];
+        }
+        else{
+            [self setFinishedBlock:^{
+                [chan send_nonblock:@(1)];
+            }];
+        }
+    }];
+    [chan receive];
 }
 
 - (void)cancelAndJoin {
@@ -423,44 +367,5 @@ NSArray *co_batch_await(NSArray * awaitableList) {
     return result.copy;
 }
 
-void co_generator_yield_prepare(COCoroutine *co) {
-    if (co == nil) {
-        @throw [NSException exceptionWithName:COInvalidException
-                                       reason:@"Cannot run co_generator_yield out of a coroutine"
-                                     userInfo:nil];
-    }
-    if (co.isCancelled) {
-        return;
-    }
-    
-    if (!co.yieldChan) {
-        co.yieldChan = [COChan chan];
-    }
-    [co.yieldChan send:[CONextBeginObj instance]]; // 第一个等待next开始
-}
-
-void co_generator_yield_do(COCoroutine *co, id _Nonnull promiseOrChan) {
-    if (co.isCancelled) return;
-    id val = co_await(promiseOrChan);
-    if (co.isCancelled) return;
-    [co.yieldChan send:val]; // 第二个发送value给next
-}
-
-void co_generator_yield_value(id value) {
-    COCoroutine *co = [COCoroutine currentCoroutine];
-    if (co == nil) {
-        @throw [NSException exceptionWithName:COInvalidException
-                                       reason:@"Cannot run co_generator_yield_value out of a coroutine"
-                                     userInfo:nil];
-    }
-    if (co.isCancelled) {
-        return;
-    }
-    
-    if (!co.yieldChan) {
-        co.yieldChan = [COChan chan];
-    }
-    [co.yieldChan send:value]; // 直接发送value给next
-}
 
 

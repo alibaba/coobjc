@@ -17,13 +17,17 @@
 //   limitations under the License.
 
 #import <Foundation/Foundation.h>
+
+#import <cocore/coroutine.h>
+#import <cocore/co_csp.h>
+#import <cocore/co_autorelease.h>
+
 #import <coobjc/COCoroutine.h>
 #import <coobjc/COChan.h>
 #import <coobjc/COActor.h>
-#import <cocore/coroutine.h>
-#import <cocore/co_csp.h>
+#import <coobjc/COGenerator.h>
 #import <coobjc/co_tuple.h>
-#import <cocore/co_autorelease.h>
+
 
 /**
  Mark a function with `CO_ASYNC`, which means the function may suspend,
@@ -90,9 +94,8 @@ NS_INLINE COCoroutine * _Nonnull  co_launch_onqueue(dispatch_queue_t _Nullable q
  @param block the sequence task.
  @return the Coroutine
  */
-NS_INLINE COCoroutine * _Nonnull co_sequence(void(^ _Nonnull block)(void)) {
-    COCoroutine *co = [COCoroutine coroutineWithBlock:block onQueue:nil];
-    co.yieldChan = [COChan chan];
+NS_INLINE COGenerator * _Nonnull co_sequence(void(^ _Nonnull block)(void)) {
+    COGenerator *co = [COGenerator coroutineWithBlock:block onQueue:nil];
     return co;
 }
 
@@ -104,9 +107,8 @@ NS_INLINE COCoroutine * _Nonnull co_sequence(void(^ _Nonnull block)(void)) {
  @param queue the queue which coroutine work on it.
  @return the coroutine instance
  */
-NS_INLINE COCoroutine * _Nonnull  co_sequence_onqueue(dispatch_queue_t _Nullable queue, void(^ _Nonnull block)(void)) {
-    COCoroutine *co = [COCoroutine coroutineWithBlock:block onQueue:queue];
-    co.yieldChan = [COChan chan];
+NS_INLINE COGenerator * _Nonnull  co_sequence_onqueue(dispatch_queue_t _Nullable queue, void(^ _Nonnull block)(void)) {
+    COGenerator *co = [COGenerator coroutineWithBlock:block onQueue:queue];
     return co;
 }
 
@@ -118,7 +120,6 @@ NS_INLINE COCoroutine * _Nonnull  co_sequence_onqueue(dispatch_queue_t _Nullable
  */
 NS_INLINE COActor * _Nonnull co_actor(void(^ _Nonnull block)(COActorChan* _Nonnull)) {
     COActor *co = [COActor actorWithBlock:block onQueue:nil];
-    co.yieldChan = [COChan chan];
     return (COActor*)[co resume];
 }
 
@@ -131,7 +132,6 @@ NS_INLINE COActor * _Nonnull co_actor(void(^ _Nonnull block)(COActorChan* _Nonnu
  */
 NS_INLINE COActor * _Nonnull  co_actor_onqueue(dispatch_queue_t _Nullable queue, void(^ _Nonnull block)(COActorChan* _Nonnull)) {
     COActor *co = [COActor actorWithBlock:block onQueue:queue];
-    co.yieldChan = [COChan chan];
     return (COActor*)[co resume];
 }
 
@@ -160,33 +160,7 @@ NS_INLINE NSArray<id> *_Nullable batch_await(NSArray<id> * _Nonnull _promiseOrCh
     return val;
 }
 
-/**
- yield with a COPromise
- 
- @discussion `yield` means pause the expression execution,
- until Generator(coroutine) call `next`.
- 
- @param _promise the COPromise object.
- */
-#define yield(_expr) \
-{ \
-    COCoroutine *__co__ = [COCoroutine currentCoroutine]; \
-    co_generator_yield_prepare(__co__); \
-    if (!__co__.isCancelled) { \
-        id __promiseOrChan__ = ({ _expr; }); \
-        co_generator_yield_do(__co__, __promiseOrChan__); \
-    } \
-}
 
-
-/**
- yield with a value.
- 
- @param val the value.
- */
-NS_INLINE void yield_val(id _Nonnull val) {
-    co_generator_yield_value(val);
-}
 
 /**
  co_delay

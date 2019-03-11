@@ -210,7 +210,7 @@ typedef void (^COPromiseConstructor)(COPromiseFullfill fullfill, COPromiseReject
 - (void)setupWithProgress:(NSProgress*)progress;
 
 //get the next progress fractionCompleted value, this method should be called in a coroutine
-- (CGFloat)next;
+- (float)next;
 
 @end
 
