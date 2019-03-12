@@ -23,7 +23,7 @@
 - (BOOL)co_openURL:(NSURL *)url options:(NSDictionary<NSString *,id> *)options{
     if (@available(iOS 10.0, *)) {
         SURE_ASYNC
-        COPromise *promise = [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+        COPromise *promise = [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
             if (@available(iOS 10.0, *)) {
                 [self openURL:url options:options completionHandler:^(BOOL success) {
                     resolve(@(success));

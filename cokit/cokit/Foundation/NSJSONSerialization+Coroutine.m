@@ -22,7 +22,7 @@
 @implementation NSJSONSerialization (COPromise)
 
 + (COPromise<NSNumber *> *)async_isValidJSONObject:(id)obj{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             BOOL ret = [self isValidJSONObject:obj];
             resolve(@(ret));
@@ -31,7 +31,7 @@
 }
 
 + (COPromise<NSData *> *)async_dataWithJSONObject:(id)obj options:(NSJSONWritingOptions)opt{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             NSError *error = nil;
             NSData* data = [self dataWithJSONObject:obj options:opt error:&error];
@@ -46,7 +46,7 @@
 }
 
 + (COPromise<id> *)async_JSONObjectWithData:(NSData *)data options:(NSJSONReadingOptions)opt{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             NSError *error = nil;
             id obj = [self JSONObjectWithData:data options:opt error:&error];
@@ -77,7 +77,7 @@
 }
 
 + (COPromise<id> *)async_JSONObjectWithStream:(NSInputStream *)stream options:(NSJSONReadingOptions)opt{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             NSError *error = nil;
             id obj = [self JSONObjectWithStream:stream options:opt error:&error];

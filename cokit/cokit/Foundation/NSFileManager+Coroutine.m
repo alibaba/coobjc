@@ -533,7 +533,7 @@
 }
 
 - (COPromise<NSArray<NSString *> *> *)async_contentsOfDirectoryAtPath:(NSString *)path{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             NSError *error = nil;
             NSArray *list = [self contentsOfDirectoryAtPath:path error:&error];
@@ -548,7 +548,7 @@
 }
 
 - (COPromise<NSArray<NSString *> *> *)async_subpathsOfDirectoryAtPath:(NSString *)path{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             NSError *error = nil;
             NSArray *list = [self subpathsOfDirectoryAtPath:path error:&error];
@@ -563,7 +563,7 @@
 }
 
 - (COPromise<NSDictionary<NSFileAttributeKey,id> *> *)async_attributesOfItemAtPath:(NSString *)path{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             NSError *error = nil;
             NSDictionary *dict = [self attributesOfItemAtPath:path error:&error];
@@ -578,7 +578,7 @@
 }
 
 - (COPromise<NSDictionary<NSFileAttributeKey,id> *> *)async_attributesOfFileSystemForPath:(NSString *)path{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             NSError *error = nil;
             NSDictionary *dict = [self attributesOfFileSystemForPath:path error:&error];
@@ -608,7 +608,7 @@
 }
 
 - (COPromise<NSString *> *)async_destinationOfSymbolicLinkAtPath:(NSString *)path{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             NSError *error = nil;
             NSString* destPath = [self destinationOfSymbolicLinkAtPath:path error:&error];
@@ -763,7 +763,7 @@
 }
 
 - (COPromise<COTuple2<NSNumber *,NSNumber *> *> *)async_fileExistsAtPath:(NSString *)path{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             BOOL isDirectory = NO;
             BOOL ret = [self fileExistsAtPath:path isDirectory:&isDirectory];
@@ -773,7 +773,7 @@
 }
 
 - (COPromise<NSNumber *> *)async_isReadableFileAtPath:(NSString *)path{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             BOOL ret = [self isReadableFileAtPath:path];
             resolve(@(ret));
@@ -782,7 +782,7 @@
 }
 
 - (COPromise<NSNumber *> *)async_isWritableFileAtPath:(NSString *)path{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             BOOL ret = [self isWritableFileAtPath:path];
             resolve(@(ret));
@@ -791,7 +791,7 @@
 }
 
 - (COPromise<NSNumber *> *)async_isExecutableFileAtPath:(NSString *)path{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             BOOL ret = [self isExecutableFileAtPath:path];
             resolve(@(ret));
@@ -800,7 +800,7 @@
 }
 
 - (COPromise<NSNumber *> *)async_isDeletableFileAtPath:(NSString *)path{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             BOOL ret = [self isDeletableFileAtPath:path];
             resolve(@(ret));
@@ -809,7 +809,7 @@
 }
 
 - (COPromise<NSNumber *> *)async_contentsEqualAtPath:(NSString *)path1 andPath:(NSString *)path2{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             BOOL ret = [self contentsEqualAtPath:path1 andPath:path2];
             resolve(@(ret));
@@ -818,7 +818,7 @@
 }
 
 - (COPromise<NSArray<NSString *> *> *)async_subpathsAtPath:(NSString *)path{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             NSArray *list = [self subpathsAtPath:path];
             resolve(list);
@@ -827,7 +827,7 @@
 }
 
 - (COPromise<NSData *> *)async_contentsAtPath:(NSString *)path{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             NSData* data = [self contentsAtPath:path];
             resolve(data);

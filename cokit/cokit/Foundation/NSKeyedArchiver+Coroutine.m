@@ -22,7 +22,7 @@
 @implementation NSKeyedArchiver (COPromise)
 
 + (COPromise<NSData *> *)async_archivedDataWithRootObject:(id)rootObject{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             NSData *data = [self archivedDataWithRootObject:rootObject];
             resolve(data);
@@ -66,7 +66,7 @@
 @implementation NSKeyedUnarchiver (COPromise)
 
 + (COPromise<id> *)async_unarchiveObjectWithData:(NSData *)data{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             id obj = [self unarchiveObjectWithData:data];
             resolve(obj);
@@ -75,7 +75,7 @@
 }
 
 + (COPromise<id> *)async_unarchiveTopLevelObjectWithData:(NSData *)data{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             NSError *error = nil;
             id obj = [self unarchiveTopLevelObjectWithData:data error:&error];
@@ -90,7 +90,7 @@
 }
 
 + (COPromise<id> *)async_unarchiveObjectWithFile:(NSString *)path{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             id obj = [self unarchiveObjectWithFile:path];
             resolve(obj);

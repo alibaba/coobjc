@@ -18,9 +18,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import <cocore/coroutine.h>
-#import <cocore/co_csp.h>
-#import <cocore/co_autorelease.h>
+#import <cocore/cocore.h>
 
 #import <coobjc/COCoroutine.h>
 #import <coobjc/COChan.h>

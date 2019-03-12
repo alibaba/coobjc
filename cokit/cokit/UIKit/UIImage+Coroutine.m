@@ -103,7 +103,7 @@
 
 + (COPromise<UIImage *>*)async_imageNamed:(NSString *)name      // load from main bundle
 {
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlock:^{
             UIImage *image = [UIImage imageNamed:name];
             if (image) {
@@ -117,7 +117,7 @@
 }
 #if __has_include(<UIKit/UITraitCollection.h>)
 + (COPromise<UIImage *>*)async_imageNamed:(NSString *)name inBundle:(nullable NSBundle *)bundle compatibleWithTraitCollection:(nullable UITraitCollection *)traitCollection{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlock:^{
             UIImage *image = [UIImage imageNamed:name inBundle:bundle compatibleWithTraitCollection:traitCollection];
             if (image) {
@@ -132,7 +132,7 @@
 #endif
 
 + (COPromise<UIImage *>*)async_imageWithContentsOfFile:(NSString *)path{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlock:^{
             UIImage *image = [UIImage imageWithContentsOfFile:path];
             if (image) {
@@ -145,7 +145,7 @@
     }];
 }
 + (COPromise<UIImage *>*)async_imageWithData:(NSData *)data{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlock:^{
             UIImage *image = [UIImage imageWithData:data];
             if (image) {
@@ -158,7 +158,7 @@
     }];
 }
 + (COPromise<UIImage *>*)async_imageWithData:(NSData *)data scale:(CGFloat)scale{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlock:^{
             UIImage *image = [UIImage imageWithData:data scale:scale];
             if (image) {
@@ -172,7 +172,7 @@
 }
 
 - (COPromise<UIImage *>*)async_initWithContentsOfFile:(NSString *)path{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlock:^{
             UIImage *image = [self initWithContentsOfFile:path];
             if (image) {
@@ -185,7 +185,7 @@
     }];
 }
 - (COPromise<UIImage *>*)async_initWithData:(NSData *)data{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlock:^{
             UIImage *image = [self initWithData:data];
             if (image) {
@@ -198,7 +198,7 @@
     }];
 }
 - (COPromise<UIImage *>*)async_initWithData:(NSData *)data scale:(CGFloat)scale{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlock:^{
             UIImage *image = [self initWithData:data scale:scale];
             if (image) {
@@ -214,7 +214,7 @@
 @end
 
 COPromise<NSData *>* async_UIImagePNGRepresentation(UIImage * __nonnull image){
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlock:^{
             NSData *data = UIImagePNGRepresentation(image);
             if (data) {
@@ -227,7 +227,7 @@ COPromise<NSData *>* async_UIImagePNGRepresentation(UIImage * __nonnull image){
     }];
 }
 COPromise<NSData *>* async_UIImageJPEGRepresentation(UIImage * __nonnull image, CGFloat compressionQuality){
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlock:^{
             NSData *data = UIImageJPEGRepresentation(image, compressionQuality);
             if (data) {

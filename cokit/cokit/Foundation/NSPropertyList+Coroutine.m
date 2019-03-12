@@ -22,7 +22,7 @@
 @implementation NSPropertyListSerialization (COPromise)
 
 + (COPromise<NSNumber *> *)async_propertyList:(id)plist isValidForFormat:(NSPropertyListFormat)format{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             BOOL ret = [self propertyList:plist isValidForFormat:format];
             resolve(@(ret));
@@ -31,7 +31,7 @@
 }
 
 + (COPromise<NSData *> *)async_dataWithPropertyList:(id)plist format:(NSPropertyListFormat)format options:(NSPropertyListWriteOptions)opt{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             NSError *error = nil;
             NSData *data = [self dataWithPropertyList:plist format:format options:opt error:&error];
@@ -46,7 +46,7 @@
 }
 
 + (COPromise<NSNumber *> *)async_writePropertyList:(id)plist toStream:(NSOutputStream *)stream format:(NSPropertyListFormat)format options:(NSPropertyListWriteOptions)opt{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             NSError *error = nil;
             NSInteger ret = [self writePropertyList:plist toStream:stream format:format options:opt error:&error];
@@ -61,7 +61,7 @@
 }
 
 + (COPromise<id> *)async_propertyListWithData:(NSData *)data options:(NSPropertyListReadOptions)opt format:(NSPropertyListFormat *)format{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             NSError *error = nil;
             id obj = [self propertyListWithData:data options:opt format:format error:&error];
@@ -76,7 +76,7 @@
 }
 
 + (COPromise<id> *)async_propertyListWithStream:(NSInputStream *)stream options:(NSPropertyListReadOptions)opt format:(NSPropertyListFormat *)format{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             NSError *error = nil;
             id obj = [self propertyListWithStream:stream options:opt format:format error:&error];

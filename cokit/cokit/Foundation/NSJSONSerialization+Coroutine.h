@@ -17,7 +17,6 @@
 //   limitations under the License.
 
 #import <Foundation/Foundation.h>
-#import <coobjc/COPromise.h>
 #import <coobjc/coobjc.h>
 
 NS_ASSUME_NONNULL_BEGIN

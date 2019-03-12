@@ -23,7 +23,7 @@
 @implementation NSBundle (COPromise)
 
 - (COPromise<NSNumber *> *)async_load{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         dispatch_async([COKitCommon io_queue], ^{
             NSError *error = nil;
             BOOL ret = [self loadAndReturnError:&error];

@@ -128,7 +128,7 @@
 @implementation NSArray (COPromise)
 
 + (COPromise *)async_arrayWithContentsOfURL:(NSURL *)url{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         dispatch_async([COKitCommon io_queue], ^{
             if (@available(iOS 11.0, *)) {
                 NSError *error = nil;
@@ -149,7 +149,7 @@
 }
 
 + (COPromise *)async_arrayWithContentsOfFile:(NSString *)path{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         dispatch_async([COKitCommon io_queue], ^{
             NSArray *list = [self arrayWithContentsOfFile:path];
             resolve(list);
@@ -158,7 +158,7 @@
 }
 
 - (COPromise *)async_initWithContentsOfURL:(NSURL *)url{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         dispatch_async([COKitCommon io_queue], ^{
             NSError *error = nil;
             if (@available(iOS 11.0, *)) {
@@ -179,7 +179,7 @@
 }
 
 - (COPromise *)async_initWithContentsOfFile:(NSString *)path{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         dispatch_async([COKitCommon io_queue], ^{
             NSArray *list = [self initWithContentsOfFile:path];
             resolve(list);
@@ -265,7 +265,7 @@
 @implementation NSMutableArray (COPromise)
 
 + (COPromise *)async_arrayWithContentsOfFile:(NSString *)path{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         dispatch_async([COKitCommon io_queue], ^{
             NSArray *list = [self arrayWithContentsOfFile:path];
             resolve(list);
@@ -274,7 +274,7 @@
 }
 
 + (COPromise *)async_arrayWithContentsOfURL:(NSURL *)url{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         dispatch_async([COKitCommon io_queue], ^{
             NSArray *list = [self arrayWithContentsOfURL:url];
             resolve(list);
@@ -283,7 +283,7 @@
 }
 
 - (COPromise *)async_initWithContentsOfFile:(NSString *)path{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         dispatch_async([COKitCommon io_queue], ^{
             NSArray *list = [self initWithContentsOfFile:path];
             resolve(list);
@@ -292,7 +292,7 @@
 }
 
 - (COPromise *)async_initWithContentsOfURL:(NSURL *)url{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         dispatch_async([COKitCommon io_queue], ^{
             NSArray *list = [self initWithContentsOfURL:url];
             resolve(list);

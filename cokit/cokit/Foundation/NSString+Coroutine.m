@@ -24,7 +24,7 @@
 /* These use the specified encoding.  If nil is returned, the optional error return indicates problem that was encountered (for instance, file system or encoding errors).
  */
 - (COPromise<NSString*>*)async_initWithContentsOfURL:(NSURL *)url encoding:(NSStringEncoding)enc{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             NSError *error = nil;
             NSString* str = [self initWithContentsOfURL:url encoding:enc error:&error];
@@ -38,7 +38,7 @@
     }];
 }
 - (COPromise<NSString*>*)async_initWithContentsOfFile:(NSString *)path encoding:(NSStringEncoding)enc{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             NSError *error = nil;
             NSString* str = [self initWithContentsOfFile:path encoding:enc error:&error];
@@ -52,7 +52,7 @@
     }];
 }
 + (COPromise<NSString*>*)async_stringWithContentsOfURL:(NSURL *)url encoding:(NSStringEncoding)enc{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             NSError *error = nil;
             NSString* str = [self stringWithContentsOfURL:url encoding:enc error:&error];
@@ -66,7 +66,7 @@
     }];
 }
 + (COPromise<NSString*>*)async_stringWithContentsOfFile:(NSString *)path encoding:(NSStringEncoding)enc{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             NSError *error = nil;
             NSString* str = [self stringWithContentsOfFile:path encoding:enc error:&error];
@@ -84,7 +84,7 @@
 /* These try to determine the encoding, and return the encoding which was used.  Note that these methods might get "smarter" in subsequent releases of the system, and use additional techniques for recognizing encodings. If nil is returned, the optional error return indicates problem that was encountered (for instance, file system or encoding errors).
  */
 - (COPromise<COTuple2<NSString*, NSNumber*>*>*)async_initWithContentsOfURL:(NSURL *)url{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             NSError *error = nil;
             NSStringEncoding encoding = 0;
@@ -99,7 +99,7 @@
     }];
 }
 - (COPromise<COTuple2<NSString*, NSNumber*>*>*)async_initWithContentsOfFile:(NSString *)path{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             NSError *error = nil;
             NSStringEncoding encoding = 0;
@@ -114,7 +114,7 @@
     }];
 }
 + (COPromise<COTuple2<NSString*, NSNumber*>*>*)async_stringWithContentsOfURL:(NSURL *)url{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             NSError *error = nil;
             NSStringEncoding encoding = 0;
@@ -129,7 +129,7 @@
     }];
 }
 + (COPromise<COTuple2<NSString*, NSNumber*>*>*)async_stringWithContentsOfFile:(NSString *)path{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             NSError *error = nil;
             NSStringEncoding encoding = 0;
@@ -178,7 +178,7 @@
 }
 
 - (COPromise<id>*)async_stringToJSONObject{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlockOnBackgroundThread:^{
             @try{
                 NSError *jsonError = nil;

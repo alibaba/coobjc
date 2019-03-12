@@ -46,6 +46,7 @@
 		18C43A3321CB955B00D75A9B /* UIImagePickerController+Coroutine.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C43A3121CB955B00D75A9B /* UIImagePickerController+Coroutine.m */; };
 		18C43A3A21CBA0AF00D75A9B /* UIVideoEditorController+Coroutine.h in Headers */ = {isa = PBXBuildFile; fileRef = 18C43A3821CBA0AF00D75A9B /* UIVideoEditorController+Coroutine.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		18C43A3B21CBA0AF00D75A9B /* UIVideoEditorController+Coroutine.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C43A3921CBA0AF00D75A9B /* UIVideoEditorController+Coroutine.m */; };
+		3C5988560D12D9E9AED01581 /* libPods-cokit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF59B8F676477B9FF026C3BF /* libPods-cokit.a */; };
 		A37DDF811E8A62DF00E11BD9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A37DDF801E8A62DF00E11BD9 /* UIKit.framework */; };
 		A37DDF831E8A62E400E11BD9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A37DDF821E8A62E400E11BD9 /* Foundation.framework */; };
 		D85037D81B9C6D8400864DF0 /* cokit-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = D85037D71B9C6D8400864DF0 /* cokit-Prefix.pch */; };
@@ -95,6 +96,7 @@
 		7357386444926A53E70FEE78 /* Pods-cokit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cokit.release.xcconfig"; path = "Pods/Target Support Files/Pods-cokit/Pods-cokit.release.xcconfig"; sourceTree = "<group>"; };
 		A37DDF801E8A62DF00E11BD9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.2.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		A37DDF821E8A62E400E11BD9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.2.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		BF59B8F676477B9FF026C3BF /* libPods-cokit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-cokit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D85037CF1B9C6D8400864DF0 /* cokit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework.static; includeInIndex = 0; path = cokit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D85037D61B9C6D8400864DF0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D85037D71B9C6D8400864DF0 /* cokit-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "cokit-Prefix.pch"; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 			files = (
 				A37DDF831E8A62E400E11BD9 /* Foundation.framework in Frameworks */,
 				A37DDF811E8A62DF00E11BD9 /* UIKit.framework in Frameworks */,
+				3C5988560D12D9E9AED01581 /* libPods-cokit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -205,6 +208,7 @@
 			children = (
 				A37DDF821E8A62E400E11BD9 /* Foundation.framework */,
 				A37DDF801E8A62DF00E11BD9 /* UIKit.framework */,
+				BF59B8F676477B9FF026C3BF /* libPods-cokit.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -331,13 +335,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-cokit-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -461,7 +468,7 @@
 				GCC_PREFIX_HEADER = "cokit/cokit-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = cokit/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_CFLAGS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -487,7 +494,7 @@
 				GCC_PREFIX_HEADER = "cokit/cokit-Prefix.pch";
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = cokit/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_CFLAGS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";

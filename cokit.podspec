@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name         = "cokit"
-  s.version      = "1.0.0"
-  s.summary      = "Coobjc's Foundationkit."
+  s.version      = "1.1.0"
+  s.summary      = "coobjc's Foundationkit."
 
   s.description  = <<-DESC
                     The Foundation extensions of coobjc.
@@ -21,8 +21,8 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '8.0'
   s.requires_arc = true
 
-  s.source =  { :git => "https://github.com/alibaba/coobjc.git", :tag => '1.0.0' } 
+  s.source =  { :git => "https://github.com/alibaba/coobjc.git", :tag => '1.1.0' } 
   s.source_files = 'cokit/cokit/**/*.{h,m}' 
   
-  s.dependency 'coobjc', '~> 1.0.0'
+  s.dependency 'coobjc', '~> 1.1.0'
 end

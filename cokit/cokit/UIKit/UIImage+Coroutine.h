@@ -17,7 +17,7 @@
 //   limitations under the License.
 
 #import <UIKit/UIKit.h>
-#import <coobjc/COPromise.h>
+#import <coobjc/coobjc.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

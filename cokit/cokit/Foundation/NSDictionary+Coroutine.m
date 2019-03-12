@@ -38,7 +38,7 @@
 }
 
 + (COPromise *)async_dictionaryWithContentsOfURL:(NSURL *)url{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         dispatch_async([COKitCommon io_queue], ^{
             NSDictionary *dict = [self dictionaryWithContentsOfURL:url];
             resolve(dict);
@@ -46,7 +46,7 @@
     }];
 }
 + (COPromise *)async_dictionaryWithContentsOfFile:(NSString *)path{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         dispatch_async([COKitCommon io_queue], ^{
             NSDictionary *dict = [self dictionaryWithContentsOfFile:path];
             resolve(dict);
@@ -55,7 +55,7 @@
 }
 
 - (COPromise *)async_initWithContentsOfFile:(NSString *)path{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         dispatch_async([COKitCommon io_queue], ^{
             NSDictionary *dict = [self initWithContentsOfFile:path];
             resolve(dict);
@@ -64,7 +64,7 @@
 }
 
 - (COPromise *)async_initWithContentsOfURL:(NSURL *)url{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         dispatch_async([COKitCommon io_queue], ^{
             if ([self respondsToSelector:@selector(initWithContentsOfURL:error:)]) {
                 NSError *error = nil;
@@ -187,7 +187,7 @@
 @implementation NSMutableDictionary (COPromise)
 
 + (COPromise *)async_dictionaryWithContentsOfFile:(NSString *)path{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         dispatch_async([COKitCommon io_queue], ^{
             NSMutableDictionary *dict = [self dictionaryWithContentsOfFile:path];
             resolve(dict);
@@ -196,7 +196,7 @@
 }
 
 + (COPromise *)async_dictionaryWithContentsOfURL:(NSURL *)url{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         dispatch_async([COKitCommon io_queue], ^{
             NSMutableDictionary *dict = [self dictionaryWithContentsOfURL:url];
             resolve(dict);
@@ -205,7 +205,7 @@
 }
 
 - (COPromise *)async_initWithContentsOfFile:(NSString *)path{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         dispatch_async([COKitCommon io_queue], ^{
             NSMutableDictionary *dict = [self initWithContentsOfFile:path];
             resolve(dict);
@@ -214,7 +214,7 @@
 }
 
 - (COPromise *)async_initWithContentsOfURL:(NSURL *)url{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         dispatch_async([COKitCommon io_queue], ^{
             NSMutableDictionary *dict = [self initWithContentsOfURL:url];
             resolve(dict);

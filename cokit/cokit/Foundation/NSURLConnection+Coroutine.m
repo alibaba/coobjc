@@ -26,7 +26,7 @@
 }
 
 + (COPromise<COTuple2<NSURLResponse *,NSData *> *> *)async_sendAsynchronousRequest:(NSURLRequest *)request queue:(NSOperationQueue *)queue{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [NSURLConnection sendAsynchronousRequest:request queue:queue completionHandler:^(NSURLResponse * _Nullable response, NSData * _Nullable data, NSError * _Nullable connectionError) {
             if (connectionError) {
                 reject(connectionError);

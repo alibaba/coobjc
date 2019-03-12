@@ -17,7 +17,7 @@
 //   limitations under the License.
 
 #import <UIKit/UIKit.h>
-#import <coobjc/COPromise.h>
+#import <coobjc/coobjc.h>
 #import <Photos/Photos.h>
 #import <PhotosUI/PhotosUI.h>
 

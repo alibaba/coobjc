@@ -22,7 +22,7 @@
 @implementation NSUserDefaults (COPromise)
 
 - (COPromise<id> *)async_objectForKey:(NSString *)defaultName{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlock:^{
             id value = [self objectForKey:defaultName];
             resolve(value);
@@ -49,7 +49,7 @@
 }
 
 - (COPromise<NSString *> *)async_stringForKey:(NSString *)defaultName{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlock:^{
             id value = [self stringForKey:defaultName];
             resolve(value);
@@ -58,7 +58,7 @@
 }
 
 - (COPromise<NSArray *> *)async_arrayForKey:(NSString *)defaultName{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlock:^{
             id value = [self arrayForKey:defaultName];
             resolve(value);
@@ -67,7 +67,7 @@
 }
 
 - (COPromise<NSDictionary<NSString *,id> *> *)async_dictionaryForKey:(NSString *)defaultName{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlock:^{
             id value = [self dictionaryForKey:defaultName];
             resolve(value);
@@ -76,7 +76,7 @@
 }
 
 - (COPromise<NSData *> *)async_dataForKey:(NSString *)defaultName{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlock:^{
             id value = [self dataForKey:defaultName];
             resolve(value);
@@ -85,7 +85,7 @@
 }
 
 - (COPromise<NSArray<NSString *> *> *)async_stringArrayForKey:(NSString *)defaultName{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlock:^{
             id value = [self stringArrayForKey:defaultName];
             resolve(value);
@@ -94,7 +94,7 @@
 }
 
 - (COPromise<NSURL *> *)async_URLForKey:(NSString *)defaultName{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlock:^{
             id value = [self URLForKey:defaultName];
             resolve(value);
@@ -233,7 +233,7 @@
 
 - (NSInteger)co_integerForKey:(NSString *)defaultName{
     if ([COCoroutine currentCoroutine]) {
-        COPromise *promise = [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+        COPromise *promise = [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
             [COKitCommon runBlock:^{
                 NSInteger value = [self integerForKey:defaultName];
                 resolve(@(value));
@@ -248,7 +248,7 @@
 
 - (float)co_floatForKey:(NSString *)defaultName{
     if ([COCoroutine currentCoroutine]) {
-        COPromise *promise = [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+        COPromise *promise = [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
             [COKitCommon runBlock:^{
                 float value = [self floatForKey:defaultName];
                 resolve(@(value));
@@ -263,7 +263,7 @@
 
 - (double)co_doubleForKey:(NSString *)defaultName{
     if ([COCoroutine currentCoroutine]) {
-        COPromise *promise = [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+        COPromise *promise = [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
             [COKitCommon runBlock:^{
                 double value = [self doubleForKey:defaultName];
                 resolve(@(value));
@@ -278,7 +278,7 @@
 
 - (BOOL)co_boolForKey:(NSString *)defaultName{
     if ([COCoroutine currentCoroutine]) {
-        COPromise *promise = [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+        COPromise *promise = [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
             [COKitCommon runBlock:^{
                 BOOL value = [self boolForKey:defaultName];
                 resolve(@(value));

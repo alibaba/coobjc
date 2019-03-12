@@ -17,7 +17,7 @@
 //   limitations under the License.
 
 #import "COKitCommon.h"
-#import <coobjc/co_queue.h>
+#import <coobjc/coobjc.h>
 
 @implementation COKitCommon
 

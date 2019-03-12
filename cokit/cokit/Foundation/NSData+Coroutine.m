@@ -211,7 +211,7 @@
 
 
 + (COPromise<NSData*>*)async_dataWithContentsOfFile:(NSString *)path options:(NSDataReadingOptions)readOptionsMask{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         dispatch_async([COKitCommon io_queue], ^{
             NSError *error = nil;
             NSData *data = [self dataWithContentsOfFile:path options:readOptionsMask error:&error];
@@ -225,7 +225,7 @@
     }];
 }
 + (COPromise<NSData*>*)async_dataWithContentsOfURL:(NSURL *)url options:(NSDataReadingOptions)readOptionsMask{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         dispatch_async([COKitCommon io_queue], ^{
             NSError *error = nil;
             NSData *data = [self dataWithContentsOfURL:url options:readOptionsMask error:&error];
@@ -239,7 +239,7 @@
     }];
 }
 + (COPromise<NSData*>*)async_dataWithContentsOfFile:(NSString *)path{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         dispatch_async([COKitCommon io_queue], ^{
             NSData *data = [self dataWithContentsOfFile:path];
             resolve(data);
@@ -247,7 +247,7 @@
     }];
 }
 + (COPromise<NSData*>*)async_dataWithContentsOfURL:(NSURL *)url{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         dispatch_async([COKitCommon io_queue], ^{
             NSData *data = [self dataWithContentsOfURL:url];
             resolve(data);
@@ -257,7 +257,7 @@
 
 
 - (COPromise<NSData*>*)async_initWithContentsOfFile:(NSString *)path options:(NSDataReadingOptions)readOptionsMask{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         dispatch_async([COKitCommon io_queue], ^{
             NSError *error = nil;
             NSData *data = [self initWithContentsOfFile:path options:readOptionsMask error:&error];
@@ -271,7 +271,7 @@
     }];
 }
 - (COPromise<NSData*>*)async_initWithContentsOfURL:(NSURL *)url options:(NSDataReadingOptions)readOptionsMask{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         dispatch_async([COKitCommon io_queue], ^{
             NSError *error = nil;
             NSData *data = [self initWithContentsOfURL:url options:readOptionsMask error:&error];
@@ -285,7 +285,7 @@
     }];
 }
 - (COPromise<NSData*>*)async_initWithContentsOfFile:(NSString *)path{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         dispatch_async([COKitCommon io_queue], ^{
             NSData *data = [self initWithContentsOfFile:path];
             resolve(data);
@@ -293,7 +293,7 @@
     }];
 }
 - (COPromise<NSData*>*)async_initWithContentsOfURL:(NSURL *)url{
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         dispatch_async([COKitCommon io_queue], ^{
             NSData *data = [self initWithContentsOfURL:url];
             resolve(data);
