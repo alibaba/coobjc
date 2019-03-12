@@ -99,7 +99,6 @@ extern NSString *const COInvalidException;
  */
 @property(nonatomic, strong, nullable) NSError *lastError;
 
-
 /**
  Get the current running coroutine object.
 
@@ -135,7 +134,15 @@ extern NSString *const COInvalidException;
  */
 + (_Nullable instancetype)coroutineWithBlock:(void(^)(void))block onQueue:(dispatch_queue_t _Nullable)queue stackSize:(NSUInteger)stackSize;
 
-
+/**
+ Create coroutine instance with custom stack size, in case stackSize not enough.
+ The stack size is 65536 by default.
+ 
+ @param block : the code
+ @param queue : the queue code run
+ @param stackSize : stackSize of the coroutine.
+ @return The coroutine object.
+ */
 - (instancetype)initWithBlock:(void (^)(void))block onQueue:(dispatch_queue_t)queue stackSize:(NSUInteger)stackSize;
 
 /**

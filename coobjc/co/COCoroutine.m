@@ -30,12 +30,16 @@ NSString *const COInvalidException = @"COInvalidException";
 @property(nonatomic, assign) BOOL isResume;
 @property(nonatomic, strong) NSMutableDictionary *parameters;
 @property(nonatomic, copy, nullable) dispatch_block_t joinBlock;
-
+@property(nonatomic, strong) NSMutableArray *subroutines;
+@property(nonatomic, weak) COCoroutine *parent;
 
 - (void)execute;
 
 - (void)setParam:(id _Nullable )value forKey:(NSString *_Nonnull)key;
 - (id _Nullable )paramForKey:(NSString *_Nonnull)key;
+
+- (void)removeChild:(COCoroutine *)child;
+- (void)addChild:(COCoroutine *)child;
 
 @end
 
@@ -87,6 +91,7 @@ static void co_exec(coroutine_t  *co) {
             coObj.joinBlock();
             coObj.joinBlock = nil;
         }
+        [coObj.parent removeChild:coObj];
     }
 }
 
@@ -185,6 +190,12 @@ static void co_obj_dispose(void *coObj) {
     if (_isCancelled) {
         return;
     }
+    NSArray *subroutines = self.subroutines.copy;;
+    if (subroutines.count) {
+        [subroutines enumerateObjectsUsingBlock:^(COCoroutine * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [obj cancel];
+        }];
+    }
     
     _isCancelled = YES;
     
@@ -205,10 +216,24 @@ static void co_obj_dispose(void *coObj) {
     }];
 }
 
+- (void)addChild:(COCoroutine *)child {
+    [self.subroutines addObject:child];
+}
+
+- (void)removeChild:(COCoroutine *)child {
+    [self.subroutines removeObject:child];
+}
+
 - (COCoroutine *)resume {
+    COCoroutine *currentCo = [COCoroutine currentCoroutine];
+    BOOL isSubroutine = currentCo.queue == self.queue ? YES : NO;
     dispatch_async(self.queue, ^{
         if (self.isResume) {
             return;
+        }
+        if (isSubroutine) {
+            self.parent = currentCo;
+            [currentCo addChild:self];
         }
         self.isResume = YES;
         coroutine_resume(self.co);
@@ -217,9 +242,15 @@ static void co_obj_dispose(void *coObj) {
 }
 
 - (void)resumeNow {
+    COCoroutine *currentCo = [COCoroutine currentCoroutine];
+    BOOL isSubroutine = currentCo.queue == self.queue ? YES : NO;
     [self performBlockOnQueue:^{
         if (self.isResume) {
             return;
+        }
+        if (isSubroutine) {
+            self.parent = currentCo;
+            [currentCo addChild:self];
         }
         self.isResume = YES;
         coroutine_resume(self.co);

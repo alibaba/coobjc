@@ -257,8 +257,8 @@
 			isa = PBXGroup;
 			children = (
 				A372DA9222365AD400EF87AA /* COChan.h */,
-				A372DA9322365AD400EF87AA /* COCoroutine.h */,
 				A372DA9422365AD400EF87AA /* COChan.m */,
+				A372DA9322365AD400EF87AA /* COCoroutine.h */,
 				A372DA9522365AD400EF87AA /* COCoroutine.m */,
 			);
 			path = co;
