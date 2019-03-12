@@ -57,6 +57,9 @@ open class Coroutine {
     /// The lastError occurred in the Coroutine.
     public var lastError: Error?
     
+    private var subroutines: [Coroutine] = []
+    private var parent: Coroutine?
+    
     /// Get the current running coroutine object.
     /// Should call in a coroutine body.
     ///
@@ -95,6 +98,9 @@ open class Coroutine {
             }
             if let join = joinBlock {
                 join()
+            }
+            if let parent = self.parent {
+                parent.removeChild(child: self)
             }
         }
         
@@ -169,6 +175,16 @@ open class Coroutine {
         }
     }
     
+    private func addChild(child: Coroutine) {
+        subroutines.append(child)
+    }
+    
+    private func removeChild(child: Coroutine) {
+        subroutines.removeAll { (co:Coroutine) -> Bool in
+            return co === child
+        }
+    }
+    
     /// Do the cancel operation
     private func internalCancel() {
         if cancelled {
@@ -240,10 +256,19 @@ open class Coroutine {
     ///
     /// - Returns: The coroutine object.
     public func resume() -> Coroutine {
+        var isSubroutine = false
+        let currentCo = Coroutine.current()
+        if let co = currentCo {
+            isSubroutine = co.queue == self.queue
+        }
         self.queue.async() {
             
             if self.resumed {
                 return
+            }
+            if isSubroutine, let co = currentCo {
+                self.parent = co
+                co.addChild(child: self)
             }
             self.resumed = true
             coroutine_resume(self.co)
@@ -255,9 +280,18 @@ open class Coroutine {
     ///
     /// - Returns: The coroutine object.
     public func resumeNow() -> Void {
+        var isSubroutine = false
+        let currentCo = Coroutine.current()
+        if let co = currentCo {
+            isSubroutine = co.queue == self.queue
+        }
         self.performBlockOnQueue {
             if self.resumed {
                 return
+            }
+            if isSubroutine, let co = currentCo {
+                self.parent = co
+                co.addChild(child: self)
             }
             self.resumed = true
             coroutine_resume(self.co)
