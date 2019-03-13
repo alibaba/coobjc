@@ -33,7 +33,7 @@
 #include <execinfo.h>
 #import "co_errors.h"
 #import <pthread/pthread.h>
-#import <fishhook/fishhook.h>
+#import "cofishhook.h"
 #import <objc/runtime.h>
 
 BOOL co_enableAutorelease = YES;
@@ -734,7 +734,7 @@ id co_hook_autorelease_obj(id obj){
 void co_autoreleaseInit(void){
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        rebind_symbols((struct rebinding[3]){{"objc_autoreleasePoolPop", (void*)co_hook_autorelease_pop, (void **)&orig_autorelease_pop},{"objc_autoreleasePoolPush", (void*)co_hook_autorelease_push, (void **)&orig_autorelease_push}, {"objc_autorelease", (void*)co_hook_autorelease_obj, (void **)&orig_autorelease_obj}}, 3);
+        co_rebind_symbols((struct rebinding[3]){{"objc_autoreleasePoolPop", (void*)co_hook_autorelease_pop, (void **)&orig_autorelease_pop},{"objc_autoreleasePoolPush", (void*)co_hook_autorelease_push, (void **)&orig_autorelease_push}, {"objc_autorelease", (void*)co_hook_autorelease_obj, (void **)&orig_autorelease_obj}}, 3);
         [NSArray co_hook_autorelease];
     });
 }

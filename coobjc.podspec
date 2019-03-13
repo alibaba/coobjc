@@ -16,14 +16,13 @@ Pod::Spec.new do |s|
   }
 
   s.author       = { "pengyutang125" => "pengyutang125@sina.com" }
-  s.platform     = :ios
 
   s.ios.deployment_target = '8.0'
+  s.osx.deployment_target = '10.12'
 
   s.source =  { :git => "https://github.com/alibaba/coobjc.git", :tag => '1.1.0' } 
   s.source_files = 'coobjc/**/*.{h,m}'
   s.requires_arc = ['coobjc/co/*.m', 'coobjc/generator/*.m', 'coobjc/actor/*.m', 'coobjc/promise/*.m']
 
-  s.dependency 'fishhook', '~> 0.2.0'
   s.dependency 'cocore', '~> 1.1.0'
 end

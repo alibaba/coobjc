@@ -27,7 +27,7 @@
 #include "coroutine.h"
 #import <Foundation/Foundation.h>
 #include <mach/vm_types.h>
-#import <fishhook/fishhook.h>
+#import "cofishhook.h"
 #include <sys/sysctl.h>
 
 
@@ -124,7 +124,7 @@ void co_rebind_backtrace() {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         if (co_isDebuggerAttached()) {
-            rebind_symbols((struct rebinding[1]){{"backtrace", co_backtrace, (void *)&orig_backtrace}}, 1);
+            co_rebind_symbols((struct rebinding[1]){{"backtrace", co_backtrace, (void *)&orig_backtrace}}, 1);
         }
     });
 }

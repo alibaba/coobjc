@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3608DBB417C80480370B0A6D /* libPods-cocore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 572F70044B408B04A91BE7F2 /* libPods-cocore.a */; };
+		A34A05B1223922ED00F4E9A3 /* cofishhook.c in Sources */ = {isa = PBXBuildFile; fileRef = A34A05B0223922EC00F4E9A3 /* cofishhook.c */; };
+		A34A05B22239235700F4E9A3 /* cofishhook.h in Headers */ = {isa = PBXBuildFile; fileRef = A34A05AF223922EC00F4E9A3 /* cofishhook.h */; };
+		A34A05B42239244A00F4E9A3 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A34A05B32239244A00F4E9A3 /* libc++.tbd */; };
 		A35C04A121EC369F00AC7D6E /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35C04A021EC369F00AC7D6E /* Promise.swift */; };
 		A35C04A321EC36AD00AC7D6E /* Chan.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35C04A221EC36AD00AC7D6E /* Chan.swift */; };
 		A35C04A521EC36C200AC7D6E /* Coroutine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A35C04A421EC36C200AC7D6E /* Coroutine.swift */; };
@@ -77,8 +79,9 @@
 /* Begin PBXFileReference section */
 		539E1B31B66ADA95F4988159 /* libPods-coobjc.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-coobjc.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		572F70044B408B04A91BE7F2 /* libPods-cocore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-cocore.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		57F0EA339DD2F6ECD1258C7C /* Pods-cocore.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cocore.debug.xcconfig"; path = "Pods/Target Support Files/Pods-cocore/Pods-cocore.debug.xcconfig"; sourceTree = "<group>"; };
-		A16FE3C1594A5EA4580560EB /* Pods-cocore.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-cocore.release.xcconfig"; path = "Pods/Target Support Files/Pods-cocore/Pods-cocore.release.xcconfig"; sourceTree = "<group>"; };
+		A34A05AF223922EC00F4E9A3 /* cofishhook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cofishhook.h; sourceTree = "<group>"; };
+		A34A05B0223922EC00F4E9A3 /* cofishhook.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = cofishhook.c; sourceTree = "<group>"; };
+		A34A05B32239244A00F4E9A3 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.1.sdk/usr/lib/libc++.tbd"; sourceTree = DEVELOPER_DIR; };
 		A35C049821EC366A00AC7D6E /* coswift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = coswift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A35C049A21EC366A00AC7D6E /* coswift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = coswift.h; sourceTree = "<group>"; };
 		A35C049B21EC366A00AC7D6E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -146,7 +149,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3608DBB417C80480370B0A6D /* libPods-cocore.a in Frameworks */,
+				A34A05B42239244A00F4E9A3 /* libc++.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,15 +166,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4F83B0FDFBBD64656B7DCD45 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				57F0EA339DD2F6ECD1258C7C /* Pods-cocore.debug.xcconfig */,
-				A16FE3C1594A5EA4580560EB /* Pods-cocore.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		A35C049921EC366A00AC7D6E /* coswift */ = {
 			isa = PBXGroup;
 			children = (
@@ -206,6 +200,8 @@
 				A372DAAD22365AFE00EF87AA /* coroutine.h */,
 				A372DAAB22365AFE00EF87AA /* coroutine.m */,
 				A372DA782236597700EF87AA /* cocore.h */,
+				A34A05AF223922EC00F4E9A3 /* cofishhook.h */,
+				A34A05B0223922EC00F4E9A3 /* cofishhook.c */,
 				A372DA792236597700EF87AA /* Info.plist */,
 			);
 			path = cocore;
@@ -272,7 +268,6 @@
 				A372DA772236597700EF87AA /* cocore */,
 				D85037D11B9C6D8400864DF0 /* Frameworks */,
 				D85037D01B9C6D8400864DF0 /* Products */,
-				4F83B0FDFBBD64656B7DCD45 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -289,6 +284,7 @@
 		D85037D11B9C6D8400864DF0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A34A05B32239244A00F4E9A3 /* libc++.tbd */,
 				A37DDF821E8A62E400E11BD9 /* Foundation.framework */,
 				A37DDF801E8A62DF00E11BD9 /* UIKit.framework */,
 				539E1B31B66ADA95F4988159 /* libPods-coobjc.a */,
@@ -362,6 +358,7 @@
 				A372DAA622365AD400EF87AA /* COCoroutine.h in Headers */,
 				A372DAA522365AD400EF87AA /* COChan.h in Headers */,
 				A372DA9822365AD400EF87AA /* co_tuple.h in Headers */,
+				A34A05B22239235700F4E9A3 /* cofishhook.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,7 +388,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A372DA7D2236597700EF87AA /* Build configuration list for PBXNativeTarget "cocore" */;
 			buildPhases = (
-				15A2746F4EC781158DA00036 /* [CP] Check Pods Manifest.lock */,
 				A372DA712236597600EF87AA /* Headers */,
 				A372DA722236597600EF87AA /* Sources */,
 				A372DA732236597600EF87AA /* Frameworks */,
@@ -492,27 +488,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		15A2746F4EC781158DA00036 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-cocore-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		A35C049421EC366A00AC7D6E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -535,6 +510,7 @@
 				A372DAC122365B0D00EF87AA /* co_csp.m in Sources */,
 				A372DAAF22365AFE00EF87AA /* coroutine_context.s in Sources */,
 				A372DAAE22365AFE00EF87AA /* coroutine_context.m in Sources */,
+				A34A05B1223922ED00F4E9A3 /* cofishhook.c in Sources */,
 				A372DAC422365B0D00EF87AA /* co_queuedebugging_support.m in Sources */,
 				A372DAC322365B0D00EF87AA /* co_autorelease.mm in Sources */,
 				A372DAB022365AFE00EF87AA /* coroutine.m in Sources */,
@@ -680,7 +656,6 @@
 		};
 		A372DA7B2236597700EF87AA /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 57F0EA339DD2F6ECD1258C7C /* Pods-cocore.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -710,7 +685,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = cocore/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -727,7 +702,6 @@
 		};
 		A372DA7C2236597700EF87AA /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A16FE3C1594A5EA4580560EB /* Pods-cocore.release.xcconfig */;
 			buildSettings = {
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
@@ -756,7 +730,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = cocore/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
 				MTL_FAST_MATH = YES;
