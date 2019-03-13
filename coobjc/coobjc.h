@@ -26,6 +26,10 @@
 #import <coobjc/COGenerator.h>
 #import <coobjc/co_tuple.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #pragma mark - Basic operator
 
 /**
@@ -226,3 +230,7 @@ NS_INLINE COActor * _Nonnull  co_actor_onqueue(dispatch_queue_t _Nullable queue,
     return (COActor*)[co resume];
 }
 
+
+#ifdef __cplusplus
+}
+#endif
