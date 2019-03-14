@@ -29,5 +29,5 @@ Archives/*
 project.xcworkspace/
 xcuserdata/
 
-
+Carthage/*
 contents.xcworkspacedata
