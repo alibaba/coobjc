@@ -16,9 +16,9 @@ Pod::Spec.new do |s|
   }
 
   s.author       = { "pengyutang125" => "pengyutang125@sina.com" }
-  s.platform     = :ios
 
   s.ios.deployment_target = '8.0'
+  s.osx.deployment_target = '10.12'
   s.requires_arc = true
 
   s.source =  { :git => "https://github.com/alibaba/coobjc.git", :tag => '1.1.1' } 
