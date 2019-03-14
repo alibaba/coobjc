@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "coobjc"
-  s.version      = "1.1.0"
+  s.version      = "1.1.1"
   s.summary      = "A coroutine framework for Objective-C"
 
   s.description  = <<-DESC
@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '8.0'
   s.osx.deployment_target = '10.12'
 
-  s.source =  { :git => "https://github.com/alibaba/coobjc.git", :tag => '1.1.0' } 
+  s.source =  { :git => "https://github.com/alibaba/coobjc.git", :tag => '1.1.1' } 
   s.source_files = 'coobjc/**/*.{h,m}'
   s.requires_arc = ['coobjc/co/*.m', 'coobjc/generator/*.m', 'coobjc/actor/*.m', 'coobjc/promise/*.m']
 
