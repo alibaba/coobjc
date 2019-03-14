@@ -16,8 +16,6 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#import <UIKit/UIKit.h>
-
 //! Project version number for coswift.
 FOUNDATION_EXPORT double coswiftVersionNumber;
 
@@ -26,6 +24,4 @@ FOUNDATION_EXPORT const unsigned char coswiftVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <coswift/PublicHeader.h>
 
-#import <cocore/co_queue.h>
-#import <cocore/coroutine.h>
-#import <cocore/co_csp.h>
+#import <cocore/cocore.h>
