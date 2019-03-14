@@ -698,10 +698,9 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-coobjcBaseExampleTests/Pods-coobjcBaseExampleTests-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-coobjcBaseExampleTests/Pods-coobjcBaseExampleTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/cocore/cocore.framework",
 				"${BUILT_PRODUCTS_DIR}/coobjc/coobjc.framework",
-				"${BUILT_PRODUCTS_DIR}/fishhook/fishhook.framework",
 				"${BUILT_PRODUCTS_DIR}/Expecta/Expecta.framework",
 				"${BUILT_PRODUCTS_DIR}/OCMock/OCMock.framework",
 				"${BUILT_PRODUCTS_DIR}/Specta/Specta.framework",
@@ -710,14 +709,13 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/cocore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/coobjc.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/fishhook.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Expecta.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OCMock.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Specta.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-coobjcBaseExampleTests/Pods-coobjcBaseExampleTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-coobjcBaseExampleTests/Pods-coobjcBaseExampleTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		76F885828FF35FC568DD04BB /* [CP] Check Pods Manifest.lock */ = {
@@ -744,20 +742,18 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-coobjcBaseExample/Pods-coobjcBaseExample-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-coobjcBaseExample/Pods-coobjcBaseExample-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/cocore/cocore.framework",
 				"${BUILT_PRODUCTS_DIR}/coobjc/coobjc.framework",
-				"${BUILT_PRODUCTS_DIR}/fishhook/fishhook.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/cocore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/coobjc.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/fishhook.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-coobjcBaseExample/Pods-coobjcBaseExample-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-coobjcBaseExample/Pods-coobjcBaseExample-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F4DCC356B7B679278FCE9BD0 /* [CP] Check Pods Manifest.lock */ = {
