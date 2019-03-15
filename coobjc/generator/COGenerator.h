@@ -21,6 +21,20 @@ void co_generator_yield_do(COGenerator *co, id _Nonnull promiseOrChan);
 
 
 /**
+ This method can get the param setted by nextWithParam,
+ gen = co_generator(^{
+     id param = co_getYieldParam();
+     yield(handleParam(param));
+     //param will be @(1), it was the value passed by nextWithValue
+ });
+ 
+ co_launch(^{
+    id value = [gen nextWithValue:@(1)];
+ });
+ */
+id _Nullable co_getYieldParam(void);
+
+/**
  The Generator object.
  */
 @interface COGenerator : COCoroutine
@@ -36,12 +50,31 @@ void co_generator_yield_do(COGenerator *co, id _Nonnull promiseOrChan);
 @property(nonatomic, strong, nullable) COChan *valueChan;
 
 
+
 /**
  The designed for Generator, used as yield/next.
  
  @return The value yiled by the Generator.
  */
 - (id _Nullable )next;
+
+
+/**
+ The designed for Generator, used as yield/nextWithParam.
+ @param param is the value will pass to yield, can use like this
+ gen = co_generator(^{
+    id param = co_getYieldParam();
+    yield(handleParam(param));
+    //param will be @(1), it was the value passed by nextWithValue
+ });
+ 
+ co_launch(^{
+    id value = [gen nextWithValue:@(1)];
+ });
+ 
+ @return The value yiled by the Generator.
+ */
+- (id _Nullable )nextWithParam:(id)param;
 
 @end
 

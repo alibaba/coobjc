@@ -78,6 +78,37 @@ describe(@"test sequence on same queue", ^{
         });
     });
     
+    it(@"yield value return param", ^{
+        COGenerator *co1 = co_sequence(^{
+            int index = 0;
+            while(co_isActive()){
+                NSLog(@"==== before yield val %d", index);
+                
+                int param = [co_getYieldParam() intValue];
+                expect(param == 5).beTruthy();
+                yield_val(@(index));
+                
+                NSLog(@"==== after yield val %d", index);
+                index++;
+            }
+        });
+        __block int val = 0;
+        co_launch(^{
+            for(int i = 0; i < 10; i++){
+                NSLog(@"==== before next val %d", i);
+                val = [[co1 nextWithParam:@(5)] intValue];
+                NSLog(@"==== after next val %d", val);
+            }
+            [co1 cancel];
+        });
+        waitUntilTimeout(2.0, ^(DoneCallback done) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                XCTAssert(val == 9);
+                done();
+            });
+        });
+    });
+    
     it(@"yield value chain", ^{
         COGenerator *co1 = co_sequence(^{
             int index = 0;
@@ -122,6 +153,34 @@ describe(@"test sequence on same queue", ^{
         co_launch(^{
             for(int i = 0; i < 10; i++){
                 NSData *data = [co1 next];
+                val += data.length;
+                //val = [[co1 next] intValue];
+            }
+            [co1 cancel];
+        });
+        waitUntilTimeout(5.0, ^(DoneCallback done) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                expect(val == filebytes * 10).beTruthy();
+                expect(count).equal(10);
+                done();
+            });
+        });
+    });
+    
+    it(@"yield promise return param", ^{
+        __block int count = 0;
+        COGenerator *co1 = co_sequence(^{
+            while(co_isActive()){
+                int param = [co_getYieldParam() intValue];
+                expect(param == 10).beTruthy();
+                yield( count++; co_downloadWithURL(@"http://pytstore.oss-cn-shanghai.aliyuncs.com/GalileoShellApp.ipa"));
+            }
+        });
+        int filebytes = 248564;
+        __block int val = 0;
+        co_launch(^{
+            for(int i = 0; i < 10; i++){
+                NSData *data = [co1 nextWithParam:@(10)];
                 val += data.length;
                 //val = [[co1 next] intValue];
             }

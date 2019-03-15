@@ -40,6 +40,22 @@ void co_generator_yield_do(COGenerator *co, id _Nonnull promiseOrChanOrElse) {
 }
 
 
+@interface COGenerator ()
+
+@property(strong) id nextParamValue;
+
+@end
+
+id _Nullable co_getYieldParam(){
+    COGenerator *gen = (COGenerator*)[COCoroutine currentCoroutine];
+    if ([gen isKindOfClass:[COGenerator class]]) {
+        return gen.nextParamValue;
+    }
+    return nil;
+}
+
+
+
 @implementation COGenerator
 
 - (instancetype)initWithBlock:(void (^)(void))block onQueue:(dispatch_queue_t)queue stackSize:(NSUInteger)stackSize {
@@ -66,6 +82,11 @@ void co_generator_yield_do(COGenerator *co, id _Nonnull promiseOrChanOrElse) {
         return nil;
     }
     return [self.valueChan receive];
+}
+
+- (id)nextWithParam:(id)param{
+    self.nextParamValue = param;
+    return [self next];
 }
 
 @end
