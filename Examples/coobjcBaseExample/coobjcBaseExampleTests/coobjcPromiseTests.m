@@ -161,7 +161,33 @@ static COProgressPromise* progressDownloadFileFromUrl(NSString *url){
         }
     }];
     [task resume];
-    [promise setupWithProgress:task.progress];
+    if (@available(iOS 11.0, *)) {
+        [promise setupWithProgress:task.progress];
+    } else {
+        // Fallback on earlier versions
+        NSProgress *progress = [NSProgress progressWithTotalUnitCount:10];
+        
+        [promise setupWithProgress:progress];
+
+        
+        dispatch_source_t timer = nil;
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+        dispatch_source_set_timer(timer, dispatch_walltime(NULL, 0), 0.1 * NSEC_PER_SEC, 0 * NSEC_PER_SEC);
+        dispatch_source_set_event_handler(timer, ^{
+            if (progress.completedUnitCount < progress.totalUnitCount) {
+                progress.completedUnitCount += 1;
+            }
+            else{
+                dispatch_source_cancel(timer);
+            }
+        });
+        dispatch_resume(timer);
+        
+        [promise onCancel:^(COPromise * _Nonnull promise) {
+            dispatch_source_cancel(timer);
+        }];
+    }
     return promise;
 }
 

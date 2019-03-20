@@ -128,10 +128,7 @@ static void co_obj_dispose(void *coObj) {
 }
 
 - (BOOL)isCurrentQueue {
-    if (co_get_current_queue() == self.queue) {
-        return YES;
-    }
-    return NO;
+    return co_is_current_queue_equal(self.queue);
 }
 
 + (COCoroutine *)currentCoroutine {
@@ -178,9 +175,10 @@ static void co_obj_dispose(void *coObj) {
 
 - (void)performBlockOnQueue:(dispatch_block_t)block {
     dispatch_queue_t queue = self.queue;
-    if (queue == co_get_current_queue()) {
+    if (co_is_current_queue_equal(queue)) {
         block();
-    } else {
+    }
+    else{
         dispatch_async(queue, block);
     }
 }

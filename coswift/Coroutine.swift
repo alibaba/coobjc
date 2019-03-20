@@ -166,9 +166,10 @@ open class Coroutine {
     
     /// Execute code on the coroutine's queue
     private func performBlockOnQueue(block: @escaping ()->Void ) {
-        if co_get_current_queue() == self.queue {
+        if co_is_current_queue_equal(self.queue){
             block()
-        } else {
+        }
+        else{
             self.queue.async {
                 block()
             }

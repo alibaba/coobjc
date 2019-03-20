@@ -31,5 +31,11 @@
  */
 dispatch_queue_t co_get_current_queue(void);
 
+/**
+ check the current queue is equal to q.
+ 
+ @return YES if the current queue is equal to q, NO ifthe current queue is not equal to q
+ */
+BOOL co_is_current_queue_equal(dispatch_queue_t q);
 
 #endif /* co_queue_h */

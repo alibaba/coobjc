@@ -265,20 +265,18 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-coSwiftDemo/Pods-coSwiftDemo-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/cocore-iOS11.0/cocore.framework",
-				"${BUILT_PRODUCTS_DIR}/coswift-iOS11.0/coswift.framework",
-				"${BUILT_PRODUCTS_DIR}/fishhook-iOS11.0/fishhook.framework",
+				"${PODS_ROOT}/Target Support Files/Pods-coSwiftDemo/Pods-coSwiftDemo-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/cocore-iOS10.0/cocore.framework",
+				"${BUILT_PRODUCTS_DIR}/coswift-iOS10.0/coswift.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/cocore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/coswift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/fishhook.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-coSwiftDemo/Pods-coSwiftDemo-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-coSwiftDemo/Pods-coSwiftDemo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		3CB0D2E8875A209F43DBBCA4 /* [CP] Check Pods Manifest.lock */ = {
@@ -305,10 +303,9 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-coSwiftDemoTests/Pods-coSwiftDemoTests-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-coSwiftDemoTests/Pods-coSwiftDemoTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/cocore-iOS12.1/cocore.framework",
 				"${BUILT_PRODUCTS_DIR}/coswift-iOS12.1/coswift.framework",
-				"${BUILT_PRODUCTS_DIR}/fishhook-iOS12.1/fishhook.framework",
 				"${BUILT_PRODUCTS_DIR}/Nimble/Nimble.framework",
 				"${BUILT_PRODUCTS_DIR}/Quick/Quick.framework",
 			);
@@ -316,13 +313,12 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/cocore.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/coswift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/fishhook.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Nimble.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Quick.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-coSwiftDemoTests/Pods-coSwiftDemoTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-coSwiftDemoTests/Pods-coSwiftDemoTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -501,7 +497,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8JWVBB5S2P;
 				INFOPLIST_FILE = coSwiftDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.nj.coSwiftDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -518,7 +514,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8JWVBB5S2P;
 				INFOPLIST_FILE = coSwiftDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.nj.coSwiftDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
