@@ -266,8 +266,46 @@ public class Promise<T> {
         return promise
     }
     
+    private func chainedPromise<U>(chainedFulfill: @escaping ((T) -> Promise<U>), chainedReject: ((Error) -> Error)?) -> Promise<U> {
+        
+        let promise = Promise<U>()
+        
+        let fulfillr = { (val: U) in
+            promise.fulfill(value: val)
+        }
+        
+        let rejectr = { (error: Error) in
+            promise.reject(error: error)
+        }
+        
+        self.observe(fulfill: { (val: T) in
+            
+            let ret = chainedFulfill(val)
+            ret.observe(fulfill: { (val2: U) in
+                fulfillr(val2)
+            }, reject: { (err) in
+                rejectr(err)
+            })
+            
+        }) { (err: Error) in
+            
+            if let chainedRejectBlock = chainedReject {
+                let ret = chainedRejectBlock(err)
+                rejectr(ret)
+            } else {
+                rejectr(err)
+            }
+        }
+        return promise
+    }
+    
     @discardableResult
     public func then<U>(work: @escaping (T) -> U) -> Promise<U> {
+        return self.chainedPromise(chainedFulfill: work, chainedReject: nil)
+    }
+    
+    @discardableResult
+    public func then<U>(work: @escaping (T) -> Promise<U>) -> Promise<U> {
         return self.chainedPromise(chainedFulfill: work, chainedReject: nil)
     }
     

@@ -73,6 +73,18 @@ func testPromise22() -> Promise<String> {
     }
 }
 
+func promiseAsyncA(parameter: String) -> Promise<String> {
+    return Promise<String>(constructor: { (fulfill, _) in
+        fulfill(parameter + "promiseAsyncA")
+    })
+}
+
+func promiseAsyncB(parameter: String) -> Promise<String> {
+    return Promise<String>(constructor: { (fulfill, _) in
+        fulfill(parameter + "promiseAsyncB")
+    })
+}
+
 class PromiseSpec: QuickSpec {
     
     
@@ -284,6 +296,15 @@ class PromiseSpec: QuickSpec {
                         done()
                     }
                 })
+            }
+            
+            it("test chained promise") {
+                
+                promiseAsyncA(parameter: "A")
+                    .then { (msg)  in promiseAsyncB(parameter: msg) }
+                    .then { (promiseB) -> Void in
+                        expect(promiseB).to(equal("ApromiseAsyncApromiseAsyncB"))
+                }
             }
         }
     }
