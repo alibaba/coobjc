@@ -306,6 +306,55 @@ class PromiseSpec: QuickSpec {
                         expect(promiseB).to(equal("ApromiseAsyncApromiseAsyncB"))
                 }
             }
+            
+            it("test co delay") {
+                
+                let queue = DispatchQueue(label: "queue")
+                var step = 0
+                let co = co_launch(queue: queue) {
+                    
+                    print("time before:\(Date())")
+                    
+                    try co_delay(3)
+                    step = 1
+                    print("time after:\(Date())")
+                }
+                
+                waitUntil(timeout: 5, action: { (done) in
+                    
+                    co_launch {
+                        co.join()
+                        expect(step).to(equal(1))
+                        done()
+                    }
+                })
+            }
+            
+            it("test cancel co delay") {
+                
+                let queue = DispatchQueue(label: "queue")
+                var step = 0
+                let co = co_launch(queue: queue) {
+                    
+                    print("time before:\(Date())")
+                    
+                    try co_delay(3)
+                    step = 1
+                    print("time after:\(Date())")
+                }
+                
+                waitUntil(timeout: 5, action: { (done) in
+                    
+                    co_launch {
+                        co.cancelAndJoin()
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+                            expect(step).to(equal(0))
+                            done()
+                        })
+                    }
+                })
+            }
         }
     }
 }

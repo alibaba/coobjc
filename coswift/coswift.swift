@@ -112,3 +112,30 @@ public var co_isActive: Bool {
         return Coroutine.isActive()
     }
 }
+
+
+/// co_delay, pause current coroutine seconds.
+///
+/// - Parameter seconds: paused time
+/// - Throws: If coroutine cancel, throws.
+public func co_delay(_ seconds: TimeInterval) throws {
+    let chan = Chan<Int>()
+    
+    let queue = co_get_current_queue()
+    
+    let timer = DispatchSource.makeTimerSource(queue: queue)
+    
+    timer.setEventHandler {
+        timer.cancel()
+        chan.send_nonblock(val: 1)
+    }
+    timer.schedule(deadline: .now() + seconds, repeating: .never)
+    
+    chan.onCancel = { _ in
+        timer.cancel()
+    }
+    
+    timer.resume()
+    
+    try _ = chan.receive()
+}
