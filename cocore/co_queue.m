@@ -31,13 +31,13 @@ dispatch_queue_t co_get_current_queue() {
     kern_return_t kr = thread_info(thread,
                                    THREAD_IDENTIFIER_INFO, (thread_info_t)&tiid, &cnt);
     if (kr == KERN_SUCCESS) {
-        ptrdiff_t thread_queue_offset = (void*)(uintptr_t)tiid.dispatch_qaddr - (void*)thread;
+        ptrdiff_t thread_queue_offset = (ptrdiff_t)(tiid.dispatch_qaddr - thread);
         
         if (thread_queue_offset == 0) {
             return nil;
         }
         else{
-            __unsafe_unretained dispatch_queue_t *qptr = (__unsafe_unretained dispatch_queue_t *)((void*)thread + thread_queue_offset);
+            __unsafe_unretained dispatch_queue_t *qptr = (__unsafe_unretained dispatch_queue_t *)(void*)(thread + thread_queue_offset);
             return *qptr;
         }
     }
@@ -54,13 +54,13 @@ BOOL co_is_current_queue_equal(dispatch_queue_t q){
     kern_return_t kr = thread_info(thread,
                                    THREAD_IDENTIFIER_INFO, (thread_info_t)&tiid, &cnt);
     if (kr == KERN_SUCCESS) {
-        ptrdiff_t thread_queue_offset = (void*)(uintptr_t)tiid.dispatch_qaddr - (void*)thread;
+        ptrdiff_t thread_queue_offset = (ptrdiff_t)(tiid.dispatch_qaddr - thread);
         
         if (thread_queue_offset == 0) {
             return NO;
         }
         else{
-            void *qptr = *((void**)((void*)thread + thread_queue_offset));
+            void *qptr = *((void**)(void*)(thread + thread_queue_offset));
             void *originptr = (__bridge void*)q;
             return originptr == qptr;
         }
