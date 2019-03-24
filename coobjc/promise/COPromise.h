@@ -58,7 +58,7 @@ typedef void (^COPromiseReject)(NSError *);
 /**
  Define the constructor's prototype
  */
-typedef void (^COPromiseConstructor)(COPromiseFulfill fullfill, COPromiseReject reject);
+typedef void (^COPromiseConstructor)(COPromiseFulfill fulfill, COPromiseReject reject);
 
 /**
  Tell the promise is pending or not.

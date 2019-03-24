@@ -57,23 +57,23 @@ static id testPromise2() {
 }
 
 static COPromise *testPromise11() {
-    return [COPromise promise:^(COPromiseFulfill  _Nonnull fullfill, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull fulfill, COPromiseReject  _Nonnull reject) {
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            fullfill(@"1");
+            fulfill(@"1");
         });
     }];
 }
 static COPromise *testPromise12() {
-    return [COPromise promise:^(COPromiseFulfill  _Nonnull fullfill, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull fulfill, COPromiseReject  _Nonnull reject) {
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            fullfill(@"2");
+            fulfill(@"2");
         });
     }];
 }
 static COPromise *testPromise13() {
-    return [COPromise promise:^(COPromiseFulfill  _Nonnull fullfill, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull fulfill, COPromiseReject  _Nonnull reject) {
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             reject([NSError errorWithDomain:@"aa" code:3 userInfo:@{}]);
@@ -82,19 +82,19 @@ static COPromise *testPromise13() {
 }
 
 static COPromise *testPromise21() {
-    return [COPromise promise:^(COPromiseFulfill  _Nonnull fullfill, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull fulfill, COPromiseReject  _Nonnull reject) {
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            fullfill(@"1");
+            fulfill(@"1");
         });
     }];
 }
 
 static COPromise *testPromise22() {
-    return [COPromise promise:^(COPromiseFulfill  _Nonnull fullfill, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull fulfill, COPromiseReject  _Nonnull reject) {
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            fullfill(@"2");
+            fulfill(@"2");
         });
     }];
 }

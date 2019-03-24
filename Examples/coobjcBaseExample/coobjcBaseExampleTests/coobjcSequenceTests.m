@@ -26,7 +26,7 @@
 
 static COPromise<NSData *> *co_downloadWithURL(NSString *url) {
     
-    return [COPromise promise:^(COPromiseFulfill  _Nonnull fullfill, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull fulfill, COPromiseReject  _Nonnull reject) {
         
         [NSURLSession sharedSession].configuration.requestCachePolicy = NSURLRequestReloadIgnoringCacheData;
         NSURLSessionDownloadTask *task = [[NSURLSession sharedSession] downloadTaskWithURL:[NSURL URLWithString:url] completionHandler:
@@ -38,7 +38,7 @@ static COPromise<NSData *> *co_downloadWithURL(NSString *url) {
                                               else{
                                                   NSData *data = [[NSData alloc] initWithContentsOfURL:location];
                                                   
-                                                  fullfill(data);
+                                                  fulfill(data);
                                                   return;
                                               }
                                           }];

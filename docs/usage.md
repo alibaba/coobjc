@@ -592,7 +592,7 @@ first create a promise that resolve tuple value
 ```objc
 COPromise<COTuple*>*
 cotest_loadContentFromFile(NSString *filePath){
-    return [COPromise promise:^(COPromiseFullfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         if ([[NSFileManager defaultManager] fileExistsAtPath:filePath]) {
             NSData *data = [[NSData alloc] initWithContentsOfFile:filePath];
             resolve(co_tuple(filePath, data, nil));
