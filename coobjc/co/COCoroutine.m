@@ -394,12 +394,13 @@ NSArray *co_batch_await(NSArray * awaitableList) {
     }
     
     NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:awaitableList.count];
+    COCoroutine *currentCo = [COCoroutine currentCoroutine];
     for (COChan *chan in resultAwaitable) {
-        if (![COCoroutine isActive]) {
+        if ([currentCo isCancelled]) {
             [result addObject:[NSNull null]];
         } else {
             id val = co_await(chan);
-            if (![COCoroutine isActive]) {
+            if ([currentCo isCancelled]) {
                 [result addObject:[NSNull null]];
             } else {
                 [result addObject:val ? val : [NSNull null]];
