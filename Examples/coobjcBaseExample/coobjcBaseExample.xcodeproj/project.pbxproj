@@ -75,6 +75,7 @@
 		1827C5C7219C27240004CE59 /* coobjcDelayTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1827C5C6219C27240004CE59 /* coobjcDelayTests.m */; };
 		183F724121C748050041C32B /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1820749F21C0B235001A5021 /* libc++.tbd */; };
 		18BC88C321BDFE6200EF3D9B /* coobjcTupleTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 18BC88C221BDFE6200EF3D9B /* coobjcTupleTests.m */; };
+		18E5DBB72244F93800CF7F79 /* coobjcCrashCaseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 18E5DBB62244F93800CF7F79 /* coobjcCrashCaseTests.m */; };
 		18E74C1F21AE96EF003A9065 /* coobjcActorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 18E74C1E21AE96EF003A9065 /* coobjcActorTests.m */; };
 		271A9116FD9B174652987DBC /* Pods_coobjcBaseExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93266E644FEE5E937368A22C /* Pods_coobjcBaseExampleTests.framework */; };
 		6C8FA938FA4493592B35DB03 /* Pods_coobjcBaseExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C0EDBBC51139E6F2687ED2 /* Pods_coobjcBaseExample.framework */; };
@@ -204,6 +205,7 @@
 		1827C5C4219C1E820004CE59 /* coobjcSequenceTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = coobjcSequenceTests.m; sourceTree = "<group>"; };
 		1827C5C6219C27240004CE59 /* coobjcDelayTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = coobjcDelayTests.m; sourceTree = "<group>"; };
 		18BC88C221BDFE6200EF3D9B /* coobjcTupleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = coobjcTupleTests.m; sourceTree = "<group>"; };
+		18E5DBB62244F93800CF7F79 /* coobjcCrashCaseTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = coobjcCrashCaseTests.m; sourceTree = "<group>"; };
 		18E74C1E21AE96EF003A9065 /* coobjcActorTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = coobjcActorTests.m; sourceTree = "<group>"; };
 		236D98A1BE2319FA437A7584 /* Pods-coobjcBaseExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-coobjcBaseExample.release.xcconfig"; path = "Pods/Target Support Files/Pods-coobjcBaseExample/Pods-coobjcBaseExample.release.xcconfig"; sourceTree = "<group>"; };
 		37C0EDBBC51139E6F2687ED2 /* Pods_coobjcBaseExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_coobjcBaseExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -562,6 +564,7 @@
 				18BC88C221BDFE6200EF3D9B /* coobjcTupleTests.m */,
 				1820749D21C0AA65001A5021 /* coobjcAutoreleaseTests.m */,
 				182074A121C0DB8F001A5021 /* coobjcAutoreleaseArcTests.m */,
+				18E5DBB62244F93800CF7F79 /* coobjcCrashCaseTests.m */,
 			);
 			path = coobjcBaseExampleTests;
 			sourceTree = "<group>";
@@ -833,6 +836,7 @@
 				1827C5B1219BC9C30004CE59 /* coobjcBaseExampleTests.m in Sources */,
 				1820749E21C0AA65001A5021 /* coobjcAutoreleaseTests.m in Sources */,
 				A3FAA92721A2F7C400605F27 /* coobjcPromiseTests.m in Sources */,
+				18E5DBB72244F93800CF7F79 /* coobjcCrashCaseTests.m in Sources */,
 				1827C5BC219BCBD60004CE59 /* coobjcCreateTests.m in Sources */,
 				1827C5C5219C1E820004CE59 /* coobjcSequenceTests.m in Sources */,
 				1827C5BE219BF6770004CE59 /* coobjcCancelTests.m in Sources */,
@@ -988,15 +992,15 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8JWVBB5S2P;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = M8CRQC87AC;
 				INFOPLIST_FILE = coobjcBaseExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.fantasy.coobjcBaseExample.1123;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = tmall_dev_all;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1007,8 +1011,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8JWVBB5S2P;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = coobjcBaseExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1025,8 +1029,8 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8JWVBB5S2P;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = M8CRQC87AC;
 				INFOPLIST_FILE = coobjcBaseExampleTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -1044,8 +1048,8 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 8JWVBB5S2P;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = coobjcBaseExampleTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";

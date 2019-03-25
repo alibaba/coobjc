@@ -25,6 +25,7 @@ NSString *const COInvalidException = @"COInvalidException";
 
 @interface COCoroutine ()
 
+@property (nonatomic, strong) NSMutableArray *currentChanList;
 @property(nonatomic, assign) BOOL isFinished;
 @property(nonatomic, assign) BOOL isCancelled;
 @property(nonatomic, assign) BOOL isResume;
@@ -119,6 +120,13 @@ static void co_obj_dispose(void *coObj) {
     return self;
 }
 
+- (NSMutableArray*)currentChanList{
+    if (!_currentChanList) {
+        _currentChanList = [[NSMutableArray alloc] init];
+    }
+    return _currentChanList;
+}
+
 - (void)setParam:(id)value forKey:(NSString *)key {
     [_parameters setValue:value forKey:key];
 }
@@ -201,10 +209,21 @@ static void co_obj_dispose(void *coObj) {
     if (co) {
         co->is_cancelled = YES;
     }
-    
-    COChan *chan = self.currentChan;
-    if (chan) {
+    NSArray *list = [self.currentChanList copy];
+    [self.currentChanList removeAllObjects];
+    for (COChan *chan in list) {
         [chan cancel];
+    }
+}
+
+- (void)addCurrentChan:(COChan*)chan{
+    if (chan) {
+        [self.currentChanList addObject:chan];
+    }
+}
+- (void)removeCurrentChan:(COChan*)chan{
+    if (chan) {
+        [self.currentChanList removeObject:chan];
     }
 }
 
@@ -353,6 +372,9 @@ NSArray *co_batch_await(NSArray * awaitableList) {
         return nil;
     }
     
+    COCoroutine *co = co_get_obj(t);
+
+    
     NSMutableArray *resultAwaitable = [[NSMutableArray alloc] initWithCapacity:awaitableList.count];
 
     for (id awaitable in awaitableList) {
@@ -364,12 +386,10 @@ NSArray *co_batch_await(NSArray * awaitableList) {
         } else if ([awaitable isKindOfClass:[COPromise class]]) {
             
             COChan *chan = [COChan chanWithBuffCount:1];
-            COCoroutine *co = co_get_obj(t);
             
             COPromise *promise = awaitable;
             [[promise
               then:^id _Nullable(id  _Nullable value) {
-                  
                   [chan send_nonblock:value];
                   return value;
               }]
@@ -395,7 +415,15 @@ NSArray *co_batch_await(NSArray * awaitableList) {
     
     NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:awaitableList.count];
     for (COChan *chan in resultAwaitable) {
-        id val = co_await(chan);
+        id val = nil;
+        if ([co isCancelled]) {
+            val = [chan receive_nonblock];
+            [chan cancel];
+        }
+        else{
+            val = co_await(chan);
+        }
+        
         [result addObject:val ? val : [NSNull null]];
     }
     return result.copy;

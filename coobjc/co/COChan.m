@@ -82,10 +82,9 @@ static void co_chan_custom_resume(coroutine_t *co) {
         NSAssert(false, @"send blocking must call in a coroutine.");
         return;
     }
-    
-    co.currentChan = self;
+    [co addCurrentChan:self];
     chansendp(_chan, (__bridge_retained void *)val);
-    co.currentChan = nil;
+    [co removeCurrentChan:self];
 }
 
 - (id)receive {
@@ -94,12 +93,13 @@ static void co_chan_custom_resume(coroutine_t *co) {
     if (!co) {
         return nil;
     }
-    co.currentChan = self;
+    [co addCurrentChan:self];
 //    co.lastError = nil;
     
     void *ret = chanrecvp(_chan);
     
-    co.currentChan = nil;
+    [co removeCurrentChan:self];
+
     if (ret == NULL) {
         return nil;
     } else {

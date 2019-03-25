@@ -92,7 +92,7 @@ extern NSString *const COInvalidException;
 /**
  If `COCoroutine is suspend by a Channel, this pointer mark it.
  */
-@property(nonatomic, strong, nullable) COChan *currentChan;
+//@property(nonatomic, strong, nullable) COChan *currentChan;
 
 /**
  The lastError marked in the Coroutine.
@@ -191,6 +191,10 @@ extern NSString *const COInvalidException;
  Add to scheduler, if scheduler is idle, resume it.
  */
 - (void)addToScheduler;
+
+
+- (void)addCurrentChan:(COChan*)chan;
+- (void)removeCurrentChan:(COChan*)chan;
 
 @end
 

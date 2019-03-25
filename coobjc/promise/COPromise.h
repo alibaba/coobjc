@@ -85,6 +85,7 @@ typedef void (^COPromiseConstructor)(COPromiseFulfill fullfill, COPromiseReject 
  */
 @property(nonatomic, readonly, nullable) NSError *error;
 
+@property (nonatomic, copy) NSString *tag;
 
 /**
  Create a promise without constructor. Which means, you should control when the job begins.
