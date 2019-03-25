@@ -47,7 +47,7 @@ public class Chan<T> {
     public init(buffCount: Int32) {
         
         self.buffCount = buffCount
-        let eleSize = Int32(MemoryLayout<UInt>.size)
+        let eleSize = Int32(MemoryLayout<Int8>.size)
         cchan = chancreate(eleSize, buffCount, co_chan_custom_resume)
     }
     
@@ -71,10 +71,12 @@ public class Chan<T> {
                 self.cancel()
             }
             
-            lock.lock()
-            buffList.append(val)
-            lock.unlock()
-            chansendul(cchan, 1);
+            do {
+                lock.lock()
+                defer { lock.unlock() }
+                buffList.append(val)
+            }
+            chansendi8(cchan, 1);
             co.chanCancelBlock = nil
             if cancelled {
                 throw COError.coroutineCancelled
@@ -84,10 +86,12 @@ public class Chan<T> {
     
     public func send_nonblock(val: T) {
         
-        lock.lock()
-        buffList.append(val)
-        lock.unlock()
-        channbsendul(cchan, 1)
+        do {
+            lock.lock()
+            defer { lock.unlock() }
+            buffList.append(val)
+        }
+        channbsendi8(cchan, 1)
     }
     
     public func receive() throws -> T {
@@ -97,15 +101,17 @@ public class Chan<T> {
             co.chanCancelBlock = {
                 self.cancel()
             }
-            let ret = chanrecvul(cchan);
+            let ret = chanrecvi8(cchan);
             co.chanCancelBlock = nil
 
             if ret == 1 {
                 
-                lock.lock()
-                let obj = buffList.removeFirst()
-                lock.unlock()
-                return obj
+                do {
+                    lock.lock()
+                    defer { lock.unlock() }
+                    let obj = buffList.removeFirst()
+                    return obj
+                }
             } else {
                 throw COError.coroutineCancelled
             }
@@ -117,12 +123,14 @@ public class Chan<T> {
     
     public func receive_nonblock() -> T? {
      
-        let ret = channbrecvul(cchan)
+        let ret = channbrecvi8(cchan)
         if ret == 1 {
-            lock.lock()
-            let obj = buffList.removeFirst()
-            lock.unlock()
-            return obj
+            do {
+                lock.lock()
+                defer { lock.unlock() }
+                let obj = buffList.removeFirst()
+                return obj
+            }
         } else {
             return nil
         }
@@ -146,11 +154,11 @@ public class Chan<T> {
             
             if blockingSend > 0 {
                 for _ in 0..<blockingSend {
-                    chanrecvul(cchan)
+                    channbrecvi8(cchan)
                 }
             } else if blockingReceive > 0 {
                 for _ in 0..<blockingReceive {
-                    chansendul(cchan, 0)
+                    channbsendi8(cchan, 0)
                 }
             }
         }

@@ -204,6 +204,42 @@ int chansendp(co_channel *c, void *v);
 int chansendul(co_channel *c, unsigned long v);
 
 /**
+ Blocking send a int8_t value to channel.
+ 
+ @param c channel
+ @param val the int8 value
+ @return 1 success, else fail.
+ */
+int chansendi8(co_channel *c, int8_t val);
+
+/**
+ Blocking receive a int8_t value from channel.
+ 
+ If no one sending, and buffer is empty, blocking the current coroutine.
+ 
+ @param c channel
+ @return received int8_t value.
+ */
+int8_t chanrecvi8(co_channel *c);
+
+/**
+ Non-blocking send a int8_t value to channel.
+ 
+ @param c channel
+ @param val the int8_t value
+ @return 1 success, else fail.
+ */
+int channbsendi8(co_channel *c, int8_t val);
+
+/**
+ Non-blocking receive a int8_t value from channel.
+ 
+ @param c channel
+ @return received int8_t value.
+ */
+int8_t channbrecvi8(co_channel *c);
+
+/**
  Get the blocking task count.
  */
 int changetblocking(co_channel *c, int *sendBlockingCount, int *receiveBlockingCount);

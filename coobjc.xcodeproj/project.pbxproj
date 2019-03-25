@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A302BD5C2248D11700411E67 /* COLock.h in Headers */ = {isa = PBXBuildFile; fileRef = A302BD5B2248D11700411E67 /* COLock.h */; };
 		A34A05B1223922ED00F4E9A3 /* cofishhook.c in Sources */ = {isa = PBXBuildFile; fileRef = A34A05B0223922EC00F4E9A3 /* cofishhook.c */; };
 		A34A05B22239235700F4E9A3 /* cofishhook.h in Headers */ = {isa = PBXBuildFile; fileRef = A34A05AF223922EC00F4E9A3 /* cofishhook.h */; };
 		A34A05B42239244A00F4E9A3 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A34A05B32239244A00F4E9A3 /* libc++.tbd */; };
@@ -79,6 +80,7 @@
 /* Begin PBXFileReference section */
 		539E1B31B66ADA95F4988159 /* libPods-coobjc.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-coobjc.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		572F70044B408B04A91BE7F2 /* libPods-cocore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-cocore.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A302BD5B2248D11700411E67 /* COLock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COLock.h; sourceTree = "<group>"; };
 		A34A05AF223922EC00F4E9A3 /* cofishhook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cofishhook.h; sourceTree = "<group>"; };
 		A34A05B0223922EC00F4E9A3 /* cofishhook.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = cofishhook.c; sourceTree = "<group>"; };
 		A34A05B32239244A00F4E9A3 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.1.sdk/usr/lib/libc++.tbd"; sourceTree = DEVELOPER_DIR; };
@@ -252,6 +254,7 @@
 		A372DA9122365AD400EF87AA /* co */ = {
 			isa = PBXGroup;
 			children = (
+				A302BD5B2248D11700411E67 /* COLock.h */,
 				A372DA9222365AD400EF87AA /* COChan.h */,
 				A372DA9422365AD400EF87AA /* COChan.m */,
 				A372DA9322365AD400EF87AA /* COCoroutine.h */,
@@ -353,6 +356,7 @@
 				A372DA9D22365AD400EF87AA /* COActorChan.h in Headers */,
 				A372DA9C22365AD400EF87AA /* COGenerator.h in Headers */,
 				A372DAA422365AD400EF87AA /* COActor.h in Headers */,
+				A302BD5C2248D11700411E67 /* COLock.h in Headers */,
 				A372DAA022365AD400EF87AA /* COActorCompletable.h in Headers */,
 				A372DA9A22365AD400EF87AA /* coobjc.h in Headers */,
 				A372DAA622365AD400EF87AA /* COCoroutine.h in Headers */,

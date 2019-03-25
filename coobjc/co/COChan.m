@@ -19,6 +19,9 @@
 #import "COChan.h"
 #import <cocore/cocore.h>
 #import "COCoroutine.h"
+#import "COLock.h"
+
+static NSString *const kCOChanNilObj = @"kCOChanNilObj";
 
 static void co_chan_custom_resume(coroutine_t *co) {
     [co_get_obj(co) addToScheduler];
@@ -28,10 +31,12 @@ static void co_chan_custom_resume(coroutine_t *co) {
 {
     co_channel *_chan;
     BOOL _cancelled;
+    dispatch_semaphore_t    _buffLock;
 }
 
 @property(nonatomic, assign) int count;
 @property(nonatomic, copy) COChanOnCancelBlock cancelBlock;
+@property(nonatomic, strong) NSMutableArray *buffList;
 
 @end
 
@@ -39,12 +44,6 @@ static void co_chan_custom_resume(coroutine_t *co) {
 
 - (void)dealloc {
     // free the remain objects in buffer.
-    if (_chan->buffer.count > 0) {
-        for (int i = 0; i < _chan->buffer.count; i++) {
-            void *cacheVal = (void *)(_chan->buffer.arr + i * _chan->buffer.elemsize);
-            __unused id val = (__bridge_transfer id)cacheVal;
-        }
-    }
     if (_chan) {
         chanfree(_chan);
     }
@@ -68,8 +67,10 @@ static void co_chan_custom_resume(coroutine_t *co) {
 - (instancetype)initWithBuffCount:(int32_t)buffCount {
     self = [super init];
     if (self) {
-        _chan = chancreate(sizeof(void *), buffCount, co_chan_custom_resume);
+        _chan = chancreate(sizeof(int8_t), buffCount, co_chan_custom_resume);
         _cancelled = NO;
+        _buffList = [[NSMutableArray alloc] init];
+        COOBJC_LOCK_INIT(_buffLock);
     }
     return self;
 }
@@ -84,7 +85,11 @@ static void co_chan_custom_resume(coroutine_t *co) {
     }
     
     co.currentChan = self;
-    chansendp(_chan, (__bridge_retained void *)val);
+    do {
+        COOBJC_SCOPELOCK(_buffLock);
+        [self.buffList addObject:val ?: kCOChanNilObj];
+    } while(0);
+    chansendi8(_chan, 1);
     co.currentChan = nil;
 }
 
@@ -94,47 +99,70 @@ static void co_chan_custom_resume(coroutine_t *co) {
     if (!co) {
         return nil;
     }
+    
     co.currentChan = self;
-//    co.lastError = nil;
-    
-    void *ret = chanrecvp(_chan);
-    
+    int8_t ret = chanrecvi8(_chan);
     co.currentChan = nil;
-    if (ret == NULL) {
-        return nil;
+    
+    if (ret == 1) {
+        
+        do {
+            COOBJC_SCOPELOCK(_buffLock);
+            NSMutableArray *buffList = self.buffList;
+            if (buffList.count > 0) {
+                id obj = buffList.firstObject;
+                [buffList removeObjectAtIndex:0];
+                if (obj == kCOChanNilObj || [self isCancelled]) {
+                    obj = nil;
+                }
+                return obj;
+            } else {
+                return nil;
+            }
+
+        } while(0);
+        
     } else {
-        id val = (__bridge_transfer id)ret;
-        if ([self isCancelled]) {
-            return nil;
-        } else {
-            return val;
-        }
+        // ret not 1, means cancelled.
+        return nil;
     }
 }
 
 - (void)send_nonblock:(id)val {
     
-    channbsendp(_chan, (__bridge_retained void *)val);
+    do {
+        COOBJC_SCOPELOCK(_buffLock);
+        [self.buffList addObject:val ?: kCOChanNilObj];
+    } while(0);
+    
+    channbsendi8(_chan, 1);
 }
 
 - (id)receive_nonblock {
     
-    COCoroutine *co = [COCoroutine currentCoroutine];
-    co.lastError = nil;
+    int8_t ret = channbrecvi8(_chan);
     
-    void *ret = NULL;
-    __unused int st = channbrecv(_chan, (void *)&ret);
-
-    if (ret == NULL) {
-        return nil;
+    if (ret == 1) {
+        
+        do {
+            COOBJC_SCOPELOCK(_buffLock);
+            NSMutableArray *buffList = self.buffList;
+            if (buffList.count > 0) {
+                id obj = buffList.firstObject;
+                [buffList removeObjectAtIndex:0];
+                if (obj == kCOChanNilObj || [self isCancelled]) {
+                    obj = nil;
+                }
+                return obj;
+            } else {
+                return nil;
+            }
+            
+        } while(0);
+        
     } else {
-
-        id val = (__bridge_transfer id)ret;
-        if ([self isCancelled]) {
-            return nil;
-        } else {
-            return val;
-        }
+        // ret not 1, means cancelled.
+        return nil;
     }
 }
 
@@ -156,15 +184,12 @@ static void co_chan_custom_resume(coroutine_t *co) {
         
         if (blockingSend > 0) {
             while (blockingSend) {
-                void *ret = NULL;
-                __unused int st = channbrecv(_chan, (void *)&ret);
-                __unused id val = (__bridge_transfer id)ret;
+                channbrecvi8(_chan);
                 blockingSend--;
             }
         } else if (blockingReceive > 0) {
             while (blockingReceive) {
-                id val = nil;
-                channbsendp(_chan, (__bridge_retained void *)val);
+                channbsendi8(_chan, 0);
                 blockingReceive--;
             }
         }

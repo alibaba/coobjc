@@ -280,6 +280,9 @@ static void altexec(chan_alt *a) {
 }
 
 int changetblocking(co_channel *c, int *sendBlockingCount, int *receiveBlockingCount) {
+    if (c == NULL) {
+        return 0;
+    }
     int send = 0, recv = 0;
     chanlock(c);
     
@@ -407,6 +410,29 @@ int channbsendul(co_channel *c, unsigned long val) {
 }
 
 unsigned long channbrecvul(co_channel *c) {
+    unsigned long val = 0;
+    
+    _chanop(c, CHANNEL_RECEIVE, &val, 0);
+    return val;
+}
+
+
+int chansendi8(co_channel *c, int8_t val) {
+    return _chanop(c, CHANNEL_SEND, &val, 1);
+}
+
+int8_t chanrecvi8(co_channel *c) {
+    unsigned long val = 0;
+    
+    _chanop(c, CHANNEL_RECEIVE, &val, 1);
+    return val;
+}
+
+int channbsendi8(co_channel *c, int8_t val) {
+    return _chanop(c, CHANNEL_SEND, &val, 0);
+}
+
+int8_t channbrecvi8(co_channel *c) {
     unsigned long val = 0;
     
     _chanop(c, CHANNEL_RECEIVE, &val, 0);

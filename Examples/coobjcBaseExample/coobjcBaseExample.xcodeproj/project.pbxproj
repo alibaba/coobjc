@@ -78,6 +78,7 @@
 		18E74C1F21AE96EF003A9065 /* coobjcActorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 18E74C1E21AE96EF003A9065 /* coobjcActorTests.m */; };
 		271A9116FD9B174652987DBC /* Pods_coobjcBaseExampleTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93266E644FEE5E937368A22C /* Pods_coobjcBaseExampleTests.framework */; };
 		6C8FA938FA4493592B35DB03 /* Pods_coobjcBaseExample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37C0EDBBC51139E6F2687ED2 /* Pods_coobjcBaseExample.framework */; };
+		A302BD582248B8F400411E67 /* coobjcCrashCaseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A302BD572248B8F300411E67 /* coobjcCrashCaseTests.m */; };
 		A3E839FF21AB9DC20096A7E4 /* coobjcChannelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A3E839FE21AB9DC20096A7E4 /* coobjcChannelTests.m */; };
 		A3FAA92721A2F7C400605F27 /* coobjcPromiseTests.m in Sources */ = {isa = PBXBuildFile; fileRef = A3FAA92621A2F7C400605F27 /* coobjcPromiseTests.m */; };
 /* End PBXBuildFile section */
@@ -208,6 +209,7 @@
 		236D98A1BE2319FA437A7584 /* Pods-coobjcBaseExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-coobjcBaseExample.release.xcconfig"; path = "Pods/Target Support Files/Pods-coobjcBaseExample/Pods-coobjcBaseExample.release.xcconfig"; sourceTree = "<group>"; };
 		37C0EDBBC51139E6F2687ED2 /* Pods_coobjcBaseExample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_coobjcBaseExample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		93266E644FEE5E937368A22C /* Pods_coobjcBaseExampleTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_coobjcBaseExampleTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A302BD572248B8F300411E67 /* coobjcCrashCaseTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = coobjcCrashCaseTests.m; sourceTree = "<group>"; };
 		A3E839FE21AB9DC20096A7E4 /* coobjcChannelTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = coobjcChannelTests.m; sourceTree = "<group>"; };
 		A3FAA92621A2F7C400605F27 /* coobjcPromiseTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = coobjcPromiseTests.m; sourceTree = "<group>"; };
 		DE44BF03409C3FA4753A41D7 /* Pods-coobjcBaseExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-coobjcBaseExampleTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-coobjcBaseExampleTests/Pods-coobjcBaseExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -562,6 +564,7 @@
 				18BC88C221BDFE6200EF3D9B /* coobjcTupleTests.m */,
 				1820749D21C0AA65001A5021 /* coobjcAutoreleaseTests.m */,
 				182074A121C0DB8F001A5021 /* coobjcAutoreleaseArcTests.m */,
+				A302BD572248B8F300411E67 /* coobjcCrashCaseTests.m */,
 			);
 			path = coobjcBaseExampleTests;
 			sourceTree = "<group>";
@@ -833,6 +836,7 @@
 				1827C5B1219BC9C30004CE59 /* coobjcBaseExampleTests.m in Sources */,
 				1820749E21C0AA65001A5021 /* coobjcAutoreleaseTests.m in Sources */,
 				A3FAA92721A2F7C400605F27 /* coobjcPromiseTests.m in Sources */,
+				A302BD582248B8F400411E67 /* coobjcCrashCaseTests.m in Sources */,
 				1827C5BC219BCBD60004CE59 /* coobjcCreateTests.m in Sources */,
 				1827C5C5219C1E820004CE59 /* coobjcSequenceTests.m in Sources */,
 				1827C5BE219BF6770004CE59 /* coobjcCancelTests.m in Sources */,
