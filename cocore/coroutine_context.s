@@ -20,6 +20,15 @@
 
 .text
 .align 2
+
+/**
+ Store the current calling stack(registers need to be store) into the memory passed by x0.
+ 
+ This registers need to be saved:
+ - x19-x28  Callee-saved registers.
+ - x29,x30,sp  Known as fp,lr,sp.
+ - d8-d15   Callee-saved vector registers.
+ */
 .global _coroutine_getcontext
 _coroutine_getcontext:
     stp    x18,x19, [x0, #0x090]
@@ -39,6 +48,13 @@ _coroutine_getcontext:
     mov    x0, #0                   
     ret
 
+/**
+ Restore the saved calling stack, and resume code at lr.
+ 
+ Difference from coroutine_setcontext:
+ Setting lr to 0, to make the calling stack look clean.
+ Should be call at first time.
+ */
 .global _coroutine_begin
 _coroutine_begin:
     ldp    x18,x19, [x0, #0x090]
@@ -58,6 +74,9 @@ _coroutine_begin:
     ldp    x0, x1,  [x0, #0x000]  // restore x0,x1
     ret    x9
 
+/**
+ Restore the saved calling stack, and resume code at lr.
+ */
 .global _coroutine_setcontext
 _coroutine_setcontext:
     ldp    x18,x19, [x0, #0x090]
@@ -80,11 +99,15 @@ _coroutine_setcontext:
 
 .text
 .align 2
+
+/**
+ Store the current calling stack(registers need to be store) into the memory passed by r0.
+ */
 .global _coroutine_getcontext
 _coroutine_getcontext:
-    add r0, r0, #4*4
+    add r0, r0, #4*4        // leave space for r0-r3
     stm r0!, {r4-r6}
-    stm r0!, {r7}      // r7(fp)
+    stm r0!, {r7}           // r7(fp)
     str r13, [r0, #20];     // store sp
     str r14, [r0, #24]      // store lr
     str r14, [r0, #28]      // store lr as pc
@@ -98,6 +121,13 @@ _coroutine_getcontext:
     movs r0, #0
     bx   lr
 
+/**
+ Restore the saved calling stack, and resume code at lr.
+ 
+ Difference from coroutine_setcontext:
+ Setting lr to 0, to make the calling stack look clean.
+ Should be call at first time.
+ */
 .global _coroutine_begin
 _coroutine_begin:
     adds r0, #0x20
@@ -111,12 +141,15 @@ _coroutine_begin:
     ldr r2, [r0, #0x24]
     ldr r3, [r0, #0x2c]
     mov sp, r2
-    mov r1, r3         @ restore pc into lr
+    mov r1, r3         // restore pc into lr
     mov lr, #0
     ldm r0, {r4-r7}
     ldr r0, [r0, #-0x10];
     bx   r1
 
+/**
+ Restore the saved calling stack, and resume code at lr.
+ */
 .global _coroutine_setcontext
 _coroutine_setcontext:
     adds r0, #0x20
@@ -130,7 +163,7 @@ _coroutine_setcontext:
     ldr r2, [r0, #0x24]
     ldr r3, [r0, #0x2c]
     mov sp, r2
-    mov lr, r3         @ restore pc into lr
+    mov lr, r3         // restore pc into lr
     ldm r0, {r4-r7}
     ldr r0, [r0, #-0x10];
     bx   lr
@@ -139,6 +172,10 @@ _coroutine_setcontext:
 
 .text
 .align 2
+
+/**
+ Store the current calling stack(registers need to be store) into the memory passed in the first arg.
+ */
 .global _coroutine_getcontext
 _coroutine_getcontext:
     push  %eax
@@ -168,6 +205,11 @@ _coroutine_getcontext:
     xorl  %eax, %eax
     ret
 
+/**
+ Restore the saved calling stack, and resume code at lr.
+ 
+ In x86, _coroutine_begin is same as _coroutine_setcontext
+ */
 .global _coroutine_begin
 .global _coroutine_setcontext
 
@@ -200,6 +242,9 @@ _coroutine_setcontext:
 
 .text
 .align 2
+/**
+ Store the current calling stack(registers need to be store) into the memory passed in the first arg.
+ */
 .global _coroutine_getcontext
 _coroutine_getcontext:
     movq  %rax,   (%rdi)
@@ -228,6 +273,11 @@ _coroutine_getcontext:
     xorl  %eax, %eax
     ret
 
+/**
+ Restore the saved calling stack, and resume code at lr.
+ 
+ In x86, _coroutine_begin is same as _coroutine_setcontext
+ */
 .global _coroutine_begin
 .global _coroutine_setcontext
 
