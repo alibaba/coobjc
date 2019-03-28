@@ -32,10 +32,10 @@
 - (COActorCompletable *)sendMessage:(id)message {
     
     COActorCompletable *completable = [COActorCompletable promise];
-    dispatch_async(self.queue, ^{
+    [self.dispatch dispatch_block:^{
         COActorMessage *actorMessage = [[COActorMessage alloc] initWithType:message completable:completable];
         [self.messageChan send_nonblock:actorMessage];
-    });
+    }];
     return completable;
 }
 

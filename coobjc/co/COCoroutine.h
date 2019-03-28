@@ -18,6 +18,7 @@
 
 #import <Foundation/Foundation.h>
 #import <cocore/coroutine.h>
+#import <cocore/CODispatch.h>
 #import <coobjc/COChan.h>
 #import <coobjc/COPromise.h>
 
@@ -82,7 +83,7 @@ extern NSString *const COInvalidException;
 /**
  The `dispatch_queue_t` coroutine will run on it.
  */
-@property(nonatomic, strong) dispatch_queue_t queue;
+@property(nonatomic, strong) CODispatch* dispatch;
 
 /**
  The struct pointer of coroutine_t

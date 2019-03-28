@@ -68,7 +68,7 @@ typedef id __nullable (^__nullable COPromiseChainedRejectBlock)(NSError *error);
     return self;
 }
 
-- (instancetype)initWithContructor:(COPromiseConstructor)constructor queue:(dispatch_queue_t)queue {
+- (instancetype)initWithContructor:(COPromiseConstructor)constructor dispatch:(CODispatch*)dispatch {
     self = [self init];
     if (self) {
         if (constructor) {
@@ -78,10 +78,10 @@ typedef id __nullable (^__nullable COPromiseChainedRejectBlock)(NSError *error);
             COPromiseReject reject = ^(NSError *error){
                 [self reject:error];
             };
-            if (queue) {
-                dispatch_async(queue, ^{
+            if (dispatch) {
+                [dispatch dispatch_block:^{
                     constructor(fulfill, reject);
-                });
+                }];
             } else {
                 constructor(fulfill, reject);
             }
@@ -95,11 +95,11 @@ typedef id __nullable (^__nullable COPromiseChainedRejectBlock)(NSError *error);
 }
 
 + (instancetype)promise:(COPromiseConstructor)constructor {
-    return [[self alloc] initWithContructor:constructor queue:co_get_current_queue()];
+    return [[self alloc] initWithContructor:constructor dispatch:[CODispatch currentDispatch]];
 }
 
 + (instancetype)promise:(COPromiseConstructor)constructor onQueue:(dispatch_queue_t)queue {
-    return [[self alloc] initWithContructor:constructor queue:queue];
+    return [[self alloc] initWithContructor:constructor dispatch:[CODispatch currentDispatch]];
 }
 
 - (BOOL)isPending {

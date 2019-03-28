@@ -127,9 +127,6 @@ static void co_obj_dispose(void *coObj) {
     return [_parameters valueForKey:key];
 }
 
-- (BOOL)isCurrentQueue {
-    return co_is_current_queue_equal(self.queue);
-}
 
 + (COCoroutine *)currentCoroutine {
     return co_get_obj(coroutine_self());
@@ -152,7 +149,8 @@ static void co_obj_dispose(void *coObj) {
     self = [super init];
     if (self) {
         _execBlock = [block copy];
-        _queue = queue ?: co_get_current_queue();
+        _dispatch = [CODispatch currentDispatch];
+        //_queue = queue ?: co_get_current_queue();
         
         coroutine_t  *co = coroutine_create((void (*)(void *))co_exec);
         if (stackSize > 0 && stackSize < 1024*1024) {   // Max 1M
@@ -174,13 +172,7 @@ static void co_obj_dispose(void *coObj) {
 }
 
 - (void)performBlockOnQueue:(dispatch_block_t)block {
-    dispatch_queue_t queue = self.queue;
-    if (co_is_current_queue_equal(queue)) {
-        block();
-    }
-    else{
-        dispatch_async(queue, block);
-    }
+    [self.dispatch dispatch_block:block];
 }
 
 - (void)_internalCancel {
@@ -224,8 +216,8 @@ static void co_obj_dispose(void *coObj) {
 
 - (COCoroutine *)resume {
     COCoroutine *currentCo = [COCoroutine currentCoroutine];
-    BOOL isSubroutine = currentCo.queue == self.queue ? YES : NO;
-    dispatch_async(self.queue, ^{
+    BOOL isSubroutine = [currentCo.dispatch isEqualToDipatch:self.dispatch] ? YES : NO;
+    [self.dispatch dispatch_async_block:^{
         if (self.isResume) {
             return;
         }
@@ -235,13 +227,13 @@ static void co_obj_dispose(void *coObj) {
         }
         self.isResume = YES;
         coroutine_resume(self.co);
-    });
+    }];
     return self;
 }
 
 - (void)resumeNow {
     COCoroutine *currentCo = [COCoroutine currentCoroutine];
-    BOOL isSubroutine = currentCo.queue == self.queue ? YES : NO;
+    BOOL isSubroutine = [currentCo.dispatch isEqualToDipatch:self.dispatch] ? YES : NO;
     [self performBlockOnQueue:^{
         if (self.isResume) {
             return;

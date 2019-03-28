@@ -20,6 +20,7 @@
 #import <cocore/cocore.h>
 #import "COCoroutine.h"
 #import "COLock.h"
+#import "CODispatch.h"
 
 static NSString *const kCOChanNilObj = @"kCOChanNilObj";
 
@@ -228,20 +229,14 @@ static void co_chan_custom_resume(coroutine_t *co) {
 + (instancetype)sleep:(NSTimeInterval)duration {
     COTimeChan *chan = [self chanWithDuration:duration];
     
-    dispatch_queue_t queue = co_get_current_queue();
-    
-    dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
-    dispatch_source_set_timer(timer, dispatch_time(DISPATCH_TIME_NOW, duration * NSEC_PER_SEC), DISPATCH_TIME_FOREVER, 0);
-    dispatch_source_set_event_handler(timer, ^{
-        dispatch_source_cancel(timer);
+    CODispatchTimer *timer = [[CODispatch currentDispatch] dispatch_timer:^{
         [chan send_nonblock:@1];
-    });
+    } interval:duration];
     
     [chan onCancel:^(COChan * _Nonnull chan) {
-        dispatch_source_cancel(timer);
+        //dispatch_source_cancel(timer);
+        [timer invalidate];
     }];
-    
-    dispatch_resume(timer);
     
     
     return chan;
