@@ -146,6 +146,7 @@ typedef id __nullable (^__nullable COPromiseChainedRejectBlock)(NSError *error);
             _observers = nil;
         }
         else{
+            NSAssert(NO, @"Promise fulfill multitimes, you should check your logic");
             return;
         }
         
@@ -173,6 +174,7 @@ typedef id __nullable (^__nullable COPromiseChainedRejectBlock)(NSError *error);
             _observers = nil;
         }
         else{
+            NSAssert(NO, @"Promise reject multitimes, you should check your logic");
             return;
         }
         
