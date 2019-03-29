@@ -278,7 +278,7 @@ typedef id __nullable (^__nullable COPromiseChainedRejectBlock)(NSError *error);
             [(COPromise *)value observeWithFulfill:^(id  _Nullable value) {
                 [promise fulfill:value];
             } reject:^(NSError *error) {
-                [promise reject:value];
+                [promise reject:error];
             }];
         } else {
             if (isReject) {

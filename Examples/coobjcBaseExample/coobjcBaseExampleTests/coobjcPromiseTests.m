@@ -480,7 +480,7 @@ describe(@"background Thread Proimse tests", ^{
         
         
         waitUntil(^(DoneCallback done) {
-            dispatch_async(dispatch_get_main_queue(), ^{
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 expect(val).to.equal(11);
                 done();
             });
@@ -734,5 +734,20 @@ describe(@"background Thread Proimse tests", ^{
         });
     });
     
+});
+
+describe(@"https://github.com/alibaba/coobjc/issues/62", ^{
+    it(@"fix crash", ^{
+        [[[COPromise promise:^(COPromiseFulfill _Nonnull fullfill, COPromiseReject _Nonnull reject) {
+            fullfill(@"step 1");
+        }] then:^id _Nullable(id _Nullable value) {
+            NSLog(@"eIIIIIII = %@", value);
+            return [COPromise promise:^(COPromiseFulfill _Nonnull fullfill, COPromiseReject _Nonnull reject) {
+                reject([NSError errorWithDomain:@"step 2" code:99 userInfo:nil]);
+            }];
+        }] catch:^(NSError * _Nonnull error) {
+            NSLog(@"eIIIIIII = %@", error.domain);
+        }];
+    });
 });
 SpecEnd
