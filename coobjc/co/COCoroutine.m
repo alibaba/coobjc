@@ -149,7 +149,7 @@ static void co_obj_dispose(void *coObj) {
     self = [super init];
     if (self) {
         _execBlock = [block copy];
-        _dispatch = [CODispatch currentDispatch];
+        _dispatch = queue ? [CODispatch dispatchWithQueue:queue] : [CODispatch currentDispatch];
         //_queue = queue ?: co_get_current_queue();
         
         coroutine_t  *co = coroutine_create((void (*)(void *))co_exec);
