@@ -93,24 +93,30 @@ coroutine_scheduler_t *coroutine_scheduler_self_create_if_not_exists(void) {
     return schedule;
 }
 
+// The main entry of the coroutine's scheduler
+// The scheduler is just a special coroutine, so we can use yield.
 void coroutine_scheduler_main(coroutine_t *scheduler_co) {
     
     coroutine_scheduler_t *scheduler = scheduler_co->scheduler;
     for (;;) {
         
-        // pop a coroutine from queue.head.
+        // Pop a coroutine from the scheduler's queue.
         coroutine_t *co = scheduler_queue_pop(scheduler);
         if (co == NULL) {
-            // jump out. scheduler will enter idle.
+            // Yield the scheduler, give back cpu to origin thread.
             coroutine_yield(scheduler_co);
+            
+            // When some coroutine add to the scheduler's queue,
+            // the scheduler will resume again,
+            // then will resume here, continue the loop.
             continue;
         }
-        // set scheduler's current running coroutine.
+        // Set scheduler's current running coroutine.
         scheduler->running_coroutine = co;
-        // resume the coroutine
+        // Resume the coroutine
         coroutine_resume_im(co);
         
-        // scheduler's current running coroutine.
+        // Set scheduler's current running coroutine to nil.
         scheduler->running_coroutine = nil;
         
         // if coroutine finished, free coroutine.
