@@ -10,6 +10,7 @@
 #import <cocore/co_csp.h>
 #import <cocore/co_queue.h>
 #import <cocore/co_autorelease.h>
+#import <cocore/CODispatch.h>
 
 
 //! Project version number for cocore.
