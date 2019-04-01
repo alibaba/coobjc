@@ -20,7 +20,7 @@
 
 @interface CODispatchTimer : NSObject
 
-@property (nonatomic, strong) dispatch_block_t block;
+@property (nonatomic, strong) dispatch_block_t _Nonnull block;
 
 - (void)invalidate;
 
