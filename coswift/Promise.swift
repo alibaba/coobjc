@@ -146,7 +146,7 @@ public class Promise<T> {
             if state == .pending {
                 state = .rejected
                 stateTmp = state
-                _value = value
+                _error = error
                 observers = promiseObservers
                 promiseObservers = []
             }
