@@ -133,6 +133,9 @@ public class Promise<T> {
         do {
             lock.lock()
             defer { lock.unlock() }
+
+            _error = error
+
             if state == .pending {
                 state = .rejected
                 stateTmp = state
