@@ -147,6 +147,7 @@ public class Promise<T> {
                 state = .rejected
                 stateTmp = state
                 _value = value
+                _error = error
                 observers = promiseObservers
                 promiseObservers = []
             }
