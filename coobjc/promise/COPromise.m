@@ -99,7 +99,7 @@ typedef id __nullable (^__nullable COPromiseChainedRejectBlock)(NSError *error);
 }
 
 + (instancetype)promise:(COPromiseConstructor)constructor onQueue:(dispatch_queue_t)queue {
-    return [[self alloc] initWithContructor:constructor dispatch:[CODispatch currentDispatch]];
+    return [[self alloc] initWithContructor:constructor dispatch:[CODispatch dispatchWithQueue:queue]];
 }
 
 - (BOOL)isPending {
