@@ -336,7 +336,7 @@ typedef id __nullable (^__nullable COPromiseChainedRejectBlock)(NSError *error);
 }
 
 @property (nonatomic, strong) NSProgress *progress;
-@property (nonatomic, strong) COPromise *internalPromise;
+@property (nonatomic, strong) COChan *progressChannel;
 @property (nonatomic, strong) id lastValue;
 
 @end
@@ -348,17 +348,18 @@ static void *COProgressObserverContext = &COProgressObserverContext;
 - (instancetype)init{
     self = [super init];
     if (self) {
+        _progressChannel = [COChan chanWithBuffCount:1];
     }
     return self;
 }
 
 - (void)fulfill:(id)value{
-    [self.internalPromise fulfill:nil];
+    [self.progressChannel cancel];
     [super fulfill:value];
 }
 
 - (void)reject:(NSError *)error{
-    [self.internalPromise fulfill:nil];
+    [self.progressChannel cancel];
     [super reject:error];
 }
 
@@ -366,15 +367,7 @@ static void *COProgressObserverContext = &COProgressObserverContext;
     if (![self isPending]) {
         return nil;
     }
-    do {
-        COOBJC_SCOPELOCK(_lock);
-        self.internalPromise = [COPromise promise];
-    } while (0);
-    COProgressValue* result = co_await(self.internalPromise);
-    do {
-        COOBJC_SCOPELOCK(_lock);
-        self.internalPromise = [COPromise promise];
-    } while (0);
+    COProgressValue *result = [self.progressChannel receive];
     return result;
 }
 
@@ -409,12 +402,7 @@ static void *COProgressObserverContext = &COProgressObserverContext;
         NSProgress *progress = object;
         COProgressValue *value = [[COProgressValue alloc] init];
         value.progress = progress.fractionCompleted;
-        COPromise *promise;
-        do {
-            COOBJC_SCOPELOCK(_lock);
-            promise = self.internalPromise;
-        } while (0);
-        [promise fulfill:value];
+        [self.progressChannel send_nonblock:value];
     }
     else
     {
