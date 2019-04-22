@@ -155,18 +155,19 @@ static id testPromise3() {
     COPromise *promise = [COPromise new];
     
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_source_t timer = nil;
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+    dispatch_source_set_timer(timer, dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC), DISPATCH_TIME_FOREVER, 0);
+    dispatch_source_set_event_handler(timer, ^{
         [promise fulfill:@13];
+        dispatch_source_cancel(timer);
     });
+    dispatch_resume(timer);
     
-//    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:5 target:[Test123 instanceWithBlock:^{
-//        [promise fulfill:@13];
-//    }] selector:@selector(fire) userInfo:nil repeats:NO];
-    
-    
-//    [promise onCancel:^(COPromise * _Nonnull promise) {
-//        [timer invalidate];
-//    }];
+    [promise onCancel:^(COPromise * _Nonnull promise) {
+        dispatch_source_cancel(timer);
+    }];
     
     return promise;
 }
