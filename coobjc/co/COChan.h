@@ -42,7 +42,7 @@ typedef void (^COChanOnCancelBlock)(COChan *chan);
 /**
  Create a Channel object, and you can set the buffcount.
 
- @param buffCount then max buffer count of the channel.
+ @param buffCount the max buffer count of the channel.
  @return the Channel object
  */
 + (instancetype)chanWithBuffCount:(int32_t)buffCount;
@@ -96,6 +96,29 @@ typedef void (^COChanOnCancelBlock)(COChan *chan);
  @return the value object received.
  */
 - (Value _Nullable)receive_nonblock;
+
+/**
+ Blocking receive all values in the channel.
+ 
+ 1. If no values in channel, blocking waiting for one.
+ 2. If has values in channel, returning all values.
+ 3. If did send nil, the received value in array will be [NSNull null],
+ so you need check the returning value type in array, important!!!
+ 
+ @return the values received.
+ */
+- (NSArray<Value> * _Nonnull)receiveAll;
+
+/**
+ Blocking receive count values in the channel.
+ 
+ 1. It will continue blocking the current coroutine, until receive count objects.
+ 2. If did send nil, the received value in array will be [NSNull null],
+ so you need check the returning value type in array, important!!!
+ 
+ @return the values received.
+ */
+- (NSArray<Value> * _Nonnull)receiveWithCount:(NSUInteger)count;
 
 /**
  Cancel the Channel.

@@ -129,6 +129,27 @@ static void co_chan_custom_resume(coroutine_t *co) {
     }
 }
 
+- (NSArray *)receiveAll {
+    NSMutableArray *retArray = [[NSMutableArray alloc] init];
+    id obj = [self receive];
+    [retArray addObject:obj == kCOChanNilObj ? [NSNull null] : obj];
+    while ((obj = [self receive_nonblock])) {
+        [retArray addObject:obj == kCOChanNilObj ? [NSNull null] : obj];
+    }
+    return retArray.copy;
+}
+
+- (NSArray *)receiveWithCount:(NSUInteger)count {
+    NSMutableArray *retArray = [[NSMutableArray alloc] initWithCapacity:count];
+    id obj = nil;
+    NSUInteger currCount = 0;
+    while (currCount < count && (obj = [self receive])) {
+        [retArray addObject:obj == kCOChanNilObj ? [NSNull null] : obj];
+        currCount ++;
+    }
+    return retArray.copy;
+}
+
 - (void)send_nonblock:(id)val {
     
     do {

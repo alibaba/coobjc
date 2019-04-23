@@ -31,7 +31,10 @@ public class Chan<T> {
     
     public typealias  ChanOnCancelBlock = (Chan) -> Void
     
+    /// Callback when the channel cancel.
     public var onCancel: ChanOnCancelBlock?
+    
+    /// If the channel is cancelled.
     public var isCancelled: Bool {
         get {
             return cancelled
@@ -44,6 +47,10 @@ public class Chan<T> {
     private var buffList: [T] = []
     private let lock = NSRecursiveLock()
     
+    
+    /// Create a channel with the buffcount.
+    ///
+    /// - Parameter buffCount: the max buffer count of the channel.
     public init(buffCount: Int32) {
         
         self.buffCount = buffCount
@@ -51,6 +58,8 @@ public class Chan<T> {
         cchan = chancreate(eleSize, buffCount, co_chan_custom_resume)
     }
     
+    
+    /// Create a channel with the buffcount 0.
     public convenience init() {
         self.init(buffCount: 0)
     }
@@ -59,11 +68,21 @@ public class Chan<T> {
         chanfree(cchan)
     }
     
+    
+    /// Create a expandable Channel.  the buffer count is expandable, which means,
+    /// `send` will not blocking current process. And, val send to channel will not abandon.
+    /// The bufferCount value is being set to -1.
+    ///
+    /// - Returns: the channel object
     public class func expandable() -> Chan<T> {
         
         return Chan(buffCount: -1)
     }
     
+    /// Blocking send a value to the channel.
+    ///
+    /// - Parameter val: the value to send.
+    /// - Throws: COError types
     public func send(val: T) throws {
         
         if let co = Coroutine.current() {
@@ -84,6 +103,9 @@ public class Chan<T> {
         }
     }
     
+    /// Non-blocking send a value to the channel
+    ///
+    /// - Parameter val: the value to send.
     public func send_nonblock(val: T) {
         
         do {
@@ -94,6 +116,10 @@ public class Chan<T> {
         channbsendi8(cchan, 1)
     }
     
+    /// Blocking receive a value from the channel
+    ///
+    /// - Returns: the received value
+    /// - Throws: COError types
     public func receive() throws -> T {
         
         if let co = Coroutine.current() {
@@ -121,6 +147,9 @@ public class Chan<T> {
         }
     }
     
+    /// Non-blocking receive a value from the channel
+    ///
+    /// - Returns: the receive value or nil.
     public func receive_nonblock() -> T? {
      
         let ret = channbrecvi8(cchan)
@@ -136,6 +165,43 @@ public class Chan<T> {
         }
     }
     
+    /// Blocking receive all values in the channel for now.
+    /// At least receive one value.
+    ///
+    /// - Returns: the values
+    /// - Throws: COError types
+    public func receiveAll() throws -> [T] {
+        
+        var retArray:[T] = []
+        
+        retArray.append(try self.receive())
+        
+        while let obj = self.receive_nonblock() {
+            retArray.append(obj)
+        }
+        return retArray
+    }
+    
+    /// Blocking receive count values in the channel.
+    ///
+    /// - Parameter count: the value count will receive.
+    /// - Returns: the values
+    /// - Throws: COError types
+    public func receiveWithCount(count: UInt) throws -> [T] {
+        
+        var retArray:[T] = []
+        var currCount = 0
+        while currCount < count, let obj = self.receive_nonblock() {
+            retArray.append(obj)
+            currCount += 1;
+        }
+        return retArray
+    }
+    
+    /// Cancel the channel
+    /// Why we provide this api?
+    /// Sometimes, we need cancel a operation, such as a Network Connection. So, a coroutine is cancellable.
+    /// But Channel may blocking the coroutine, so we need cancel the Channel when cancel a coroutine.
     public func cancel() {
         
         if cancelled {

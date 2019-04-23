@@ -310,7 +310,7 @@ describe(@"Proimse tests", ^{
             }
         });
         waitUntil(^(DoneCallback done) {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(7 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [co cancel];
                 
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -737,6 +737,69 @@ describe(@"background Thread Proimse tests", ^{
         waitUntil(^(DoneCallback done) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 expect(val).to.equal(1);
+                done();
+            });
+        });
+    });
+    
+    it(@"test receive all", ^{
+        __block int val = 0;
+        [[TestThreadObject1 sharedInstance] runBlock:^{
+            
+            COChan *chan = [COChan chanWithBuffCount:10];
+            co_launch(^{
+                
+                for (int i = 0; i < 10; i++) {
+                    [chan send_nonblock:@(i)];
+                }
+            });
+            
+            co_launch(^{
+                
+                NSArray *ret = [chan receiveAll];
+                for (int i = 0; i < 10; i++) {
+                    expect(ret[i]).to.equal(@(i));
+                }
+                val = 11;
+            });
+        }];
+        
+        waitUntil(^(DoneCallback done) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                expect(val).to.equal(11);
+                done();
+            });
+        });
+    });
+    
+    it(@"test receive count", ^{
+        __block int val = 0;
+        [[TestThreadObject1 sharedInstance] runBlock:^{
+            
+            COChan *chan = [COChan chanWithBuffCount:10];
+            
+            co_launch(^{
+                
+                NSArray *ret = [chan receiveWithCount:10];
+                for (int i = 0; i < 10; i++) {
+                    expect(ret[i]).to.equal(@(i));
+                }
+                val = 11;
+            });
+            
+            co_launch(^{
+                
+                for (int i = 0; i < 10; i++) {
+                    [chan send_nonblock:@(i)];
+                }
+            });
+            
+            
+        }];
+        
+        waitUntil(^(DoneCallback done) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                expect(val).to.equal(11);
                 done();
             });
         });
