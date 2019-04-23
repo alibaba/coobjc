@@ -121,7 +121,7 @@
     }
     else{
         if (_thread) {
-            [[CODispatcHandler sharedInstance] performSelector:@selector(handleBlock:) onThread:_thread withObject:[block copy] waitUntilDone:NO];
+            [[CODispatcHandler sharedInstance] performSelector:@selector(handleBlock:) onThread:_thread withObject:[block copy] waitUntilDone:YES];
         }
     }
 }
@@ -141,7 +141,7 @@
                 block();
             }
             else{
-                [[CODispatcHandler sharedInstance] performSelector:@selector(handleBlock:) onThread:_thread withObject:[block copy] waitUntilDone:NO];
+                [[CODispatcHandler sharedInstance] performSelector:@selector(handleBlock:) onThread:_thread withObject:[block copy] waitUntilDone:YES];
             }
         }
     }
