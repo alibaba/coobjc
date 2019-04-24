@@ -30,9 +30,6 @@
 @implementation COActorChan
 
 - (COActorMessage *)next {
-    if (self.isCancelled) {
-        return nil;
-    }
     id obj = [self receive];
     if (![obj isKindOfClass:[COActorMessage class]]) {
         self.lastMessage = nil;

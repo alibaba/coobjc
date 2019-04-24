@@ -21,6 +21,7 @@
 #import "COCoroutine.h"
 #import "COLock.h"
 #import "CODispatch.h"
+#import <objc/runtime.h>
 
 static NSString *const kCOChanNilObj = @"kCOChanNilObj";
 
@@ -31,12 +32,11 @@ static void co_chan_custom_resume(coroutine_t *co) {
 @interface COChan()
 {
     co_channel *_chan;
-    BOOL _cancelled;
     dispatch_semaphore_t    _buffLock;
 }
 
 @property(nonatomic, assign) int count;
-@property(nonatomic, copy) COChanOnCancelBlock cancelBlock;
+@property(nonatomic, strong) NSMapTable *cancelBlocksByCo;
 @property(nonatomic, strong) NSMutableArray *buffList;
 
 @end
@@ -69,7 +69,6 @@ static void co_chan_custom_resume(coroutine_t *co) {
     self = [super init];
     if (self) {
         _chan = chancreate(sizeof(int8_t), buffCount, co_chan_custom_resume);
-        _cancelled = NO;
         _buffList = [[NSMutableArray alloc] init];
         COOBJC_LOCK_INIT(_buffLock);
     }
@@ -86,11 +85,25 @@ static void co_chan_custom_resume(coroutine_t *co) {
     }
     
     co.currentChan = self;
-    do {
-        COOBJC_SCOPELOCK(_buffLock);
+    IMP custom_exec = imp_implementationWithBlock(^{
+        COOBJC_SCOPELOCK(self->_buffLock);
         [self.buffList addObject:val ?: kCOChanNilObj];
-    } while(0);
-    chansendi8(_chan, 1);
+    });
+    
+    IMP cancel_exec = NULL;
+    COChanOnCancelBlock cancelBlock = [self popCancelBlockForCo:co];
+    if (cancelBlock) {
+        cancel_exec = imp_implementationWithBlock(^{
+            cancelBlock(self);
+        });
+    }
+    // do send
+    int8_t v = 1;
+    chansend_custom_exec(_chan, &v, custom_exec, cancel_exec);
+    imp_removeBlock(custom_exec);
+    if (cancel_exec) {
+        imp_removeBlock(cancel_exec);
+    }
     co.currentChan = nil;
 }
 
@@ -102,18 +115,31 @@ static void co_chan_custom_resume(coroutine_t *co) {
     }
     
     co.currentChan = self;
-    int8_t ret = chanrecvi8(_chan);
+    
+    IMP cancel_exec = NULL;
+    COChanOnCancelBlock cancelBlock = [self popCancelBlockForCo:co];
+    if (cancelBlock) {
+        cancel_exec = imp_implementationWithBlock(^{
+            cancelBlock(self);
+        });
+    }
+    
+    uint8_t val = 0;
+    int ret = chanrecv_custom_exec(_chan, &val, cancel_exec);
+    if (cancel_exec) {
+        imp_removeBlock(cancel_exec);
+    }
     co.currentChan = nil;
     
     if (ret == 1) {
-        
+        // success
         do {
             COOBJC_SCOPELOCK(_buffLock);
             NSMutableArray *buffList = self.buffList;
             if (buffList.count > 0) {
                 id obj = buffList.firstObject;
                 [buffList removeObjectAtIndex:0];
-                if (obj == kCOChanNilObj || [self isCancelled]) {
+                if (obj == kCOChanNilObj) {
                     obj = nil;
                 }
                 return obj;
@@ -124,7 +150,7 @@ static void co_chan_custom_resume(coroutine_t *co) {
         } while(0);
         
     } else {
-        // ret not 1, means cancelled.
+        // ret not 1, means nothing received or cancelled.
         return nil;
     }
 }
@@ -132,8 +158,11 @@ static void co_chan_custom_resume(coroutine_t *co) {
 - (NSArray *)receiveAll {
     NSMutableArray *retArray = [[NSMutableArray alloc] init];
     id obj = [self receive];
+    if (!obj) {
+        return retArray.copy;
+    }
     [retArray addObject:obj == kCOChanNilObj ? [NSNull null] : obj];
-    while ((obj = [self receive_nonblock])) {
+    while ([COCoroutine isActive] && (obj = [self receive_nonblock])) {
         [retArray addObject:obj == kCOChanNilObj ? [NSNull null] : obj];
     }
     return retArray.copy;
@@ -143,7 +172,7 @@ static void co_chan_custom_resume(coroutine_t *co) {
     NSMutableArray *retArray = [[NSMutableArray alloc] initWithCapacity:count];
     id obj = nil;
     NSUInteger currCount = 0;
-    while (currCount < count && (obj = [self receive])) {
+    while (currCount < count && [COCoroutine isActive] && (obj = [self receive])) {
         [retArray addObject:obj == kCOChanNilObj ? [NSNull null] : obj];
         currCount ++;
     }
@@ -152,18 +181,20 @@ static void co_chan_custom_resume(coroutine_t *co) {
 
 - (void)send_nonblock:(id)val {
     
-    do {
-        COOBJC_SCOPELOCK(_buffLock);
+    IMP custom_exec = imp_implementationWithBlock(^{
+        COOBJC_SCOPELOCK(self->_buffLock);
         [self.buffList addObject:val ?: kCOChanNilObj];
-    } while(0);
-    
-    channbsendi8(_chan, 1);
+    });
+    int8_t v = 1;
+    channbsend_custom_exec(_chan, &v, custom_exec);
+    imp_removeBlock(custom_exec);
 }
 
 - (id)receive_nonblock {
     
-    int8_t ret = channbrecvi8(_chan);
-    
+    uint8_t val = 0;
+    int ret = channbrecv(_chan, &val);
+
     if (ret == 1) {
         
         do {
@@ -172,7 +203,7 @@ static void co_chan_custom_resume(coroutine_t *co) {
             if (buffList.count > 0) {
                 id obj = buffList.firstObject;
                 [buffList removeObjectAtIndex:0];
-                if (obj == kCOChanNilObj || [self isCancelled]) {
+                if (obj == kCOChanNilObj) {
                     obj = nil;
                 }
                 return obj;
@@ -183,47 +214,43 @@ static void co_chan_custom_resume(coroutine_t *co) {
         } while(0);
         
     } else {
-        // ret not 1, means cancelled.
+        // ret not 1, means nothing received.
         return nil;
     }
 }
 
-- (void)cancel {
+- (void)cancelForCoroutine:(COCoroutine *)co {
     
-    if (self.isCancelled) {
-        return;
-    }
-    
-    _cancelled = YES;
-    
-    if (self.cancelBlock) {
-        self.cancelBlock(self);
-    }
-    
-    // releaseing blocking channels.
-    int blockingSend = 0, blockingReceive = 0;
-    if (changetblocking(_chan, &blockingSend, &blockingReceive)) {
-        
-        if (blockingSend > 0) {
-            while (blockingSend) {
-                channbrecvi8(_chan);
-                blockingSend--;
-            }
-        } else if (blockingReceive > 0) {
-            while (blockingReceive) {
-                channbsendi8(_chan, 0);
-                blockingReceive--;
-            }
-        }
-    } 
+    chan_cancel_alt_in_co(co.co);
 }
 
-- (BOOL)isCancelled {
-    return _cancelled;
+- (NSMapTable *)cancelBlocksByCo {
+    if (!_cancelBlocksByCo) {
+        _cancelBlocksByCo = [NSMapTable mapTableWithKeyOptions:NSMapTableWeakMemory valueOptions:NSMapTableStrongMemory];
+    }
+    return _cancelBlocksByCo;
 }
 
 - (void)onCancel:(COChanOnCancelBlock)onCancelBlock {
-    self.cancelBlock = onCancelBlock;
+    if (!onCancelBlock) {
+        return;
+    }
+    COCoroutine *co = [COCoroutine currentCoroutine];
+    if (!co) {
+        @throw [NSException exceptionWithName:COInvalidException reason:@"onCancel must called in a routine" userInfo:@{}];
+    }
+    COOBJC_SCOPELOCK(_buffLock);
+    [self.cancelBlocksByCo setObject:[onCancelBlock copy] forKey:co];
+}
+
+- (COChanOnCancelBlock)popCancelBlockForCo:(COCoroutine *)co {
+    COOBJC_SCOPELOCK(_buffLock);
+    COChanOnCancelBlock block = [self.cancelBlocksByCo objectForKey:co];
+    if (block) {
+        [self.cancelBlocksByCo removeObjectForKey:co];
+        return block;
+    }
+    return nil;
 }
 
 @end

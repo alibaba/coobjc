@@ -78,6 +78,7 @@ static int queuepush(chan_queue *q, void *element)
             }
             
         } else {
+            // fail
             return 0;
         }
     }
@@ -101,6 +102,71 @@ static int queuepop(chan_queue *q, void *val) {
     }
 }
 
+#pragma mark - altqueue
+
+static int altqueuepush(alt_queue *q, chan_alt *alt) {
+    if (!alt) {
+        return 0;
+    }
+    if (q->head) {
+        alt->next = q->head;
+        q->head->prev = alt;
+        q->head = alt;
+    } else {
+        q->head = alt;
+    }
+    
+    if (!q->tail) {
+        q->tail = alt;
+    }
+    q->count++;
+    return 1;
+}
+
+static int altqueuepop(alt_queue *q, chan_alt **alt) {
+    if (q->tail) {
+        *alt = q->tail;
+        
+        chan_alt *prev = q->tail->prev;
+        if (prev) {
+            prev->next = NULL;
+            q->tail->prev = NULL;
+            q->tail = prev;
+        } else {
+            q->head = NULL;
+            q->tail = NULL;
+        }
+        q->count--;
+        return 1;
+    }
+    return 0;
+}
+
+static int altqueueremove(alt_queue *q, chan_alt *alt) {
+    if (!alt) {
+        return 0;
+    }
+    
+    chan_alt *prev = alt->prev;
+    chan_alt *next = alt->next;
+    
+    if (prev) {
+        prev->next = next;
+    }
+    if (next) {
+        next->prev = prev;
+    }
+    
+    if (q->head == alt) {
+        q->head = next;
+    }
+    if (q->tail == alt) {
+        q->tail = prev;
+    }
+    q->count--;
+    return 1;
+}
+
 #pragma mark - channel
 
 co_channel *chancreate(int elemsize, int bufsize, void (*custom_resume)(coroutine_t *co)) {
@@ -119,10 +185,6 @@ co_channel *chancreate(int elemsize, int bufsize, void (*custom_resume)(coroutin
         queueinit(&c->buffer, elemsize, bufsize, 0, (void *)(c+1));
     }
     
-    // init queue
-    queueinit(&c->asend, sizeof(chan_alt), 16, 16, NULL);
-    queueinit(&c->arecv, sizeof(chan_alt), 16, 16, NULL);
-    
     // init lock
     c->lock = (pthread_mutex_t)PTHREAD_MUTEX_INITIALIZER;
     
@@ -140,8 +202,6 @@ void chanfree(co_channel *c) {
         free(c->buffer.arr);
     }
     pthread_mutex_destroy(&c->lock);
-    free(c->arecv.arr);
-    free(c->asend.arr);
     free(c);
 }
 
@@ -155,7 +215,7 @@ static void chanunlock(co_channel *c) {
 
 #define otherop(op)    (CHANNEL_SEND+CHANNEL_RECEIVE-(op))
 
-static chan_queue *chanarray(co_channel *c, uint op) {
+static alt_queue *chanarray(co_channel *c, uint op) {
     switch(op){
         default:
             return nil;
@@ -167,7 +227,7 @@ static chan_queue *chanarray(co_channel *c, uint op) {
 }
 
 static int altcanexec(chan_alt *a) {
-    chan_queue *altqueue;
+    alt_queue *altqueue;
     co_channel *c;
     
     c = a->channel;
@@ -198,8 +258,8 @@ static int altcanexec(chan_alt *a) {
 }
 
 static void altqueue(chan_alt *a) {
-    chan_queue *altqueue = chanarray(a->channel, a->op);
-    queuepush(altqueue, a);
+    alt_queue *altqueue = chanarray(a->channel, a->op);
+    altqueuepush(altqueue, a);
 }
 
 
@@ -211,7 +271,7 @@ static void altqueue(chan_alt *a) {
  * the receiver removes some from the channel and the sender
  * gets to put some in.
  */
-static void altcopy(chan_alt *s, chan_alt *r) {
+static int altcopy(chan_alt *s, chan_alt *r) {
     chan_alt *t;
     co_channel *c;
     
@@ -219,7 +279,7 @@ static void altcopy(chan_alt *s, chan_alt *r) {
      * Work out who is sender and who is receiver
      */
     if(s == nil && r == nil) {
-        return;
+        return 0;
     }
     assert(s != nil);
     c = s->channel;
@@ -234,34 +294,57 @@ static void altcopy(chan_alt *s, chan_alt *r) {
     /*
      * Channel is empty (or unbuffered) - copy directly.
      */
-    if(s && r && c->buffer.count == 0){
-        amove(r->value, s->value, c->buffer.elemsize);
-        return;
+    if(s && r){
+        // no buffer
+        if (c->buffer.count == 0) {
+            if (s->custom_exec) {
+                s->custom_exec();
+            }
+            amove(r->value, s->value, c->buffer.elemsize);
+            return 1;
+        } else {
+            // hasBuffer
+            // receive first from buffer
+            queuepop(&c->buffer, r->value);
+            // then send to buffer
+            int ret = queuepush(&c->buffer, s->value);
+            if (ret == 1) {
+                if (s->custom_exec) {
+                    s->custom_exec();
+                }
+            }
+            return ret;
+        }
     }
     
     /*
      * Otherwise it's always okay to receive and then send.
      */
     if(r){
-        queuepop(&c->buffer, r->value);
+        return queuepop(&c->buffer, r->value);
+    } else if(s) {
+        
+        int ret = queuepush(&c->buffer, s->value);
+        if (ret == 1) {
+            if (s->custom_exec) {
+                s->custom_exec();
+            }
+        }
+        return ret;
     }
-    if(s){
-        queuepush(&c->buffer, s->value);
-    }
+    return 0;
 }
 
-static void altexec(chan_alt *a) {
+static int altexec(chan_alt *a) {
 
-    chan_queue *altqueue;
-    chan_alt other_alt;
-    chan_alt *other = &other_alt;
+    alt_queue *altqueue;
+    chan_alt *other = NULL;
     co_channel *c;
     
     c = a->channel;
     altqueue = chanarray(c, otherop(a->op));
-    if(altqueue && altqueue->count){
+    if(altqueuepop(altqueue, &other)){
 
-        queuepop(altqueue, other);
         altcopy(a, other);
         coroutine_t *co = other->task;
         void (*custom_resume)(coroutine_t *co) = c->custom_resume;
@@ -272,39 +355,59 @@ static void altexec(chan_alt *a) {
         } else {
             coroutine_add(co);
         }
-        
+        return 1;
     } else {
-        altcopy(a, nil);
+        int ret = altcopy(a, nil);
         chanunlock(c);
+        return ret;
     }
 }
 
-int changetblocking(co_channel *c, int *sendBlockingCount, int *receiveBlockingCount) {
-    if (c == NULL) {
-        return 0;
+void altcancel(chan_alt *a) {
+    if (!a) {
+        return;
     }
-    int send = 0, recv = 0;
-    chanlock(c);
     
-    chan_queue *ar = chanarray(c, CHANNEL_SEND);
-    if (ar && ar->count) {
+    alt_queue *altqueue;
+    co_channel *c;
+    
+    c = a->channel;
+    if (c) {
+        chanlock(c);
         
-        send = ar->count;
-        if (sendBlockingCount) {
-            *sendBlockingCount = send;
+        altqueue = chanarray(c, a->op);
+        if(altqueue && altqueue->count){
+            
+            altqueueremove(altqueue, a);
+            a->is_cancelled = true;
+            
+            // custom cancel
+            if (a->cancel_exec) {
+                a->cancel_exec();
+            }
+            
+            // resume the task.
+            coroutine_t *co = a->task;
+            void (*custom_resume)(coroutine_t *co) = c->custom_resume;
+            chanunlock(c);
+            
+            if (custom_resume) {
+                custom_resume(co);
+            } else {
+                coroutine_add(co);
+            }
+        } else {
+            chanunlock(c);
         }
     }
-    
-    chan_queue *receiveAr = chanarray(c, CHANNEL_RECEIVE);
-    if (receiveAr && receiveAr->count) {
-        recv = receiveAr->count;
-        if (receiveBlockingCount) {
-            *receiveBlockingCount = recv;
-        }
-    }
+}
 
-    chanunlock(c);
-    return send > 0 || recv > 0;
+int chan_cancel_alt_in_co(coroutine_t *co) {
+    if (co && co->chan_alt) {
+        altcancel(co->chan_alt);
+        return 1;
+    }
+    return 0;
 }
 
 int chanalt(chan_alt *a) {
@@ -319,38 +422,74 @@ int chanalt(chan_alt *a) {
     chanlock(c);
     
     if(altcanexec(a)) {
-        altexec(a);
-        return 0;
+        return altexec(a);
     }
     
     if(!canblock) {
         chanunlock(c);
-        return -1;
+        return 0;
     }
     
     // add to queue
     altqueue(a);
+    // set coroutine's chan_alt
+    t->chan_alt = a;
     
     chanunlock(c);
     
     // blocking.
     coroutine_yield(t);
+    // resume
+    t->chan_alt = nil;
+    // alt is cancelled
+    if (a->is_cancelled) {
+        return 0;
+    }
     
-    return 0;
+    return 1;
 }
 
 static int _chanop(co_channel *c, int op, void *p, int canblock) {
-    chan_alt a;
+    chan_alt *a = malloc(sizeof(chan_alt));
     
-    a.channel = c;
-    a.op = op;
-    a.value = p;
-    a.op = op;
-    a.can_block = canblock;
+    a->channel = c;
+    a->op = op;
+    a->value = p;
+    a->op = op;
+    a->can_block = canblock;
+    a->prev = NULL;
+    a->next = NULL;
+    a->is_cancelled = false;
+    a->custom_exec = NULL;
+    a->cancel_exec = NULL;
     
-    if(chanalt(&a) < 0) {
-        return -1;
+    if(chanalt(a) == 0) {
+        free(a);
+        return 0;
     }
+    free(a);
+    return 1;
+}
+
+static int _chanop2(co_channel *c, int op, void *p, int canblock, IMP custom_exec, IMP cancel_exec) {
+    chan_alt *a = malloc(sizeof(chan_alt));
+    
+    a->channel = c;
+    a->op = op;
+    a->value = p;
+    a->op = op;
+    a->can_block = canblock;
+    a->prev = NULL;
+    a->next = NULL;
+    a->is_cancelled = false;
+    a->custom_exec = custom_exec;
+    a->cancel_exec = cancel_exec;
+
+    if(chanalt(a) == 0) {
+        free(a);
+        return 0;
+    }
+    free(a);
     return 1;
 }
 
@@ -416,25 +555,14 @@ unsigned long channbrecvul(co_channel *c) {
     return val;
 }
 
-
-int chansendi8(co_channel *c, int8_t val) {
-    return _chanop(c, CHANNEL_SEND, &val, 1);
+int chansend_custom_exec(co_channel *c, void *v, IMP exec, IMP cancelExec) {
+    return _chanop2(c, CHANNEL_SEND, v, 1, exec, cancelExec);
 }
 
-int8_t chanrecvi8(co_channel *c) {
-    unsigned long val = 0;
-    
-    _chanop(c, CHANNEL_RECEIVE, &val, 1);
-    return val;
+int channbsend_custom_exec(co_channel *c, void *v, IMP exec) {
+    return _chanop2(c, CHANNEL_SEND, v, 0, exec, NULL);
 }
 
-int channbsendi8(co_channel *c, int8_t val) {
-    return _chanop(c, CHANNEL_SEND, &val, 0);
-}
-
-int8_t channbrecvi8(co_channel *c) {
-    unsigned long val = 0;
-    
-    _chanop(c, CHANNEL_RECEIVE, &val, 0);
-    return val;
+int chanrecv_custom_exec(co_channel *c, void *v, IMP cancelExec) {
+    return _chanop2(c, CHANNEL_RECEIVE, v, 1, NULL, cancelExec);
 }

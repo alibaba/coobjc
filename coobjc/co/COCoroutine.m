@@ -176,15 +176,19 @@ static void co_obj_dispose(void *coObj) {
 }
 
 - (void)_internalCancel {
+    // dead
+    if (_co == nil) {
+        return;
+    }
     
     if (_isCancelled) {
         return;
     }
     NSArray *subroutines = self.subroutines.copy;;
     if (subroutines.count) {
-        [subroutines enumerateObjectsUsingBlock:^(COCoroutine * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            [obj cancel];
-        }];
+        for (COCoroutine *subco in subroutines) {
+            [subco cancel];
+        }
     }
     
     _isCancelled = YES;
@@ -196,7 +200,7 @@ static void co_obj_dispose(void *coObj) {
     
     COChan *chan = self.currentChan;
     if (chan) {
-        [chan cancel];
+        [chan cancelForCoroutine:self];
     }
 }
 
