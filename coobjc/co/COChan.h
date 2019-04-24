@@ -20,6 +20,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class COCoroutine;
+
 /**
  The channel object.
  
@@ -128,17 +130,12 @@ typedef void (^COChanOnCancelBlock)(COChan *chan);
  Sometimes, we need cancel a operation, such as a Network Connection. So, a coroutine is cancellable.
  But Channel may blocking the coroutine, so we need cancel the Channel when cancel a coroutine.
  */
-- (void)cancel;
+- (void)cancelForCoroutine:(COCoroutine *)co;
 
 /**
- tell us is the channel is cancelled.
-
- @return isCancelled.
- */
-- (BOOL)isCancelled;
-
-/**
- Set a callback block when the Channel is cancel.
+ Set a callback block when the Channel cancel current blocking operation(send: or receive:)
+ 
+ Must set before `send:` or `receive:`, or it will not work.
 
  @param onCancelBlock the cancel callback block.
  */

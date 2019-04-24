@@ -354,12 +354,12 @@ static void *COProgressObserverContext = &COProgressObserverContext;
 }
 
 - (void)fulfill:(id)value{
-    [self.progressChannel cancel];
+    [self.progressChannel send_nonblock:nil];
     [super fulfill:value];
 }
 
 - (void)reject:(NSError *)error{
-    [self.progressChannel cancel];
+    [self.progressChannel send_nonblock:nil];
     [super reject:error];
 }
 

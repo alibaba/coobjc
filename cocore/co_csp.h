@@ -37,6 +37,7 @@ typedef enum {
 typedef struct chan_alt chan_alt;
 typedef struct chan_queue chan_queue;
 typedef struct co_channel co_channel;
+typedef struct alt_queue alt_queue;
 
 /**
  Define the chan alt, record a send/receive context.
@@ -46,8 +47,20 @@ struct chan_alt
     co_channel          *channel;
     void                *value;
     coroutine_t         *task;
+    chan_alt            *prev;
+    chan_alt            *next;
+    IMP                 custom_exec;
+    IMP                 cancel_exec;
     channel_op          op;
     int                 can_block;
+    bool                is_cancelled;
+};
+
+struct alt_queue
+{
+    chan_alt        *head;
+    chan_alt        *tail;
+    unsigned int    count;
 };
 
 /**
@@ -69,8 +82,8 @@ struct chan_queue
  */
 struct co_channel {
     chan_queue    buffer;
-    chan_queue    asend;
-    chan_queue    arecv;
+    alt_queue     asend;
+    alt_queue     arecv;
     pthread_mutex_t  lock;
     void (*custom_resume)(coroutine_t *co);
 };
@@ -204,44 +217,47 @@ int chansendp(co_channel *c, void *v);
 int chansendul(co_channel *c, unsigned long v);
 
 /**
- Blocking send a int8_t value to channel.
- 
- @param c channel
- @param val the int8 value
+ If a channel is blocking a coroutine, using this method
+ to cancel the blocking.
+
+ @param co the coroutine object
  @return 1 success, else fail.
  */
-int chansendi8(co_channel *c, int8_t val);
+int chan_cancel_alt_in_co(coroutine_t *co);
 
 /**
- Blocking receive a int8_t value from channel.
+ Blocking send value to channel.
  
  If no one sending, and buffer is empty, blocking the current coroutine.
  
  @param c channel
- @return received int8_t value.
- */
-int8_t chanrecvi8(co_channel *c);
-
-/**
- Non-blocking send a int8_t value to channel.
- 
- @param c channel
- @param val the int8_t value
+ @param v the pointer pass the send value.
+ @param exec  run at sending.
+ @param cancelExec run at cancel a alt.
  @return 1 success, else fail.
  */
-int channbsendi8(co_channel *c, int8_t val);
+int chansend_custom_exec(co_channel *c, void *v, IMP exec, IMP cancelExec);
 
 /**
- Non-blocking receive a int8_t value from channel.
+ Non-blocking send value to channel.
  
  @param c channel
- @return received int8_t value.
+ @param v the value's address.
+ @param exec  run at sending.
+ @return 1 success, else fail.
  */
-int8_t channbrecvi8(co_channel *c);
+int channbsend_custom_exec(co_channel *c, void *v, IMP exec);
 
 /**
- Get the blocking task count.
+ Blocking receive value to channel.
+ 
+ If no one sending, and buffer is empty, blocking the current coroutine.
+ 
+ @param c channel
+ @param v the pointer will store received value.
+ @param cancelExec run at cancel a alt.
+ @return 1 success, else fail.
  */
-int changetblocking(co_channel *c, int *sendBlockingCount, int *receiveBlockingCount);
+int chanrecv_custom_exec(co_channel *c, void *v, IMP cancelExec);
 
 #endif

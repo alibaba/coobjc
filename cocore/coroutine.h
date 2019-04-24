@@ -50,13 +50,14 @@ extern "C" {
         void *stack_memory;                     // Coroutine's stack memory address.
         void *stack_top;                    // Coroutine's stack top address.
         struct coroutine_scheduler *scheduler;  // The pointer to the scheduler.
-        int8_t   is_scheduler;                  // The coroutine is a scheduler.
         
         struct coroutine *prev;
         struct coroutine *next;
         
         void *autoreleasepage;                  // If enable autorelease, the custom autoreleasepage.
+        void *chan_alt;                         // If blocking by a channel, record the alt
         bool is_cancelled;                      // The coroutine is cancelled
+        int8_t   is_scheduler;                  // The coroutine is a scheduler.
     };
     typedef struct coroutine coroutine_t;
     
