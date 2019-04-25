@@ -48,11 +48,11 @@ open class Coroutine {
     public var queue: DispatchQueue
     
     /// The c pointer to coroutine_t struct
-    private var co: UnsafeMutablePointer<coroutine_t>?
+    public var co: UnsafeMutablePointer<coroutine_t>?
     
     /// The closure to cancel the blocking Channel when Coroutine cancel.
     /// If a channel blocking this coroutine, should set this block.
-    public var chanCancelBlock: (() -> Void)?
+    public var chanCancelBlock: ((Coroutine) -> Void)?
     
     /// The lastError occurred in the Coroutine.
     public var lastError: Error?
@@ -195,7 +195,7 @@ open class Coroutine {
         
         self.co?.pointee.is_cancelled = true
         if let chanCancel = self.chanCancelBlock {
-            chanCancel();
+            chanCancel(self);
         }
     }
     

@@ -68,6 +68,8 @@ typedef void (^COChanOnCancelBlock)(COChan *chan);
  */
 - (void)send:(Value _Nullable )val;
 
+- (void)send:(Value _Nullable )val onCancel:(COChanOnCancelBlock _Nullable)cancelBlock;
+
 /**
  Receive a value from the Channel, blocking.
  
@@ -76,6 +78,8 @@ typedef void (^COChanOnCancelBlock)(COChan *chan);
  @return the value received from the channel
  */
 - (Value _Nullable )receive;
+
+- (Value _Nullable )receiveWithOnCancel:(COChanOnCancelBlock _Nullable)cancelBlock;;
 
 /**
  Send a value to the Channel, non blocking.
@@ -132,14 +136,14 @@ typedef void (^COChanOnCancelBlock)(COChan *chan);
  */
 - (void)cancelForCoroutine:(COCoroutine *)co;
 
-/**
+/** @deprecated This method is not safe. use `send:onCancel:` or `receiveWithOnCancel:`
  Set a callback block when the Channel cancel current blocking operation(send: or receive:)
  
  Must set before `send:` or `receive:`, or it will not work.
 
  @param onCancelBlock the cancel callback block.
  */
-- (void)onCancel:(COChanOnCancelBlock _Nullable )onCancelBlock;
+// - (void)onCancel:(COChanOnCancelBlock _Nullable )onCancelBlock;
 
 @end
 

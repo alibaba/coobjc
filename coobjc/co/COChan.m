@@ -36,7 +36,6 @@ static void co_chan_custom_resume(coroutine_t *co) {
 }
 
 @property(nonatomic, assign) int count;
-@property(nonatomic, strong) NSMapTable *cancelBlocksByCo;
 @property(nonatomic, strong) NSMutableArray *buffList;
 
 @end
@@ -76,6 +75,10 @@ static void co_chan_custom_resume(coroutine_t *co) {
 }
 
 - (void)send:(id)val {
+    [self send:val onCancel:NULL];
+}
+
+- (void)send:(id)val onCancel:(COChanOnCancelBlock)cancelBlock {
     
     // send may blocking current process, so must check in a coroutine.
     COCoroutine *co = [COCoroutine currentCoroutine];
@@ -91,7 +94,6 @@ static void co_chan_custom_resume(coroutine_t *co) {
     });
     
     IMP cancel_exec = NULL;
-    COChanOnCancelBlock cancelBlock = [self popCancelBlockForCo:co];
     if (cancelBlock) {
         cancel_exec = imp_implementationWithBlock(^{
             cancelBlock(self);
@@ -108,6 +110,10 @@ static void co_chan_custom_resume(coroutine_t *co) {
 }
 
 - (id)receive {
+    return [self receiveWithOnCancel:NULL];
+}
+
+- (id)receiveWithOnCancel:(COChanOnCancelBlock)cancelBlock {
     
     COCoroutine *co = [COCoroutine currentCoroutine];
     if (!co) {
@@ -117,7 +123,6 @@ static void co_chan_custom_resume(coroutine_t *co) {
     co.currentChan = self;
     
     IMP cancel_exec = NULL;
-    COChanOnCancelBlock cancelBlock = [self popCancelBlockForCo:co];
     if (cancelBlock) {
         cancel_exec = imp_implementationWithBlock(^{
             cancelBlock(self);
@@ -224,37 +229,13 @@ static void co_chan_custom_resume(coroutine_t *co) {
     chan_cancel_alt_in_co(co.co);
 }
 
-- (NSMapTable *)cancelBlocksByCo {
-    if (!_cancelBlocksByCo) {
-        _cancelBlocksByCo = [NSMapTable mapTableWithKeyOptions:NSMapTableWeakMemory valueOptions:NSMapTableStrongMemory];
-    }
-    return _cancelBlocksByCo;
-}
-
-- (void)onCancel:(COChanOnCancelBlock)onCancelBlock {
-    if (!onCancelBlock) {
-        return;
-    }
-    COCoroutine *co = [COCoroutine currentCoroutine];
-    if (!co) {
-        @throw [NSException exceptionWithName:COInvalidException reason:@"onCancel must called in a routine" userInfo:@{}];
-    }
-    COOBJC_SCOPELOCK(_buffLock);
-    [self.cancelBlocksByCo setObject:[onCancelBlock copy] forKey:co];
-}
-
-- (COChanOnCancelBlock)popCancelBlockForCo:(COCoroutine *)co {
-    COOBJC_SCOPELOCK(_buffLock);
-    COChanOnCancelBlock block = [self.cancelBlocksByCo objectForKey:co];
-    if (block) {
-        [self.cancelBlocksByCo removeObjectForKey:co];
-        return block;
-    }
-    return nil;
-}
-
 @end
 
+@interface COTimeChan()
+
+@property (nonatomic, strong) CODispatchTimer *timer;
+
+@end
 
 @implementation COTimeChan
 {
@@ -274,18 +255,18 @@ static void co_chan_custom_resume(coroutine_t *co) {
     [super send_nonblock:val];
 }
 
+- (id)receive {
+    return [self receiveWithOnCancel:^(COChan * _Nonnull chan) {
+        [[(COTimeChan *)chan timer] invalidate];
+    }];
+}
+
 + (instancetype)sleep:(NSTimeInterval)duration {
     COTimeChan *chan = [self chanWithDuration:duration];
     
-    CODispatchTimer *timer = [[CODispatch currentDispatch] dispatch_timer:^{
+    chan.timer = [[CODispatch currentDispatch] dispatch_timer:^{
         [chan send_nonblock:@1];
     } interval:duration];
-    
-    [chan onCancel:^(COChan * _Nonnull chan) {
-        //dispatch_source_cancel(timer);
-        [timer invalidate];
-    }];
-    
     
     return chan;
 }

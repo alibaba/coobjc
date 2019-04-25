@@ -26,6 +26,8 @@
 
 #pragma mark - queue
 
+static void chancancelallalt(co_channel *c);
+
 static void amove(void *dst, void *src, uint n) {
     if(dst){
         if(src == nil) {
@@ -198,6 +200,7 @@ void chanfree(co_channel *c) {
     if(c == nil) {
         return;
     }
+    chancancelallalt(c);
     if (c->buffer.expandsize) {
         free(c->buffer.arr);
     }
@@ -363,6 +366,75 @@ static int altexec(chan_alt *a) {
     }
 }
 
+static void chancancelallalt(co_channel *c) {
+    
+    if (!c) {
+        return;
+    }
+    
+    chan_alt **remainList = NULL;
+    size_t remainCount = 0;
+    
+    chanlock(c);
+
+    remainCount = c->asend.count + c->arecv.count;
+    if (remainCount > 0) {
+        remainList = calloc(remainCount, sizeof(chan_alt *));
+        
+        chan_alt **ptr = remainList;
+        
+        alt_queue *sending = &c->asend;
+        if (sending->count) {
+            
+            for (int i = 0; i < sending->count; i++) {
+                altqueuepop(sending, ptr);
+                ptr++;
+            }
+        }
+        alt_queue *recv = &c->arecv;
+        if (recv->count) {
+            
+            for (int i = 0; i < recv->count; i++) {
+                altqueuepop(recv, ptr);
+                ptr++;
+            }
+        }
+    }
+    
+    chanunlock(c);
+    
+    if (remainCount > 0) {
+        for (int i = 0; i < remainCount; i++) {
+            chan_alt *a = remainList[i];
+            if (!a) {
+                continue;
+            }
+            // custom cancel
+            if (a->cancel_exec) {
+                a->cancel_exec();
+            }
+            
+            // resume the task.
+            coroutine_t *co = a->task;
+            void (*custom_resume)(coroutine_t *co) = c->custom_resume;
+            
+            if (custom_resume) {
+                custom_resume(co);
+            } else {
+                coroutine_add(co);
+            }
+        }
+        
+    }
+    
+    if (remainList) {
+        free(remainList);
+    }
+    
+}
+
+
+
 void altcancel(chan_alt *a) {
     if (!a) {
         return;
@@ -379,6 +451,7 @@ void altcancel(chan_alt *a) {
         if(altqueue && altqueue->count){
             
             altqueueremove(altqueue, a);
+            chanunlock(c);
             a->is_cancelled = true;
             
             // custom cancel
@@ -389,7 +462,6 @@ void altcancel(chan_alt *a) {
             // resume the task.
             coroutine_t *co = a->task;
             void (*custom_resume)(coroutine_t *co) = c->custom_resume;
-            chanunlock(c);
             
             if (custom_resume) {
                 custom_resume(co);
