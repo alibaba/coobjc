@@ -301,9 +301,6 @@ static int altcopy(chan_alt *s, chan_alt *r) {
     if(s && r){
         // no buffer
         if (c->buffer.count == 0) {
-            if (s->custom_exec) {
-                s->custom_exec();
-            }
             amove(r->value, s->value, c->buffer.elemsize);
             return 1;
         } else {
