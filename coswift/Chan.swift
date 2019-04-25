@@ -25,25 +25,52 @@ private let co_chan_custom_resume: @convention(c) (UnsafeMutablePointer<coroutin
     }
 }
 
+fileprivate class ChanCancelMethod<T> {
+    public var onCancel: (Chan<T>) -> Void
+    init(blk: @escaping (Chan<T>) -> Void) {
+        onCancel = blk
+    }
+}
 
 /// Define the Channel
 public class Chan<T> {
     
+   
+    
     public typealias  ChanOnCancelBlock = (Chan) -> Void
     
-    /// Callback when the channel cancel.
-    public var onCancel: ChanOnCancelBlock?
+    private var cancelBlocksByCo = NSMapTable<Coroutine, ChanCancelMethod<T>>(keyOptions: NSMapTableWeakMemory, valueOptions: NSMapTableStrongMemory)
     
-    /// If the channel is cancelled.
-    public var isCancelled: Bool {
+    /// Callback when the channel cancel.
+    public var onCancel: ChanOnCancelBlock? {
+        set {
+            if let co = Coroutine.current() {
+                do {
+                    lock.lock()
+                    defer { lock.unlock() }
+                    let method = ChanCancelMethod<T>(blk: newValue!)
+                    cancelBlocksByCo.setObject(method, forKey: co)
+                }
+            }
+        }
         get {
-            return cancelled
+            return nil
         }
     }
+   
+    private func popCancelBlockForCo(co: Coroutine) -> ChanOnCancelBlock? {
+        lock.lock()
+        defer { lock.unlock() }
+        
+        if let method = cancelBlocksByCo.object(forKey: co) {
+            return method.onCancel
+        }
+        return nil
+    }
+    
     
     private var buffCount: Int32
     private var cchan: UnsafeMutablePointer<co_channel>
-    private var cancelled: Bool = false
     private var buffList: [T] = []
     private let lock = NSRecursiveLock()
     
@@ -86,20 +113,34 @@ public class Chan<T> {
     public func send(val: T) throws {
         
         if let co = Coroutine.current() {
-            co.chanCancelBlock = {
-                self.cancel()
+            co.chanCancelBlock = { coroutine in
+                self.cancelForCoroutine(co: coroutine)
             }
             
-            do {
-                lock.lock()
-                defer { lock.unlock() }
-                buffList.append(val)
-            }
-            chansendi8(cchan, 1);
-            co.chanCancelBlock = nil
-            if cancelled {
+            
+            let custom_exec = imp_implementationWithBlock({
+                self.lock.lock()
+                defer { self.lock.unlock() }
+                self.buffList.append(val)
+            })
+            
+            let cancel_exec = imp_implementationWithBlock({
+                // cancel call back
+                if let block = self.popCancelBlockForCo(co: co) {
+                    block(self)
+                }
+                // throw cancelled error
                 throw COError.coroutineCancelled
+            })
+            
+            defer {
+                imp_removeBlock(custom_exec)
+                imp_removeBlock(cancel_exec)
             }
+            
+            var v: Int8 = 1;
+            
+            _ = chansend_custom_exec(cchan, &v, custom_exec, cancel_exec)
         }
     }
     
@@ -202,31 +243,8 @@ public class Chan<T> {
     /// Why we provide this api?
     /// Sometimes, we need cancel a operation, such as a Network Connection. So, a coroutine is cancellable.
     /// But Channel may blocking the coroutine, so we need cancel the Channel when cancel a coroutine.
-    public func cancel() {
+    public func cancelForCoroutine(co: Coroutine) {
         
-        if cancelled {
-            return
-        }
-        cancelled = true
-        
-        if let cancelBlock = self.onCancel {
-            cancelBlock(self)
-        }
-        
-        var blockingSend:Int32 = 0
-        var blockingReceive:Int32 = 0
-        
-        if (changetblocking(cchan, &blockingSend, &blockingReceive) != 0) {
-            
-            if blockingSend > 0 {
-                for _ in 0..<blockingSend {
-                    channbrecvi8(cchan)
-                }
-            } else if blockingReceive > 0 {
-                for _ in 0..<blockingReceive {
-                    channbsendi8(cchan, 0)
-                }
-            }
-        }
+        chan_cancel_alt_in_co(co.co)
     }
 }

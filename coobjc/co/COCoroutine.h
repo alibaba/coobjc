@@ -144,7 +144,7 @@ extern NSString *const COInvalidException;
  @param stackSize : stackSize of the coroutine.
  @return The coroutine object.
  */
-- (instancetype)initWithBlock:(void (^)(void))block onQueue:(dispatch_queue_t)queue stackSize:(NSUInteger)stackSize;
+- (instancetype)initWithBlock:(void (^)(void))block onQueue:(dispatch_queue_t _Nullable)queue stackSize:(NSUInteger)stackSize;
 
 /**
  The coroutine is Finished.

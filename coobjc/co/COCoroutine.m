@@ -20,6 +20,7 @@
 #import "COChan.h"
 #import "coroutine.h"
 #import "co_queue.h"
+#import "coobjc.h"
 
 NSString *const COInvalidException = @"COInvalidException";
 
@@ -150,7 +151,6 @@ static void co_obj_dispose(void *coObj) {
     if (self) {
         _execBlock = [block copy];
         _dispatch = queue ? [CODispatch dispatchWithQueue:queue] : [CODispatch currentDispatch];
-        //_queue = queue ?: co_get_current_queue();
         
         coroutine_t  *co = coroutine_create((void (*)(void *))co_exec);
         if (stackSize > 0 && stackSize < 1024*1024) {   // Max 1M
@@ -322,12 +322,10 @@ id co_await(id awaitable) {
              co.lastError = error;
              [chan send_nonblock:nil];
          }];
-
-        [chan onCancel:^(COChan * _Nonnull chan) {
+        
+        id val = [chan receiveWithOnCancel:^(COChan * _Nonnull chan) {
             [promise cancel];
         }];
-        
-        id val = [chan receive];
         return val;
         
     } else {
@@ -349,61 +347,40 @@ NSArray *co_batch_await(NSArray * awaitableList) {
         return nil;
     }
     
-    NSMutableArray *resultAwaitable = [[NSMutableArray alloc] initWithCapacity:awaitableList.count];
-
-    for (id awaitable in awaitableList) {
-        
-        if ([awaitable isKindOfClass:[COChan class]]) {
-            
-            [resultAwaitable addObject:awaitable];
-           
-        } else if ([awaitable isKindOfClass:[COPromise class]]) {
-            
-            COChan *chan = [COChan chanWithBuffCount:1];
-            COCoroutine *co = co_get_obj(t);
-            
-            COPromise *promise = awaitable;
-            [[promise
-              then:^id _Nullable(id  _Nullable value) {
-                  
-                  [chan send_nonblock:value];
-                  return value;
-              }]
-             catch:^(NSError * _Nonnull error) {
-                 co.lastError = error;
-                 [chan send_nonblock:error];
-             }];
-            
-            [chan onCancel:^(COChan * _Nonnull chan) {
-                [promise cancel];
-            }];
-            
-            [resultAwaitable addObject:chan];
-            
-        } else {
-            @throw [NSException exceptionWithName:COInvalidException
-                                           reason:[NSString stringWithFormat:@"Cannot await object: %@.", awaitable]
-                                         userInfo:nil];
-        }
-        
-        
+    uint32_t count = (uint32_t)awaitableList.count;
+    
+    if (count == 0) {
+        return nil;
     }
     
-    NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:awaitableList.count];
-    COCoroutine *currentCo = [COCoroutine currentCoroutine];
-    for (COChan *chan in resultAwaitable) {
-        if ([currentCo isCancelled]) {
-            [result addObject:[NSNull null]];
-        } else {
-            id val = co_await(chan);
-            if ([currentCo isCancelled]) {
-                [result addObject:[NSNull null]];
-            } else {
-                [result addObject:val ? val : [NSNull null]];
-            }
-        }
+    NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:count];
+    
+    COChan *chan = [COChan chanWithBuffCount:count];
+    
+    for (int i = 0; i < count; i++) {
         
+        [result addObject:[NSNull null]];
+        id awaitable = awaitableList[i];
+        
+        // start subroutines
+        co_launch(^{
+            
+            id val = co_await(awaitable);
+            if (!co_isCancelled()) {
+                if (val) {
+                    [result replaceObjectAtIndex:i withObject:val];
+                } else {
+                    NSError *error = co_getError();
+                    if (error) {
+                        [result replaceObjectAtIndex:i withObject:error];
+                    }
+                }
+            }
+            [chan send_nonblock:@(i)];
+        });
     }
+    
+    [chan receiveWithCount:count];
     return result.copy;
 }
 
