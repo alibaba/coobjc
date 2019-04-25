@@ -136,7 +136,7 @@ static void co_chan_custom_resume(coroutine_t *co) {
     }
     co.currentChan = nil;
     
-    if (ret == 1) {
+    if (ret == CHANNEL_ALT_SUCCESS) {
         // success
         do {
             COOBJC_SCOPELOCK(_buffLock);
@@ -200,7 +200,7 @@ static void co_chan_custom_resume(coroutine_t *co) {
     uint8_t val = 0;
     int ret = channbrecv(_chan, &val);
 
-    if (ret == 1) {
+    if (ret == CHANNEL_ALT_SUCCESS) {
         
         do {
             COOBJC_SCOPELOCK(_buffLock);
