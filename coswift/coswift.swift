@@ -130,7 +130,7 @@ public func co_delay(_ seconds: TimeInterval) throws {
     
     timer.resume()
     
-    try _ = chan.receive(onCancel: { (chan) in
+    try _ = chan.receive(onCancel: { _ in
         timer.cancel()
     })
 }
