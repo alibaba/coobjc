@@ -273,6 +273,7 @@ static void altqueue(chan_alt *a) {
  * data goes from sender to receiver.  If the channel is full,
  * the receiver removes some from the channel and the sender
  * gets to put some in.
+ * 1 success, 0 fail.
  */
 static int altcopy(chan_alt *s, chan_alt *r) {
     chan_alt *t;
@@ -310,13 +311,7 @@ static int altcopy(chan_alt *s, chan_alt *r) {
             // receive first from buffer
             queuepop(&c->buffer, r->value);
             // then send to buffer
-            int ret = queuepush(&c->buffer, s->value);
-            if (ret == 1) {
-                if (s->custom_exec) {
-                    s->custom_exec();
-                }
-            }
-            return ret;
+            return queuepush(&c->buffer, s->value);
         }
     }
     
@@ -326,14 +321,7 @@ static int altcopy(chan_alt *s, chan_alt *r) {
     if(r){
         return queuepop(&c->buffer, r->value);
     } else if(s) {
-        
-        int ret = queuepush(&c->buffer, s->value);
-        if (ret == 1) {
-            if (s->custom_exec) {
-                s->custom_exec();
-            }
-        }
-        return ret;
+        return queuepush(&c->buffer, s->value);
     }
     return 0;
 }
@@ -348,21 +336,34 @@ static int altexec(chan_alt *a) {
     altqueue = chanarray(c, otherop(a->op));
     if(altqueuepop(altqueue, &other)){
 
-        altcopy(a, other);
+        int copyRet = altcopy(a, other);
+        assert(copyRet == 1);
         coroutine_t *co = other->task;
         void (*custom_resume)(coroutine_t *co) = c->custom_resume;
         chanunlock(c);
+        
+        // call back sender
+        chan_alt *sender = a->op == CHANNEL_SEND ? a : other;
+        if (sender->custom_exec) {
+            sender->custom_exec();
+        }
         
         if (custom_resume) {
             custom_resume(co);
         } else {
             coroutine_add(co);
         }
-        return 1;
+        return CHANNEL_ALT_SUCCESS;
     } else {
-        int ret = altcopy(a, nil);
+        int copyRet = altcopy(a, nil);
         chanunlock(c);
-        return ret;
+        
+        if (copyRet && a->op == CHANNEL_SEND) {
+            if (a->custom_exec) {
+                a->custom_exec();
+            }
+        }
+        return copyRet ? CHANNEL_ALT_SUCCESS : CHANNEL_ALT_ERROR_COPYFAIL;
     }
 }
 
@@ -409,6 +410,7 @@ static void chancancelallalt(co_channel *c) {
             if (!a) {
                 continue;
             }
+            a->is_cancelled = true;
             // custom cancel
             if (a->cancel_exec) {
                 a->cancel_exec();
@@ -499,7 +501,7 @@ int chanalt(chan_alt *a) {
     
     if(!canblock) {
         chanunlock(c);
-        return 0;
+        return a->op == CHANNEL_SEND ? CHANNEL_ALT_ERROR_BUFFER_FULL : CHANNEL_ALT_ERROR_NO_VALUE;
     }
     
     // add to queue
@@ -515,10 +517,10 @@ int chanalt(chan_alt *a) {
     t->chan_alt = nil;
     // alt is cancelled
     if (a->is_cancelled) {
-        return 0;
+        return CHANNEL_ALT_ERROR_CANCELLED;
     }
     
-    return 1;
+    return CHANNEL_ALT_SUCCESS;
 }
 
 static int _chanop(co_channel *c, int op, void *p, int canblock) {
@@ -535,12 +537,9 @@ static int _chanop(co_channel *c, int op, void *p, int canblock) {
     a->custom_exec = NULL;
     a->cancel_exec = NULL;
     
-    if(chanalt(a) == 0) {
-        free(a);
-        return 0;
-    }
+    int ret = chanalt(a);
     free(a);
-    return 1;
+    return ret;
 }
 
 static int _chanop2(co_channel *c, int op, void *p, int canblock, IMP custom_exec, IMP cancel_exec) {
@@ -557,12 +556,9 @@ static int _chanop2(co_channel *c, int op, void *p, int canblock, IMP custom_exe
     a->custom_exec = custom_exec;
     a->cancel_exec = cancel_exec;
 
-    if(chanalt(a) == 0) {
-        free(a);
-        return 0;
-    }
+    int ret = chanalt(a);
     free(a);
-    return 1;
+    return ret;
 }
 
 #pragma mark - public apis

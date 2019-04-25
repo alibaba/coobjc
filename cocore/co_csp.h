@@ -33,6 +33,13 @@ typedef enum {
     CHANNEL_RECEIVE,
 } channel_op;
 
+enum channel_errorno {
+    CHANNEL_ALT_SUCCESS = 1,
+    CHANNEL_ALT_ERROR_COPYFAIL    = 0,
+    CHANNEL_ALT_ERROR_CANCELLED   = -1,     // cancel the current alt.
+    CHANNEL_ALT_ERROR_BUFFER_FULL = -2,     // no buffer remain, send_nonblock fail
+    CHANNEL_ALT_ERROR_NO_VALUE    = -3,     // receive_nonblock fail
+};
 
 typedef struct chan_alt chan_alt;
 typedef struct chan_queue chan_queue;
@@ -109,7 +116,7 @@ void chanfree(co_channel *chan);
 
  @param c channel
  @param v the pointer will store received value.
- @return 1 success, else fail.
+ @return channel_errorno
  */
 int channbrecv(co_channel *c, void *v);
 
@@ -117,7 +124,7 @@ int channbrecv(co_channel *c, void *v);
  Non-blocking receive a pointer value from channel.
 
  @param c channel
- @return received pointer value.
+ @return received pointer value, default NULL.
  */
 void *channbrecvp(co_channel *c);
 
@@ -125,7 +132,7 @@ void *channbrecvp(co_channel *c);
  Non-blocking receive a unsigned long value from channel.
 
  @param c channel
- @return received unsigned long value.
+ @return received unsigned long value, default 0.
  */
 unsigned long channbrecvul(co_channel *c);
 
@@ -134,7 +141,7 @@ unsigned long channbrecvul(co_channel *c);
 
  @param c channel
  @param v the value's address.
- @return 1 success, else fail.
+ @return channel_errorno
  */
 int channbsend(co_channel *c, void *v);
 
@@ -143,7 +150,7 @@ int channbsend(co_channel *c, void *v);
 
  @param c channel
  @param v the pointer
- @return 1 success, else fail.
+ @return channel_errorno
  */
 int channbsendp(co_channel *c, void *v);
 
@@ -152,7 +159,7 @@ int channbsendp(co_channel *c, void *v);
  
  @param c channel
  @param v the unsigned long value
- @return 1 success, else fail.
+ @return channel_errorno
  */
 int channbsendul(co_channel *c, unsigned long v);
 
@@ -163,7 +170,7 @@ int channbsendul(co_channel *c, unsigned long v);
  
  @param c channel
  @param v the pointer will store received value.
- @return 1 success, else fail.
+ @return channel_errorno
  */
 int chanrecv(co_channel *c, void *v);
 
@@ -173,7 +180,7 @@ int chanrecv(co_channel *c, void *v);
  If no one sending, and buffer is empty, blocking the current coroutine.
  
  @param c channel
- @return received pointer.
+ @return received pointer, default NULL.
  */
 void *chanrecvp(co_channel *c);
 
@@ -183,7 +190,7 @@ void *chanrecvp(co_channel *c);
  If no one sending, and buffer is empty, blocking the current coroutine.
  
  @param c channel
- @return received unsigned long value.
+ @return received unsigned long value, default 0.
  */
 unsigned long chanrecvul(co_channel *c);
 
@@ -194,7 +201,7 @@ unsigned long chanrecvul(co_channel *c);
  
  @param c channel
  @param v the pointer will store received value.
- @return 1 success, else fail.
+ @return channel_errorno
  */
 int chansend(co_channel *c, void *v);
 
@@ -203,7 +210,7 @@ int chansend(co_channel *c, void *v);
  
  @param c channel
  @param v the pointer
- @return 1 success, else fail.
+ @return channel_errorno
  */
 int chansendp(co_channel *c, void *v);
 
@@ -212,7 +219,7 @@ int chansendp(co_channel *c, void *v);
  
  @param c channel
  @param v the unsigned long value
- @return 1 success, else fail.
+ @return channel_errorno
  */
 int chansendul(co_channel *c, unsigned long v);
 
@@ -221,7 +228,7 @@ int chansendul(co_channel *c, unsigned long v);
  to cancel the blocking.
 
  @param co the coroutine object
- @return 1 success, else fail.
+ @return channel_errorno
  */
 int chan_cancel_alt_in_co(coroutine_t *co);
 
@@ -234,7 +241,7 @@ int chan_cancel_alt_in_co(coroutine_t *co);
  @param v the pointer pass the send value.
  @param exec  run at sending.
  @param cancelExec run at cancel a alt.
- @return 1 success, else fail.
+ @return channel_errorno
  */
 int chansend_custom_exec(co_channel *c, void *v, IMP exec, IMP cancelExec);
 
@@ -244,7 +251,7 @@ int chansend_custom_exec(co_channel *c, void *v, IMP exec, IMP cancelExec);
  @param c channel
  @param v the value's address.
  @param exec  run at sending.
- @return 1 success, else fail.
+ @return channel_errorno
  */
 int channbsend_custom_exec(co_channel *c, void *v, IMP exec);
 
@@ -256,7 +263,7 @@ int channbsend_custom_exec(co_channel *c, void *v, IMP exec);
  @param c channel
  @param v the pointer will store received value.
  @param cancelExec run at cancel a alt.
- @return 1 success, else fail.
+ @return channel_errorno
  */
 int chanrecv_custom_exec(co_channel *c, void *v, IMP cancelExec);
 
