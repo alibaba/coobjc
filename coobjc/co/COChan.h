@@ -61,6 +61,7 @@ typedef void (^COChanOnCancelBlock)(COChan *chan);
 /**
  Send a value to the Channel.
  
+ @see send:onCancel:
  @discussion This method may blocking the current process, when there's no one receives and buffer is full.
  So, this method requires calling in a coroutine.
  
@@ -68,6 +69,14 @@ typedef void (^COChanOnCancelBlock)(COChan *chan);
  */
 - (void)send:(Value _Nullable )val;
 
+/**
+ Send a value to the Channel.
+ 
+ Requires calling in a coroutine.
+ 
+ @param val the value send to Channel.
+ @param cancelBlock call back when the coroutine cancels.
+ */
 - (void)send:(Value _Nullable )val onCancel:(COChanOnCancelBlock _Nullable)cancelBlock;
 
 /**
@@ -79,7 +88,15 @@ typedef void (^COChanOnCancelBlock)(COChan *chan);
  */
 - (Value _Nullable )receive;
 
-- (Value _Nullable )receiveWithOnCancel:(COChanOnCancelBlock _Nullable)cancelBlock;;
+/**
+ Receive a value from the Channel, blocking.
+ 
+ @see `receive`
+ 
+ @return the value received from the channel
+ @param cancelBlock call back when the coroutine cancels.
+ */
+- (Value _Nullable )receiveWithOnCancel:(COChanOnCancelBlock _Nullable)cancelBlock;
 
 /**
  Send a value to the Channel, non blocking.
