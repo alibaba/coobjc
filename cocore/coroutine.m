@@ -35,7 +35,7 @@
 #define COROUTINE_SUSPEND 3
 
 
-#define STACK_SIZE      (64*1024)
+#define STACK_SIZE      (512*1024)
 #define DEFAULT_COROUTINE_COUNT     64
 
 #pragma clang diagnostic push
