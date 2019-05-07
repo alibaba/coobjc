@@ -31,6 +31,14 @@ static dispatch_queue_t get_test_queue(){
     return q;
 }
 
+static COPromise *test_promise(){
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull fullfill, COPromiseReject  _Nonnull reject) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            reject([NSError errorWithDomain:@"test" code:100 userInfo:nil]);
+        });
+    }];
+}
+
 SpecBegin(coActor)
 
 describe(@"actor tests", ^{
@@ -247,6 +255,26 @@ describe(@"actor tests", ^{
             [countActor sendMessage:@"inc"];
             int currentCount = [await([countActor sendMessage:@"get"]) intValue];
         });
+    });
+    
+    it(@"error example", ^{
+        COActor *actor = co_actor_onqueue(get_test_queue(), ^(COActorChan *channel) {
+            for(COActorMessage *message in channel){
+                message.complete(await(test_promise()));
+            }
+        });
+        co_launch(^{
+            id value = await([actor sendMessage:@"test"]);
+            NSError *error = co_getError();
+            XCTAssert(error.code == 100);
+        });
+        
+        waitUntilTimeout(3, ^(DoneCallback done) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                done();
+            });
+        });
+        
     });
 });
 

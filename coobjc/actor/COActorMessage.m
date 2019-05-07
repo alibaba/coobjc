@@ -18,6 +18,8 @@
 
 #import "COActorMessage.h"
 
+extern NSError *co_getError(void);
+
 @interface COActorMessage ()
 
 @property(nonatomic, strong) COActorCompletable *completableObj;
@@ -40,7 +42,18 @@
     COActorCompletable *completable = _completableObj;
     return ^(id val){
         if (completable) {
-            [completable fulfill:val];
+            if (val) {
+                [completable fulfill:val];
+            }
+            else{
+                NSError *error = co_getError();
+                if (error) {
+                    [completable reject:error];
+                }
+                else{
+                    [completable fulfill:val];
+                }
+            }
         }
     };
 }
