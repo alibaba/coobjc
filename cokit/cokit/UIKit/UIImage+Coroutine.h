@@ -28,10 +28,13 @@ NS_ASSUME_NONNULL_BEGIN
 + (COPromise<UIImage *>*)async_imageNamed:(NSString *)name inBundle:(nullable NSBundle *)bundle compatibleWithTraitCollection:(nullable UITraitCollection *)traitCollection NS_AVAILABLE_IOS(8_0);
 #endif
 
++ (COPromise<UIImage *>*)async_imageWithContentsOfFileNamed:(NSString *)imageName;
+
 + (COPromise<UIImage *>*)async_imageWithContentsOfFile:(NSString *)path;
 + (COPromise<UIImage *>*)async_imageWithData:(NSData *)data;
 + (COPromise<UIImage *>*)async_imageWithData:(NSData *)data scale:(CGFloat)scale NS_AVAILABLE_IOS(6_0);
 
+- (COPromise<UIImage *>*)async_initWithContentsOfFileNamed:(NSString *)imageName;
 - (COPromise<UIImage *>*)async_initWithContentsOfFile:(NSString *)path;
 - (COPromise<UIImage *>*)async_initWithData:(NSData *)data;
 - (COPromise<UIImage *>*)async_initWithData:(NSData *)data scale:(CGFloat)scale NS_AVAILABLE_IOS(6_0);
@@ -44,10 +47,13 @@ NS_ASSUME_NONNULL_BEGIN
 #if __has_include(<UIKit/UITraitCollection.h>)
 + (UIImage *)co_imageNamed:(NSString *)name inBundle:(nullable NSBundle *)bundle compatibleWithTraitCollection:(nullable UITraitCollection *)traitCollection NS_AVAILABLE_IOS(8_0);
 #endif
++ (UIImage *)co_imageWithContentsOfFileNamed:(NSString *)imageName;
 
 + (UIImage *)co_imageWithContentsOfFile:(NSString *)path;
 + (UIImage *)co_imageWithData:(NSData *)data;
 + (UIImage *)co_imageWithData:(NSData *)data scale:(CGFloat)scale NS_AVAILABLE_IOS(6_0);
+
+- (UIImage *)co_initWithContentsOfFileNamed:(NSString *)imageName;
 
 - (UIImage *)co_initWithContentsOfFile:(NSString *)path;
 - (UIImage *)co_initWithData:(NSData *)data;

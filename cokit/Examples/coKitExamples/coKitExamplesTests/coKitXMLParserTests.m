@@ -57,7 +57,7 @@
         int testsuiteCount = 0;
         int testcaseCount = 0;
         while (1) {
-            item = [parse_generator next];
+//            item = [parse_generator next];
             if (item.itemType == COXMLItemDidStartElement) {
                 if ([item.elementName isEqualToString:@"testsuites"]) {
                     testsuitesCount++;

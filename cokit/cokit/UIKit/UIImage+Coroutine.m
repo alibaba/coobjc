@@ -42,6 +42,15 @@
 }
 #endif
 
++ (UIImage *)co_imageWithContentsOfFileNamed:(NSString *)imageName{
+    if ([COCoroutine currentCoroutine]) {
+        return await([self async_imageWithContentsOfFileNamed:imageName]);
+    }
+    else{
+        return nil;
+    }
+}
+
 + (UIImage *)co_imageWithContentsOfFile:(NSString *)path{
     if ([COCoroutine currentCoroutine]) {
         return await([self async_imageWithContentsOfFile:path]);
@@ -67,6 +76,13 @@
     else{
         return [self imageWithData:data scale:scale];
     }
+}
+
+- (UIImage *)co_initWithContentsOfFileNamed:(NSString *)imageName{
+    if ([COCoroutine currentCoroutine]) {
+        return await([self async_initWithContentsOfFileNamed:imageName]);
+    }
+    return nil;
 }
 
 - (UIImage *)co_initWithContentsOfFile:(NSString *)path{
@@ -131,6 +147,12 @@
 }
 #endif
 
++ (COPromise<UIImage *>*)async_imageWithContentsOfFileNamed:(NSString *)imageName{
+    return [[self alloc] async_initWithContentsOfFileNamed:imageName];
+}
+
+
+
 + (COPromise<UIImage *>*)async_imageWithContentsOfFile:(NSString *)path{
     return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlock:^{
@@ -161,6 +183,63 @@
     return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
         [COKitCommon runBlock:^{
             UIImage *image = [UIImage imageWithData:data scale:scale];
+            if (image) {
+                resolve(image);
+            }
+            else{
+                resolve(nil);
+            }
+        } onQueue:[COKitCommon image_queue]];
+    }];
+}
+
+- (COPromise<UIImage *> *)async_initWithContentsOfFileNamed:(NSString *)imageName{
+    return [COPromise promise:^(COPromiseFulfill  _Nonnull resolve, COPromiseReject  _Nonnull reject) {
+        [COKitCommon runBlock:^{
+            if (imageName.length <= 0) {
+                resolve(nil);
+                return;
+            }
+            NSArray *list = [imageName componentsSeparatedByString:@"."];
+            
+            NSString *type = nil;
+            NSString *suffix = nil;
+            NSString *fileName = list.firstObject;
+            if (list.count >= 2) {
+                type = list.lastObject;
+            }
+            if ([fileName hasPrefix:@"@2x"]) {
+                suffix = @"@2x";
+                fileName = [fileName stringByReplacingOccurrencesOfString:@"@2x" withString:@""];
+            }
+            if ([fileName hasPrefix:@"@3x"]) {
+                suffix = @"@3x";
+                fileName = [fileName stringByReplacingOccurrencesOfString:@"@3x" withString:@""];
+            }
+            NSArray *typeList = @[@"png", @"jpg"];
+            NSArray *suffixList = @[@"", @"@2x", @"@3x"];
+            if (type.length > 0) {
+                typeList = @[type];
+            }
+            if (suffix.length > 0) {
+                suffixList = @[@"", suffix];
+            }
+            
+            NSString *filePath = nil;
+            
+            for (NSString *s in suffixList) {
+                for (NSString *t in typeList) {
+                    NSString *f = [NSString stringWithFormat:@"%@%@", fileName, s];
+                    filePath = [[NSBundle mainBundle] pathForResource:f ofType:t];
+                    if (filePath) {
+                        break;
+                    }
+                }
+                if (filePath) {
+                    break;
+                }
+            }
+            UIImage *image = [self initWithContentsOfFile:filePath];
             if (image) {
                 resolve(image);
             }

@@ -5,6 +5,7 @@ target 'coKitExamples' do
 
     pod 'cokit', :path => '../../../'
     pod 'coobjc', :path => '../../../'
+    pod 'cocore', :path => '../../../'
 
 end
 
@@ -12,6 +13,8 @@ target 'coKitExamplesTests' do
 
     pod 'cokit', :path => '../../../'
     pod 'coobjc', :path => '../../../'
+    pod 'cocore', :path => '../../../'
+
 
     pod 'Specta', '~> 1.0'
     pod 'Expecta',     '~> 1.0'   # expecta matchers

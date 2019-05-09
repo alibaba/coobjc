@@ -17,6 +17,8 @@
 //   limitations under the License.
 
 #import <XCTest/XCTest.h>
+#import <coobjc/coobjc.h>
+#import <cokit/UIImage+Coroutine.h>
 
 @interface coKitExamplesTests : XCTestCase
 
@@ -37,6 +39,38 @@
 - (void)testExample {
     // This is an example of a functional test case.
     // Use XCTAssert and related functions to verify your tests produce the correct results.
+    XCTestExpectation *e = [self expectationWithDescription:@"test"];
+    co_launch(^{
+        UIImage *image = await([UIImage async_imageWithContentsOfFileNamed:@"home"]);
+        NSAssert(image != nil, @"test");
+        
+        image = await([UIImage async_imageWithContentsOfFileNamed:@"home1"]);
+        NSAssert(image != nil, @"test1");
+        
+        image = await([UIImage async_imageWithContentsOfFileNamed:@"home2"]);
+        NSAssert(image != nil, @"test2");
+        
+        image = await([UIImage async_imageWithContentsOfFileNamed:@"home.png"]);
+        NSAssert(image != nil, @"test");
+        
+        image = await([UIImage async_imageWithContentsOfFileNamed:@"home1.png"]);
+        NSAssert(image != nil, @"test1");
+        
+        image = await([UIImage async_imageWithContentsOfFileNamed:@"home2.png"]);
+        NSAssert(image != nil, @"test2");
+        
+        image = await([UIImage async_imageWithContentsOfFileNamed:@"home@2x.png"]);
+        NSAssert(image == nil, @"test");
+        
+        image = await([UIImage async_imageWithContentsOfFileNamed:@"home1@3x.png"]);
+        NSAssert(image == nil, @"test1");
+        
+        image = await([UIImage async_imageWithContentsOfFileNamed:@"home2@2x.png"]);
+        NSAssert(image == nil, @"test2");
+        [e fulfill];
+    });
+    
+    [self waitForExpectations:@[e] timeout:10];
 }
 
 - (void)testPerformanceExample {
