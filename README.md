@@ -7,6 +7,7 @@ This library provides coroutine support for Objective-C and Swift. We added awai
 [cooobjc 中文文档](README_cn.md)
 
 ## 0x0 iOS Asynchronous programming problem
+
 Block-based asynchronous programming callback is currently the most widely used asynchronous programming method for iOS. The GCD library provided by iOS system makes asynchronous development very simple and convenient, but there are many disadvantages based on this programming method：
 
 * get into Callback hell
@@ -34,7 +35,6 @@ These problem have been faced in many systems and many languages, and the abstra
 
 Kotlin is a static programming language supported by JetBrains that supports modern multi-platform applications. It has been quite hot in the developer community for the past two years. In the Kotlin language, async/await based on coroutine, generator/yield and other asynchronous technologies have become syntactic standard, Kotlin coroutine related introduction, you can refer to：[https://www.kotlincn.net/docs/reference/coroutines/basics.html](https://www.kotlincn.net/docs/reference/coroutines/basics.html)
 
-
 ## 0x2 Coroutine
 
 > **Coroutines are computer program components that generalize subroutines for non-preemptive multitasking, by allowing execution to be suspended and resumed. Coroutines are well-suited for implementing familiar program components such as cooperative tasks, exceptions, event loops, iterators, infinite lists and pipes**
@@ -43,15 +43,18 @@ Kotlin is a static programming language supported by JetBrains that supports mod
 The concept of coroutine has been proposed in the 1960s. It is widely used in the server. It is extremely suitable for use in high concurrency scenarios. It can greatly reduce the number of threads in a single machine and improve the connection and processing capabilities of a single machine. In the meantime, iOS currently does not support the use of coroutines（That's why we want to support it.）
 
 ## 0x3 coobjc framework
+
 coobjc is a coroutine development framework that can be used on the iOS by the Alibaba Taobao-Mobile architecture team. Currently it supports the use of Objective-C and Swift. We use the assembly and C language for development, and the upper layer provides the interface between Objective-C and Swift. Currently, It's open source here under Apache open source license.
 
 ### 0x31 Install
+
 * cocoapods for objective-c:  pod 'coobjc'
 * cocoapods for swift: pod 'coswift'
 * cocoapods for cokit: pod 'cokit'
 * source code: All the code is in the ./coobjc directory
 
 ### 0x32 Documents
+
 * Read the [Coroutine framework design](docs/arch_design.md) document.
 * Read the [coobjc Objective-C Guide](docs/usage.md) document.
 * Read the [coobjc Swift Guide](docs/usage_swift.md) document.
@@ -65,6 +68,7 @@ coobjc is a coroutine development framework that can be used on the iOS by the A
 * create coroutine
 
 Create a coroutine using the co_launch method
+
 ```objc
 co_launch(^{
     ...
@@ -78,19 +82,18 @@ The coroutine created by co_launch is scheduled by default in the current thread
 In the coroutine we use the await method to wait for the asynchronous method to execute, get the asynchronous execution result
 
 ```objc
-
 - (void)viewDidLoad {
     ...
     co_launch(^{
         // async downloadDataFromUrl
-    	NSData *data = await(downloadDataFromUrl(url));
+        NSData *data = await(downloadDataFromUrl(url));
         
         // async transform data to image
-    	UIImage *image = await(imageFromData(data));
+        UIImage *image = await(imageFromData(data));
 
         // set image to imageView
-    	self.imageView.image = image;
-	});
+        self.imageView.image = image;
+    });
 }
 ```
 
@@ -98,7 +101,8 @@ The above code turns the code that originally needs dispatch_async twice into se
 
 * error handling
 
-In the coroutine, all our methods are directly returning the value, and no error is returned. Our error in the execution process is obtained by co_getError(). For example, we have the following interface to obtain data from the network. When the promise will reject: error<br /><br />
+In the coroutine, all our methods are directly returning the value, and no error is returned. Our error in the execution process is obtained by co_getError(). For example, we have the following interface to obtain data from the network. When the promise will reject: error
+
 ```objc
 - (COPromise*)co_GET:(NSString*)url parameters:(NSDictionary*)parameters{
     COPromise *promise = [COPromise promise];
@@ -122,7 +126,6 @@ co_launch(^{
     ...
 });
 ```
-
 
 #### Generator
 
@@ -174,10 +177,10 @@ co_launch(^{
 });
 ```
 
-Through the generator, we can load the data from the traditional producer--notifying the consumer model, turning the consumer into the data-->telling the producer to load the pattern, avoiding the need to use many shared variables for the state in multi-threaded computing. Synchronization eliminates the use of locks in certain scenarios<br /><br />
-
+Through the generator, we can load the data from the traditional producer--notifying the consumer model, turning the consumer into the data-->telling the producer to load the pattern, avoiding the need to use many shared variables for the state in multi-threaded computing. Synchronization eliminates the use of locks in certain scenarios.
 
 #### Actor
+
 > **_The concept of Actor comes from Erlang. In AKKA, an Actor can be thought of as a container for storing state, behavior, Mailbox, and child Actor and Supervisor policies. Actors do not communicate directly, but use Mail to communicate with each other._**
 
 * create actor
@@ -210,10 +213,10 @@ COActor *actor = co_actor_onqueue(q, ^(COActorChan *channel) {
 // send a message to the actor
 [actor send:@"sadf"];
 [actor send:@(1)];
-
 ```
 
 #### tuple
+
 * create tuple
 we provide co_tuple method to create tuple
 
@@ -223,6 +226,7 @@ NSAssert(tup[0] == nil, @"tup[0] is wrong");
 NSAssert([tup[1] intValue] == 10, @"tup[1] is wrong");
 NSAssert([tup[2] isEqualToString:@"abc"], @"tup[2] is wrong");
 ```
+
 you can store any value in tuple
 
 * unpack tuple
@@ -285,9 +289,11 @@ co_launch(^{
     XCTAssert(error == nil, @"error is wrong");
 });
 ```
+
 use tuple you can get multiple values from await return
 
 #### Actual case using coobjc
+
 Let's take the code of the Feeds stream update in the GCDFetchFeed open source project as an example to demonstrate the actual usage scenarios and advantages of the coroutine. The following is the original implementation of not using coroutine：
 
 ```objc
@@ -354,36 +360,35 @@ Let's take the code of the Feeds stream update in the GCDFetchFeed open source p
 The following is the call to the above method in viewDidLoad:
 
 ```objc
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    self.fetchingCount = 0; 
-    @weakify(self);
-    [[[[[[SMNetManager shareInstance] fetchAllFeedWithModelArray:self.feeds] map:^id(NSNumber *value) {
-        @strongify(self);
-        NSUInteger index = [value integerValue];
-        self.feeds[index] = [SMNetManager shareInstance].feeds[index];
-        return self.feeds[index];
-    }] doCompleted:^{
-        @strongify(self);
-        NSLog(@"fetch complete");
-        self.tbHeaderLabel.text = @"";
-        self.tableView.tableHeaderView = [[UIView alloc] init];
-        self.fetchingCount = 0;
-        [self.tableView.mj_header endRefreshing];
-        [self.tableView reloadData];
-        if ([SMFeedStore defaultFeeds].count > self.feeds.count) {
-            self.feeds = [SMFeedStore defaultFeeds];
-            [self fetchAllFeeds];
-        }
-        [self cacheFeedItems];
-    }] deliverOn:[RACScheduler mainThreadScheduler]] subscribeNext:^(SMFeedModel *feedModel) {
-        @strongify(self);
-        self.tableView.tableHeaderView = self.tbHeaderView;
-        self.fetchingCount += 1;
-        self.tbHeaderLabel.text = [NSString stringWithFormat:@"正在获取%@...(%lu/%lu)",feedModel.title,(unsigned long)self.fetchingCount,(unsigned long)self.feeds.count];
-        feedModel.isSync = YES;
-        [self.tableView reloadData];
-    }];
-
+[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+self.fetchingCount = 0;
+@weakify(self);
+[[[[[[SMNetManager shareInstance] fetchAllFeedWithModelArray:self.feeds] map:^id(NSNumber *value) {
+    @strongify(self);
+    NSUInteger index = [value integerValue];
+    self.feeds[index] = [SMNetManager shareInstance].feeds[index];
+    return self.feeds[index];
+}] doCompleted:^{
+    @strongify(self);
+    NSLog(@"fetch complete");
+    self.tbHeaderLabel.text = @"";
+    self.tableView.tableHeaderView = [[UIView alloc] init];
+    self.fetchingCount = 0;
+    [self.tableView.mj_header endRefreshing];
+    [self.tableView reloadData];
+    if ([SMFeedStore defaultFeeds].count > self.feeds.count) {
+        self.feeds = [SMFeedStore defaultFeeds];
+        [self fetchAllFeeds];
+    }
+    [self cacheFeedItems];
+}] deliverOn:[RACScheduler mainThreadScheduler]] subscribeNext:^(SMFeedModel *feedModel) {
+    @strongify(self);
+    self.tableView.tableHeaderView = self.tbHeaderView;
+    self.fetchingCount += 1;
+    self.tbHeaderLabel.text = [NSString stringWithFormat:@"正在获取%@...(%lu/%lu)",feedModel.title,(unsigned long)self.fetchingCount,(unsigned long)self.feeds.count];
+    feedModel.isSync = YES;
+    [self.tableView reloadData];
+}];
 ```
 
 The above code is relatively poor in terms of readability and simplicity. Let's take a look at the code after using the coroutine transformation:
@@ -434,7 +439,8 @@ co_launch(^{
 
 The code after the coroutine transformation has become easier to understand and less error-prone.
 
-####  Swift
+#### Swift
+
 coobjc fully supports Swift through top-level encapsulation, enabling us to enjoy the coroutine ahead of time in Swift.
 Because Swift has richer and more advanced syntax support, coobjc is more elegant in Swift, for example:
 
@@ -445,7 +451,7 @@ func test() {
         let resultStr = try await(channel: co_fetchSomething())
         print("result: \(resultStr)")
     }
-    
+
     co_launch {//create coroutine
         //fetch data asynchronous
         let result = try await(promise: co_fetchSomethingAsynchronous())
@@ -461,6 +467,7 @@ func test() {
 ```
 
 ## 0x4 Advantages of the coroutine
+
 * Concise
   * Less concept: there are only a few operators, compared to dozens of operators in response, it can't be simpler.
   * The principle is simple: the implementation principle of the coroutine is very simple, the entire coroutine library has only a few thousand lines of code
@@ -475,6 +482,7 @@ func test() {
   * Reduce app block: The use of coroutines to help reduce the abuse of locks and semaphores, and to reduce the number of stalls and jams from the root cause by encapsulating the coroutine interfaces such as IOs that cause blocking, and improve the overall performance of the application.
 
 ## 0x5 Communication
+
 * If you **need help**, use [Stack Overflow](http://stackoverflow.com/questions/tagged/coobjc). (Tag 'coobjc')
 * If you'd like to **ask a general question**, use [Stack Overflow](http://stackoverflow.com/questions/tagged/coobjc).
 * If you **found a bug**, _and can provide steps to reliably reproduce it_, open an issue.
@@ -482,11 +490,12 @@ func test() {
 * If you **want to contribute**, submit a pull request.
 * If you are interested in **joining Alibaba Taobao-Mobile architecture team**, please send your resume to [junzhan](mailto:junzhan.yzw@taobao.com)
 
-
 ## 0x6 Unit Tests
+
 coobjc includes a suite of unit tests within the Tests subdirectory. These tests can be run simply be executed the test action on the platform framework you would like to test. You can find coobjc's unit tests in Examples/coobjcBaseExample/coobjcBaseExampleTests. You can find cokit's unit tests in cokit/Examples/coKitExamples/coKitExamplesTests.
 
 ## 0x7 Credits
+
 coobjc couldn't exist without:
 
 * [Promises](https://github.com/google/promises) - Google's Objective-C and Swift Promises framework.
@@ -504,6 +513,7 @@ coobjc couldn't exist without:
 * https://blog.csdn.net/shenlei19911210/article/details/61194617
 
 ## 0x8 Authors
+
 * [pengyutang125](https://github.com/pengyutang125)
 * [NianJi](https://github.com/NianJi)
 * [intheway](https://github.com/intheway)
@@ -514,8 +524,6 @@ coobjc couldn't exist without:
 
 * [Contributing](./CONTRIBUTING.md)
 
-## 0x10 License
+## 0xA License
+
 coobjc is released under the Apache 2.0 license. See [LICENSE](LICENSE) for details.
-<br />
-
-
