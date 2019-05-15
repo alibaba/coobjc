@@ -23,7 +23,8 @@
 
 上述问题在很多系统和语言中都会遇到，解决问题的标准方式就是使用协程。这里不介绍太多的理论，简单说协程就是对基础函数的扩展，可以让函数异步执行的时候挂起然后返回值。协程可以用来实现 generator ，异步模型以及其他强大的能力。
 
-Kotlin 是这两年由 JetBrains 推出的支持现代多平台应用的静态编程语言，支持 JVM ，Javascript ，目前也可以在 iOS 上执行，这两年在开发者社区中也是比较火。<br />在 Kotlin 语言中基于协程的 async/await ，generator/yield 等异步化技术都已经成了语法标配，Kotlin 协程相关的介绍，大家可以参考：[https://www.kotlincn.net/docs/reference/coroutines/basics.html](https://www.kotlincn.net/docs/reference/coroutines/basics.html)
+Kotlin 是这两年由 JetBrains 推出的支持现代多平台应用的静态编程语言，支持 JVM ，Javascript ，目前也可以在 iOS 上执行，这两年在开发者社区中也是比较火。  
+在 Kotlin 语言中基于协程的 async/await ，generator/yield 等异步化技术都已经成了语法标配，Kotlin 协程相关的介绍，大家可以参考：[https://www.kotlincn.net/docs/reference/coroutines/basics.html](https://www.kotlincn.net/docs/reference/coroutines/basics.html)
 
 ## 0x2 协程
 
@@ -70,11 +71,11 @@ co_launch(^{
 ```objc
 - (void)viewDidLoad{
     ...
-		co_launch(^{
-    		NSData *data = await(downloadDataFromUrl(url));
-    		UIImage *image = await(imageFromData(data));
-    		self.imageView.image = image;
-		});
+        co_launch(^{
+            NSData *data = await(downloadDataFromUrl(url));
+            UIImage *image = await(imageFromData(data));
+            self.imageView.image = image;
+        });
 }
 ```
 
@@ -82,7 +83,7 @@ co_launch(^{
 
 * 错误处理
 
-在协程中，我们所有的方法都是直接返回值的，并没有返回错误，我们在执行过程中的错误是通过 `co_getError()` 获取的，比如我们有以下从网络获取数据的接口，在失败的时候， promise 会 `reject:error`<br /><br />
+在协程中，我们所有的方法都是直接返回值的，并没有返回错误，我们在执行过程中的错误是通过 `co_getError()` 获取的，比如我们有以下从网络获取数据的接口，在失败的时候， promise 会 `reject:error`。
 
 ```objc
 - (COPromise*)co_GET:(NSString*)url
@@ -159,7 +160,7 @@ co(^{
 });
 ```
 
-通过生成器，我们可以把传统的生产者加载数据->通知消费者模式，变成消费者需要数据->告诉生产者加载模式，避免了在多线程计算中，需要使用很多共享变量进行状态同步，消除了在某些场景下对于锁的使用<br /><br />
+通过生成器，我们可以把传统的生产者加载数据->通知消费者模式，变成消费者需要数据->告诉生产者加载模式，避免了在多线程计算中，需要使用很多共享变量进行状态同步，消除了在某些场景下对于锁的使用。
 
 #### Actor
 
@@ -344,44 +345,43 @@ co_launch(^{
 下面是 `viewDidLoad` 中对上述方法的调用：
 
 ```objc
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    self.fetchingCount = 0; //统计抓取数量
-    @weakify(self);
-    [[[[[[SMNetManager shareInstance] fetchAllFeedWithModelArray:self.feeds] map:^id(NSNumber *value) {
-        @strongify(self);
-        NSUInteger index = [value integerValue];
-        self.feeds[index] = [SMNetManager shareInstance].feeds[index];
-        return self.feeds[index];
-    }] doCompleted:^{
-        //抓完所有的feeds
-        @strongify(self);
-        NSLog(@"fetch complete");
-        //完成置为默认状态
-        self.tbHeaderLabel.text = @"";
-        self.tableView.tableHeaderView = [[UIView alloc] init];
-        self.fetchingCount = 0;
-        //下拉刷新关闭
-        [self.tableView.mj_header endRefreshing];
-        //更新列表
-        [self.tableView reloadData];
-        //检查是否需要增加源
-        if ([SMFeedStore defaultFeeds].count > self.feeds.count) {
-            self.feeds = [SMFeedStore defaultFeeds];
-            [self fetchAllFeeds];
-        }
-        //缓存未缓存的页面
-        [self cacheFeedItems];
-    }] deliverOn:[RACScheduler mainThreadScheduler]] subscribeNext:^(SMFeedModel *feedModel) {
-        //抓完一个
-        @strongify(self);
-        self.tableView.tableHeaderView = self.tbHeaderView;
-        //显示抓取状态
-        self.fetchingCount += 1;
-        self.tbHeaderLabel.text = [NSString stringWithFormat:@"正在获取%@...(%lu/%lu)",feedModel.title,(unsigned long)self.fetchingCount,(unsigned long)self.feeds.count];
-        feedModel.isSync = YES;
-        [self.tableView reloadData];
-    }];
-
+[UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+self.fetchingCount = 0; //统计抓取数量
+@weakify(self);
+[[[[[[SMNetManager shareInstance] fetchAllFeedWithModelArray:self.feeds] map:^id(NSNumber *value) {
+    @strongify(self);
+    NSUInteger index = [value integerValue];
+    self.feeds[index] = [SMNetManager shareInstance].feeds[index];
+    return self.feeds[index];
+}] doCompleted:^{
+    //抓完所有的feeds
+    @strongify(self);
+    NSLog(@"fetch complete");
+    //完成置为默认状态
+    self.tbHeaderLabel.text = @"";
+    self.tableView.tableHeaderView = [[UIView alloc] init];
+    self.fetchingCount = 0;
+    //下拉刷新关闭
+    [self.tableView.mj_header endRefreshing];
+    //更新列表
+    [self.tableView reloadData];
+    //检查是否需要增加源
+    if ([SMFeedStore defaultFeeds].count > self.feeds.count) {
+        self.feeds = [SMFeedStore defaultFeeds];
+        [self fetchAllFeeds];
+    }
+    //缓存未缓存的页面
+    [self cacheFeedItems];
+}] deliverOn:[RACScheduler mainThreadScheduler]] subscribeNext:^(SMFeedModel *feedModel) {
+    //抓完一个
+    @strongify(self);
+    self.tableView.tableHeaderView = self.tbHeaderView;
+    //显示抓取状态
+    self.fetchingCount += 1;
+    self.tbHeaderLabel.text = [NSString stringWithFormat:@"正在获取%@...(%lu/%lu)",feedModel.title,(unsigned long)self.fetchingCount,(unsigned long)self.feeds.count];
+    feedModel.isSync = YES;
+    [self.tableView reloadData];
+}];
 ```
 
 上述代码无论从可读性还是简洁性上都比较差，下面我们看一下使用协程改造以后的代码：
