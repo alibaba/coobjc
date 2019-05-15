@@ -514,7 +514,7 @@ coobjc couldn't exist without:
 
 * [Contributing](./CONTRIBUTING.md)
 
-## 0x10 License
+## 0xA License
 coobjc is released under the Apache 2.0 license. See [LICENSE](LICENSE) for details.
 <br />
 

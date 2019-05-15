@@ -517,8 +517,9 @@ coobjc 离不开下面这些项目和文章的帮助:
 * [jmpews](https://github.com/jmpews)
 
 ## 0x9贡献代码
+
 * [贡献指南](./CONTRIBUTING_CHINESE.md)
 
-## 0x9 协议
+## 0xA 协议
 
 coobjc 使用 Apache 2.0 协议，详情见 [LICENSE](LICENSE) 文件。
