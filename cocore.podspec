@@ -18,7 +18,7 @@ Pod::Spec.new do |s|
   s.author       = { "pengyutang125" => "pengyutang125@sina.com" }
 
   s.ios.deployment_target = '8.0'
-  s.osx.deployment_target = '10.12'
+  s.osx.deployment_target = '10.10'
 
   s.source =  { :git => "https://github.com/alibaba/coobjc.git", :tag => '1.2.0' } 
   s.source_files = 'cocore/*.{h,m,s,c,mm}'
