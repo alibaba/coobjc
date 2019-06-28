@@ -526,7 +526,6 @@ static int _chanop(co_channel *c, int op, void *p, int canblock) {
     a->channel = c;
     a->op = op;
     a->value = p;
-    a->op = op;
     a->can_block = canblock;
     a->prev = NULL;
     a->next = NULL;
@@ -545,7 +544,6 @@ static int _chanop2(co_channel *c, int op, void *p, int canblock, IMP custom_exe
     a->channel = c;
     a->op = op;
     a->value = p;
-    a->op = op;
     a->can_block = canblock;
     a->prev = NULL;
     a->next = NULL;
