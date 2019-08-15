@@ -84,6 +84,7 @@
 		18E16473224CBF1600B277FC /* CODispatch.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CODispatch.m; sourceTree = "<group>"; };
 		539E1B31B66ADA95F4988159 /* libPods-coobjc.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-coobjc.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		572F70044B408B04A91BE7F2 /* libPods-cocore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-cocore.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6AE2932723053E4D0034D1EC /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		A302BD5B2248D11700411E67 /* COLock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COLock.h; sourceTree = "<group>"; };
 		A34A05AF223922EC00F4E9A3 /* cofishhook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cofishhook.h; sourceTree = "<group>"; };
 		A34A05B0223922EC00F4E9A3 /* cofishhook.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = cofishhook.c; sourceTree = "<group>"; };
@@ -272,6 +273,7 @@
 		D85037C41B9C6D8400864DF0 = {
 			isa = PBXGroup;
 			children = (
+				6AE2932723053E4D0034D1EC /* Package.swift */,
 				D85037D41B9C6D8400864DF0 /* coobjc */,
 				A35C049921EC366A00AC7D6E /* coswift */,
 				A372DA772236597700EF87AA /* cocore */,
