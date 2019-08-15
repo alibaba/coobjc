@@ -25,8 +25,5 @@ let package = Package(
             name: "coswift",
             dependencies: ["cocore"],
             path: "coswift"),
-        .testTarget(
-            name: "coswiftTests",
-            dependencies: ["coswift"]),
     ]
 )
