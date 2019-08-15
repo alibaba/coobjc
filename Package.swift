@@ -20,13 +20,10 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "cocore",
-            path: ".",
-            sources: ["cocore"],
-            dependencies: []),
+            path: "cocore"),
         .target(
             name: "coswift",
-            path: ".",
-            sources: ["coswift"],
+            path: "coswift",
             dependencies: ["cocore"]),
         .testTarget(
             name: "coswiftTests",
