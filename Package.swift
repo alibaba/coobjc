@@ -23,8 +23,8 @@ let package = Package(
             path: "cocore"),
         .target(
             name: "coswift",
-            path: "coswift",
-            dependencies: ["cocore"]),
+            dependencies: ["cocore"],
+            path: "coswift"),
         .testTarget(
             name: "coswiftTests",
             dependencies: ["coswift"]),
