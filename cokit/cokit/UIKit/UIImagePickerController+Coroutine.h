@@ -39,7 +39,7 @@
 
 @property(nonatomic, copy, readonly) NSDictionary* mediaMetadata;
 
-@property(nonatomic, strong, readonly) PHLivePhoto *livePhoto PHOTOS_AVAILABLE_IOS_TVOS(9_1, 10_0);
+@property(nonatomic, strong, readonly) PHLivePhoto *livePhoto API_AVAILABLE(macos(10.15), ios(9.1), tvos(10));
 
 @property(nonatomic, strong, readonly) PHAsset *asset;
 

@@ -23,13 +23,18 @@
 
 #import "cofishhook.h"
 
-#import <dlfcn.h>
-#import <stdlib.h>
-#import <string.h>
-#import <sys/types.h>
-#import <mach-o/dyld.h>
-#import <mach-o/loader.h>
-#import <mach-o/nlist.h>
+#include <dlfcn.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/mman.h>
+#include <sys/types.h>
+#include <mach/mach.h>
+#include <mach/vm_map.h>
+#include <mach/vm_region.h>
+#include <mach-o/dyld.h>
+#include <mach-o/loader.h>
+#include <mach-o/nlist.h>
 
 #ifdef __LP64__
 typedef struct mach_header_64 mach_header_t;
@@ -76,14 +81,41 @@ static int co_prepend_rebindings(struct rebindings_entry **rebindings_head,
   return 0;
 }
 
+static vm_prot_t get_protection(void *sectionStart) {
+  mach_port_t task = mach_task_self();
+  vm_size_t size = 0;
+  vm_address_t address = (vm_address_t)sectionStart;
+  memory_object_name_t object;
+#if __LP64__
+  mach_msg_type_number_t count = VM_REGION_BASIC_INFO_COUNT_64;
+  vm_region_basic_info_data_64_t info;
+  kern_return_t info_ret = vm_region_64(
+      task, &address, &size, VM_REGION_BASIC_INFO_64, (vm_region_info_64_t)&info, &count, &object);
+#else
+  mach_msg_type_number_t count = VM_REGION_BASIC_INFO_COUNT;
+  vm_region_basic_info_data_t info;
+  kern_return_t info_ret = vm_region(task, &address, &size, VM_REGION_BASIC_INFO, (vm_region_info_t)&info, &count, &object);
+#endif
+  if (info_ret == KERN_SUCCESS) {
+    return info.protection;
+  } else {
+    return VM_PROT_READ;
+  }
+}
 static void co_perform_rebinding_with_section(struct rebindings_entry *rebindings,
                                            section_t *section,
                                            intptr_t slide,
                                            nlist_t *symtab,
                                            char *strtab,
                                            uint32_t *indirect_symtab) {
+  const bool isDataConst = strcmp(section->segname, "__DATA_CONST") == 0;
   uint32_t *indirect_symbol_indices = indirect_symtab + section->reserved1;
   void **indirect_symbol_bindings = (void **)((uintptr_t)slide + section->addr);
+  vm_prot_t oldProtection = VM_PROT_READ;
+  if (isDataConst) {
+    oldProtection = get_protection(rebindings);
+    mprotect(indirect_symbol_bindings, section->size, PROT_READ | PROT_WRITE);
+  }
   for (uint i = 0; i < section->size / sizeof(void *); i++) {
     uint32_t symtab_index = indirect_symbol_indices[i];
     if (symtab_index == INDIRECT_SYMBOL_ABS || symtab_index == INDIRECT_SYMBOL_LOCAL ||
@@ -92,10 +124,11 @@ static void co_perform_rebinding_with_section(struct rebindings_entry *rebinding
     }
     uint32_t strtab_offset = symtab[symtab_index].n_un.n_strx;
     char *symbol_name = strtab + strtab_offset;
+    bool symbol_name_longer_than_1 = symbol_name[0] && symbol_name[1];
     struct rebindings_entry *cur = rebindings;
     while (cur) {
       for (uint j = 0; j < cur->rebindings_nel; j++) {
-        if (strlen(symbol_name) > 1 &&
+        if (symbol_name_longer_than_1 &&
             strcmp(&symbol_name[1], cur->rebindings[j].name) == 0) {
           if (cur->rebindings[j].replaced != NULL &&
               indirect_symbol_bindings[i] != cur->rebindings[j].replacement) {
@@ -108,6 +141,19 @@ static void co_perform_rebinding_with_section(struct rebindings_entry *rebinding
       cur = cur->next;
     }
   symbol_loop:;
+  }
+  if (isDataConst) {
+    int protection = 0;
+    if (oldProtection & VM_PROT_READ) {
+      protection |= PROT_READ;
+    }
+    if (oldProtection & VM_PROT_WRITE) {
+      protection |= PROT_WRITE;
+    }
+    if (oldProtection & VM_PROT_EXECUTE) {
+      protection |= PROT_EXEC;
+    }
+    mprotect(indirect_symbol_bindings, section->size, protection);
   }
 }
 
@@ -185,6 +231,9 @@ int co_rebind_symbols_image(void *header,
     struct rebindings_entry *rebindings_head = NULL;
     int retval = co_prepend_rebindings(&rebindings_head, rebindings, rebindings_nel);
     co_rebind_symbols_for_image(rebindings_head, header, slide);
+    if (rebindings_head) {
+      free(rebindings_head->rebindings);
+    }
     free(rebindings_head);
     return retval;
 }
