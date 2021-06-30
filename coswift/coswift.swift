@@ -49,7 +49,7 @@ public func co_launch(queue: DispatchQueue? = nil, stackSize: UInt32? = nil, blo
 ///         // the promise reject
 ///         break
 ///     }
-public func await<T>(promise: Promise<T>) throws -> Resolution<T>  {
+public func co_await<T>(promise: Promise<T>) throws -> Resolution<T>  {
     if let _ = Coroutine.current() {
         
         let chan = Chan<Resolution<T>>(buffCount: 1)
@@ -78,8 +78,8 @@ public func await<T>(promise: Promise<T>) throws -> Resolution<T>  {
 /// - Parameter closure: return a Promise object
 /// - Returns: the promise's resolution
 /// - Throws: COError
-public func await<T>(closure: @escaping () -> Promise<T> ) throws -> Resolution<T> {
-    return try await(promise: closure())
+public func co_await<T>(closure: @escaping () -> Promise<T> ) throws -> Resolution<T> {
+    return try co_await(promise: closure())
 }
 
 /// Await a channel object, blocking current process, wait the channel send something.
@@ -87,7 +87,7 @@ public func await<T>(closure: @escaping () -> Promise<T> ) throws -> Resolution<
 /// - Parameter channel: the Chan object
 /// - Returns: The value passing to channel
 /// - Throws: COError
-public func await<T>(channel: Chan<T>) throws -> T {
+public func co_await<T>(channel: Chan<T>) throws -> T {
     if let _ = Coroutine.current() {
         return try channel.receive()
     } else {
@@ -100,8 +100,8 @@ public func await<T>(channel: Chan<T>) throws -> T {
 /// - Parameter closure: return a Promise object
 /// - Returns: the promise's resolution
 /// - Throws: COError
-public func await<T>(closure: @escaping () -> Chan<T> ) throws -> T {
-    return try await(channel: closure())
+public func co_await<T>(closure: @escaping () -> Chan<T> ) throws -> T {
+    return try co_await(channel: closure())
 }
 
 /// Check current coroutine is active or not.
