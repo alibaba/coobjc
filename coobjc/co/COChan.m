@@ -264,7 +264,9 @@ static void co_chan_custom_resume(coroutine_t *co) {
 + (instancetype)sleep:(NSTimeInterval)duration {
     COTimeChan *chan = [self chanWithDuration:duration];
     
+    __weak __typeof(chan) weakChan = chan;
     chan.timer = [[CODispatch currentDispatch] dispatch_timer:^{
+        __strong __typeof(chan) chan = weakChan;
         [chan send_nonblock:@1];
     } interval:duration];
     
