@@ -249,7 +249,7 @@ void** co_unpackSentinel(){
 }
 
 - (void)dealloc{
-    [storage removeAllObjects];
+    [storage release];
     storage = nil;
     if (_tuple) {
         [_tuple release];
