@@ -360,7 +360,7 @@ describe(@"Proimse tests", ^{
     it(@"test progress promise", ^{
         co_launch(^{
             int progressCount = 0;
-            COProgressPromise *promise = progressDownloadFileFromUrl(@"http://img17.3lian.com/d/file/201701/17/9a0d018ba683b9cbdcc5a7267b90891c.jpg");
+            COProgressPromise *promise = progressDownloadFileFromUrl(@"https://github.com/alibaba/coobjc/archive/refs/heads/master.zip");
             for(id p in promise){
                 double v = [p doubleValue];
                 NSLog(@"current progress: %f", (float)v);
@@ -380,7 +380,7 @@ describe(@"Proimse tests", ^{
     it(@"test progress promise 50%", ^{
         co_launch(^{
             int progressCount = 0;
-            COProgressPromise *promise = progressDownloadFileFromUrl(@"http://img17.3lian.com/d/file/201701/17/9a0d018ba683b9cbdcc5a7267b90891c.jpg");
+            COProgressPromise *promise = progressDownloadFileFromUrl(@"https://github.com/alibaba/coobjc/archive/refs/heads/master.zip");
             for(id p in promise){
                 double v = [p doubleValue];
                 if(v >= 0.5){
@@ -403,7 +403,7 @@ describe(@"Proimse tests", ^{
     it(@"test progress promise direct", ^{
         co_launch(^{
             int progressCount = 0;
-            COProgressPromise *promise = progressDownloadFileFromUrl(@"http://img17.3lian.com/d/file/201701/17/9a0d018ba683b9cbdcc5a7267b90891c.jpg");
+            COProgressPromise *promise = progressDownloadFileFromUrl(@"https://github.com/alibaba/coobjc/archive/refs/heads/master.zip");
             NSData *data = await(promise);
             expect(data.length > 0).beTruthy();
         });
@@ -620,7 +620,7 @@ describe(@"background Thread Proimse tests", ^{
         [[TestThreadObject1 sharedInstance] runBlock:^{
             co_launch(^{
                 int progressCount = 0;
-                COProgressPromise *promise = progressDownloadFileFromUrl(@"http://img17.3lian.com/d/file/201701/17/9a0d018ba683b9cbdcc5a7267b90891c.jpg");
+                COProgressPromise *promise = progressDownloadFileFromUrl(@"https://github.com/alibaba/coobjc/archive/refs/heads/master.zip");
                 for(id p in promise){
                     double v = [p doubleValue];
                     NSLog(@"current progress: %f", (float)v);
@@ -644,7 +644,7 @@ describe(@"background Thread Proimse tests", ^{
         [[TestThreadObject1 sharedInstance] runBlock:^{
             co_launch(^{
                 int progressCount = 0;
-                COProgressPromise *promise = progressDownloadFileFromUrl(@"http://img17.3lian.com/d/file/201701/17/9a0d018ba683b9cbdcc5a7267b90891c.jpg");
+                COProgressPromise *promise = progressDownloadFileFromUrl(@"https://github.com/alibaba/coobjc/archive/refs/heads/master.zip");
                 for(id p in promise){
                     double v = [p doubleValue];
                     if(v >= 0.5){
@@ -670,7 +670,7 @@ describe(@"background Thread Proimse tests", ^{
         [[TestThreadObject1 sharedInstance] runBlock:^{
             co_launch(^{
                 int progressCount = 0;
-                COProgressPromise *promise = progressDownloadFileFromUrl(@"http://img17.3lian.com/d/file/201701/17/9a0d018ba683b9cbdcc5a7267b90891c.jpg");
+                COProgressPromise *promise = progressDownloadFileFromUrl(@"https://github.com/alibaba/coobjc/archive/refs/heads/master.zip");
                 NSData *data = await(promise);
                 expect(data.length > 0).beTruthy();
             });
