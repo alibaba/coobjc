@@ -107,7 +107,7 @@ public func yield<T>(closure: @escaping () -> T ) throws {
 /// - Throws: COError
 public func yield<T>(closure: @escaping () -> Promise<T> ) throws {
     try yield {
-        return try await(closure: closure)
+        return try co_await(closure: closure)
     }
 }
 
@@ -118,7 +118,7 @@ public func yield<T>(closure: @escaping () -> Promise<T> ) throws {
 /// - Throws: COError
 public func yield<T>(closure: @escaping () -> Chan<T> ) throws {
     try yield {
-        return try await(closure: closure)
+        return try co_await(closure: closure)
     }
 }
 
