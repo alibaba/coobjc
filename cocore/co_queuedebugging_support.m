@@ -120,7 +120,7 @@ static BOOL co_isDebuggerAttached() {
 
 
 
-void co_rebind_backtrace() {
+void co_rebind_backtrace(void) {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         if (co_isDebuggerAttached()) {
