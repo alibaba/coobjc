@@ -134,7 +134,7 @@ co_launch(^{
 We use co_sequence to create the generator
 
 ```objc
-COCoroutine *co1 = co_sequence(^{
+COGenerator *co1 = co_sequence(^{
             int index = 0;
             while(co_isActive()){
                 yield_val(@(index));
